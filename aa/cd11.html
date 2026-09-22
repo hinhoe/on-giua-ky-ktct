@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 11: Tập đoàn kinh tế lớn & Cạnh tranh lành mạnh (Case Petrolimex)</title>
+  <style>
+    :root {
+      --primary: #c2410c;
+      --primary-dark: #9a3412;
+      --primary-light: #ffedd5;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #fff7ed;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(194, 65, 12, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Feedback & Highlight */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 11: CÁC TẬP ĐOÀN KINH TẾ LỚN VÀ BẢO ĐẢM CẠNH TRANH LÀNH MẠNH</h1>
+    <p>Case Study: Petrolimex - Môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (10 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Bản chất tính hai mặt của tập đoàn kinh tế quy mô lớn:</strong>
+          <br>• <strong>Mặt tích cực:</strong> Khai thác <em>lợi thế kinh tế nhờ quy mô (Economies of Scale)</em>, tối ưu hóa chi phí hạ tầng/kho bãi, có nguồn lực vốn khổng lồ để làm "bộ đệm giảm xóc" chống đứt gãy chuỗi cung ứng khi khủng hoảng kinh tế xảy ra.
+          <br>• <strong>Mặt tiêu cực:</strong> Nguy cơ lạm dụng vị thế thống lĩnh thị trường, chèn ép chiết khấu của các doanh nghiệp đầu mối nhỏ hoặc đại lý tư nhân, dựng rào cản ngăn cản đối thủ mới gia nhập ngành.
+        </li>
+        <li><strong>Case study Khủng hoảng xăng dầu năm 2022 tại Việt Nam:</strong>
+          <br>Khi nguồn cung toàn cầu gián đoạn và nhiều đại lý tư nhân đóng cửa do thua lỗ, Petrolimex đóng vai trò trụ cột: <em>chấp nhận giảm lợi nhuận ngắn hạn, nhập khẩu xăng dầu vượt hạn ngạch (quota), tổ chức vận tải bồn/tàu 24/7, cung ứng đạt 130% - 150% công suất</em> để bảo đảm an ninh năng lượng quốc gia.
+        </li>
+        <li><strong>Vai trò điều tiết cân bằng của Nhà nước:</strong>
+          <br>Nhà nước cần đạt được mục tiêu kép: vừa sử dụng các tập đoàn Nhà nước lớn làm công cụ bình ổn kinh tế vĩ mô và an ninh năng lượng, vừa hoàn thiện thể chế cạnh tranh (Luật Cạnh tranh, công thức định giá, quản lý Quỹ Bình ổn) để đảm bảo sân chơi bình đẳng, tránh triệt tiêu các thành phần kinh tế tư nhân.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Cụm từ dễ nhầm lẫn & Ký hiệu cần lưu ý</h2>
+      <ul>
+        <li><span class="badge">Bộ đệm giảm xóc (Shock Absorber)</span> Năng lực tài chính, hạ tầng dự trữ và khả năng tự hấp thụ tổn thất tài chính ngắn hạn của các doanh nghiệp trụ cột để duy trì liên tục dòng chảy hàng hóa thiết yếu khi thị trường có biến động tiêu cực cực đoan.</li>
+        <li><span class="badge">Lợi thế quy mô (Economies of Scale)</span> Quy luật chi phí bình quân trên một đơn vị hàng hóa/dịch vụ giảm xuống khi sản lượng và quy mô vận hành tăng lên (hạ chi phí vận chuyển, tồn trữ trên mỗi lít xăng dầu).</li>
+        <li><span class="badge">Doanh nghiệp đầu mối xăng dầu</span> Các thương nhân cấp cao nhất được Nhà nước cấp phép xuất nhập khẩu, mua bán xăng dầu từ nhà máy lọc dầu và tổ chức phân phối xuống hệ thống bán buôn, bán lẻ.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render danh sách câu hỏi qua Javascript -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Tính hai mặt của các tập đoàn kinh tế quy mô lớn (như Petrolimex) được biểu hiện như thế nào?",
+      options: [
+        "A. Vừa có lợi thế quy mô ổn định thị trường, vừa có nguy cơ lạm dụng sức mạnh gây suy yếu cạnh tranh.",
+        "B. Chỉ mang lại tác động tiêu cực gây độc quyền.",
+        "C. Chỉ mang lại lợi ích tuyệt đối cho người tiêu dùng.",
+        "D. Hoàn toàn không ảnh hưởng đến thị trường."
+      ],
+      correct: 0,
+      explain: "Tập đoàn lớn mang tính hai mặt rõ rệt: mặt tích cực là hiệu quả quy mô, đóng vai trò đòn bẩy vĩ mô và bình ổn thị trường; mặt tiêu cực là nguy cơ bóp nghẹt đối thủ nhỏ và lạm dụng vị thế thống lĩnh để triệt tiêu cạnh tranh tự do."
+    },
+    {
+      q: "Câu 2: Trong đợt khủng hoảng xăng dầu năm 2022 tại Việt Nam, vai trò \"bộ đệm giảm xóc\" của Petrolimex thể hiện ở hành động nào?",
+      options: [
+        "A. Tạm dừng bán hàng để chờ giá tăng lên.",
+        "B. Chấp nhận rủi ro tài chính ngắn hạn, nhập vượt quota và huy động tổng lực vận chuyển 24/7 để bù đắp thiếu hụt toàn thị trường.",
+        "C. Tăng giá bán lẻ lên gấp đôi để thu lợi nhuận.",
+        "D. Chuyển sang xuất khẩu xăng dầu ra nước ngoài."
+      ],
+      correct: 1,
+      explain: "Khi các đầu mối tư nhân găm hàng hoặc tạm ngừng kinh doanh do chiết khấu 0 đồng, Petrolimex chấp nhận lỗ chi phí lưu kho, nhập hàng vượt quota và vận hành mạng lưới hết công suất để giữ vững dòng cung ứng cho nền kinh tế."
+    },
+    {
+      q: "Câu 3: Khái niệm \"Lợi thế quy mô\" (Economies of Scale) giúp Petrolimex đạt được điều gì trong phân phối xăng dầu?",
+      options: [
+        "A. Tối ưu hóa chi phí kho bãi, vận chuyển trên mỗi lít xăng dầu nhờ hệ thống hạ tầng khổng lồ sẵn có.",
+        "B. Tự quyết định thuế xăng dầu.",
+        "C. Loại bỏ hoàn toàn các quy định an toàn cháy nổ.",
+        "D. Không cần mua bảo hiểm cháy nổ."
+      ],
+      correct: 0,
+      explain: "Nhờ sở hữu hệ thống kho cảng đầu mối và đội xe bồn, tàu thủy chuyên dụng lớn nhất cả nước, chi phí cố định được phân bổ trên khối lượng hàng triệu mét khối xăng dầu, giúp hạ giá thành phân phối trên từng lít nhiên liệu."
+    },
+    {
+      q: "Câu 4: Nguy cơ tiêu cực nhất khi một tập đoàn xăng dầu chiếm thị phần quá lớn trên thị trường là gì?",
+      options: [
+        "A. Giá xăng dầu quá rẻ.",
+        "B. Doanh nghiệp có thể lạm dụng vị thế thống lĩnh để chèn ép chiết khấu của đại lý nhỏ, gây mất bình đẳng cạnh tranh.",
+        "C. Cây xăng mở ra quá nhiều.",
+        "D. Người dân không mua được xăng."
+      ],
+      correct: 1,
+      explain: "Khi nắm vị thế thống lĩnh khống chế nguồn cung thượng nguồn, tập đoàn lớn có thể giảm tỷ lệ chiết khấu cho đại lý bán lẻ tư nhân xuống mức âm hoặc 0 đồng, đẩy đối thủ nhỏ vào bờ vực đóng cửa."
+    },
+    {
+      q: "Câu 5: Mục tiêu cao nhất của Nhà nước trong quản lý thị trường xăng dầu tại Việt Nam là gì?",
+      options: [
+        "A. Cân bằng giữa ổn định an ninh năng lượng quốc gia và đảm bảo môi trường cạnh tranh lành mạnh.",
+        "B. Triệt tiêu hoàn toàn các doanh nghiệp xăng dầu tư nhân.",
+        "C. Quốc hữu hóa 100% tất cả cây xăng bán lẻ.",
+        "D. Đặt giá xăng theo thị trường tự do hoàn toàn không quản lý."
+      ],
+      correct: 0,
+      explain: "Xăng dầu là mặt hàng chiến lược đầu vào của nền kinh tế. Nhà nước phải điều hành sao cho vừa giữ vững an ninh năng lượng quốc gia (thông qua doanh nghiệp nhà nước), vừa tạo điều kiện bình đẳng cho các doanh nghiệp đầu mối tư nhân tham gia."
+    },
+    {
+      q: "Câu 6: Yếu tố nào giúp Petrolimex chịu đựng được tổn thất tài chính ngắn hạn khi giá xăng dầu thế giới biến động dị thường?",
+      options: [
+        "A. Tiền vay không lãi suất từ người dân.",
+        "B. Quy mô vốn lớn, hạ tầng kho bãi rộng khắp và năng lực tài chính dồi dào tích lũy.",
+        "C. Do không phải trả lương cho nhân viên.",
+        "D. Được miễn phí hoàn toàn tiền mua xăng từ nước ngoài."
+      ],
+      correct: 1,
+      explain: "Tiềm lực tài chính vững chắc, dòng vốn lưu động lớn và hệ thống hạ tầng dự trữ chiến lược giúp tập đoàn có sức chịu đựng rủi ro trượt giá tốt hơn nhiều so với các công ty nhỏ có vốn mỏng."
+    },
+    {
+      q: "Câu 7: Việc Nhà nước quy định Quỹ Bình ổn giá xăng dầu nhằm mục đích chính là gì?",
+      options: [
+        "A. Giảm thiểu biến động giá quá đột ngột, bảo vệ người tiêu dùng và ổn định vĩ mô.",
+        "B. Tăng lợi nhuận cho các tập đoàn bán xăng.",
+        "C. Phạt các cây xăng nhỏ lẻ.",
+        "D. Trả lương cho cán bộ quản lý."
+      ],
+      correct: 0,
+      explain: "Quỹ bình ổn giá là công cụ tài chính dùng để trích lập khi giá thế giới giảm và xả quỹ khi giá thế giới tăng sốc nhằm làm mềm hóa biên độ tăng giá, kìm hãm chỉ số lạm phát vĩ mô."
+    },
+    {
+      q: "Câu 8: Cạnh tranh giữa Petrolimex và các doanh nghiệp đầu mối khác (PVOil, Mipec...) mang lại lợi ích gì cho xã hội?",
+      options: [
+        "A. Tăng nguy cơ đứt gãy nguồn cung.",
+        "B. Thúc đẩy cải tiến dịch vụ tại cây xăng, minh bạch chất lượng và tối ưu hóa chi phí phục vụ.",
+        "C. Làm xăng dầu bị pha tạp chất.",
+        "D. Làm cho giá xăng tăng vọt."
+      ],
+      correct: 1,
+      explain: "Cạnh tranh lành mạnh buộc các hãng xăng dầu phải nâng cao chất lượng đo lường, áp dụng thanh toán không tiền mặt, hóa đơn điện tử từng lần bơm và nâng cấp dịch vụ phục vụ khách hàng."
+    },
+    {
+      q: "Câu 9: Bản thân quy mô khổng lồ của một tập đoàn kinh tế có phải là hành vi vi phạm pháp luật cạnh tranh không?",
+      options: [
+        "A. Có, quy mô lớn mặc định là vi phạm độc quyền.",
+        "B. Không, quy mô lớn là kết quả phát triển tự nhiên; vi phạm chỉ xảy ra khi doanh nghiệp \"lạm dụng\" quy mô đó để hạn chế cạnh tranh.",
+        "C. Chỉ vi phạm nếu là doanh nghiệp nhà nước.",
+        "D. Chỉ vi phạm nếu là doanh nghiệp tư nhân."
+      ],
+      correct: 1,
+      explain: "Luật Cạnh tranh không trừng phạt doanh nghiệp vì có quy mô lớn hoặc thị phần cao đạt được bằng năng lực tự thân; luật chỉ xử lý và ngăn chặn hành vi 'lạm dụng' vị thế đó để ép giá, phân biệt đối xử hoặc ngăn cản đối thủ."
+    },
+    {
+      q: "Câu 10: Giải pháp căn cơ để phòng ngừa sự chèn ép của tập đoàn lớn đối với doanh nghiệp bán lẻ xăng dầu nhỏ là gì?",
+      options: [
+        "A. Minh bạch công thức tính giá, chiết khấu tối thiểu và hoàn thiện cơ chế điều hành giá xăng dầu theo thị trường có sự quản lý.",
+        "B. Cấm tập đoàn lớn mở thêm cây xăng.",
+        "C. Bắt buộc người dân chia đều tiền mua xăng cho các công ty.",
+        "D. Đóng cửa các đại lý tư nhân nhỏ."
+      ],
+      correct: 0,
+      explain: "Minh bạch chi phí tạo nguồn, quy định cơ chế chiết khấu hợp lý và chu kỳ điều hành giá linh hoạt sát với giá thế giới là giải pháp kinh tế căn cơ giúp cả đầu mối lớn và đại lý bán lẻ nhỏ cùng tồn tại ổn định."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

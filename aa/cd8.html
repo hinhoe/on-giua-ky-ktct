@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 8: Tích lũy tư bản & Cơ cấu lao động hiện đại</title>
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --primary-light: #d1fae5;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f0fdf4;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .math-formula {
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Feedback & Highlight */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 8: TÍCH LŨY TƯ BẢN & SỰ THAY ĐỔI CƠ CẤU LAO ĐỘNG</h1>
+    <p>Hệ thống tự học và kiểm tra trắc nghiệm môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Bản chất của tích lũy tư bản:</strong> Là quá trình tái sản xuất mở rộng tư bản chủ nghĩa thông qua việc <em>chuyển hóa một phần giá trị thặng dư (m) thành tư bản phụ thêm ($c_1 + v_1$)</em>. Nguồn gốc duy nhất của tích lũy tư bản chính là giá trị thặng dư do công nhân làm thuê tạo ra.</li>
+        <li><strong>Động cơ thúc đẩy tích lũy:</strong> Quy luật giá trị thặng dư (khát khao săn tìm m tối đa) và áp lực cạnh tranh sinh tồn khốc liệt giữa các doanh nghiệp.</li>
+        <li><strong>Các nhân tố ảnh hưởng trực tiếp đến quy mô tích lũy:</strong>
+          <br>• Trình độ bóc lột sức lao động (tỷ suất $m'$).
+          <br>• Năng suất lao động xã hội (năng suất cao làm giảm giá tư liệu sản xuất và tư liệu sinh hoạt, cùng lượng $m$ mua được nhiều yếu tố sản xuất hơn).
+          <br>• Chênh lệch giữa tư bản sử dụng và tư bản tiêu dùng (máy móc tham gia toàn bộ nhưng chỉ hao mòn từng phần).
+          <br>• Đại lượng tư bản ứng trước ($K_0$).
+        </li>
+        <li><strong>Hệ quả kinh tế - xã hội cốt lõi:</strong>
+          <br>• Làm tăng cấu tạo hữu cơ của tư bản ($c/v$) $\implies$ máy móc, tự động hóa thay thế dần sức lao động.
+          <br>• Thúc đẩy tích tụ và tập trung tư bản thành các tập đoàn quy mô khổng lồ.
+          <br>• Sinh ra tình trạng <em>nhân khẩu thừa tương đối</em> (đội quân thất nghiệp công nghiệp / thất nghiệp cơ cấu).
+          <br>• Phân hóa giàu nghèo sâu sắc trong xã hội.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Công thức, Ký hiệu & Phân biệt chuyên ngành</h2>
+      <ul>
+        <li><span class="badge">Tư bản tích lũy</span> <span class="math-formula">m_tl = m * % tích lũy</span> (với m là tổng khối lượng giá trị thặng dư).</li>
+        <li><span class="badge">Quy mô tư bản chu kỳ mở rộng</span> <span class="math-formula">K1 = K0 + m_tl</span></li>
+        <li><span class="badge">Tích tụ vs Tập trung tư bản</span>
+          <br>• <strong>Tích tụ tư bản:</strong> Tăng quy mô tư bản cá biệt bằng cách tư bản hóa giá trị thặng dư $\implies$ <em>làm tăng cả tư bản cá biệt lẫn tổng tư bản xã hội</em>.
+          <br>• <strong>Tập trung tư bản:</strong> Sự liên kết, sáp nhập, thôn tính các tư bản cá biệt có sẵn $\implies$ <em>làm tăng nhanh quy mô tư bản cá biệt nhưng KHÔNG làm tăng ngay tổng tư bản xã hội</em>.
+        </li>
+        <li><span class="badge">Tư bản cố định vs Tư bản lưu động</span>
+          <br>• Căn cứ phân chia: <em>Phương thức chuyển dịch giá trị sang sản phẩm</em>.
+          <br>• <strong>Tư bản cố định (nhà xưởng, máy móc, robot):</strong> Tham gia toàn bộ vào sản xuất nhưng giá trị chỉ dịch chuyển từng phần (hao mòn dần).
+          <br>• <strong>Tư bản lưu động (nguyên nhiên vật liệu, tiền công mua sức lao động):</strong> Bị tiêu dùng hoàn toàn trong 1 chu kỳ sản xuất và chuyển toàn bộ giá trị vào sản phẩm mới.
+        </li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render danh sách câu hỏi qua Javascript -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Động cơ chủ yếu của tích lũy tư bản là gì?",
+      options: [
+        "A. Quy luật giá trị.",
+        "B. Săn tìm giá trị thặng dư và áp lực cạnh tranh.",
+        "C. Nhu cầu từ thiện.",
+        "D. Quy luật cung cầu."
+      ],
+      correct: 1,
+      explain: "Nhà tư bản tích lũy không ngừng nhằm hai động cơ sống còn: một là lòng tham không đáy săn tìm giá trị thặng dư tối đa; hai là áp lực cạnh tranh khốc liệt buộc phải mở rộng quy mô sản xuất để tránh bị đối thủ tiêu diệt."
+    },
+    {
+      q: "Câu 2: Tư bản đầu tư ban đầu K0 = 2.000.000 USD, cấu tạo hữu cơ c/v = 4/1, m' = 400%. Biết rằng nhà tư bản tích lũy 70% giá trị thặng dư thu được. Xác định quy mô tư bản khi tái sản xuất mở rộng (K1)?",
+      options: [
+        "A. 2.000.000 USD",
+        "B. 3.120.000 USD",
+        "C. 1.120.000 USD",
+        "D. 1.600.000 USD"
+      ],
+      correct: 1,
+      explain: "Ta có: K0 = c + v = 4v + v = 5v = 2.000.000 USD => v = 400.000 USD. Khối lượng m = m' * v = 400% * 400.000 = 1.600.000 USD. Phần m tích lũy = 70% * 1.600.000 = 1.120.000 USD. Quy mô tư bản mới K1 = K0 + m_tl = 2.000.000 + 1.120.000 = 3.120.000 USD."
+    },
+    {
+      q: "Câu 3: Nhà tư bản đầu tư lần đầu 10.000.000 USD, c/v = 3/2, m' = 200%. Nếu nhà tư bản dùng 30% giá trị thặng dư cho tiêu dùng cá nhân thì tổng lượng tư bản đầu tư cho chu kỳ sau là bao nhiêu?",
+      options: [
+        "A. 5.600.000 USD",
+        "B. 8.000.000 USD",
+        "C. 15.600.000 USD",
+        "D. 18.000.000 USD"
+      ],
+      correct: 2,
+      explain: "c/v = 3/2 => v = (2/5) * 10.000.000 = 4.000.000 USD. Khối lượng m = 200% * 4.000.000 = 8.000.000 USD. Tiêu dùng cá nhân 30% thì tỷ lệ tích lũy là 70%. m_tl = 70% * 8.000.000 = 5.600.000 USD. Tổng tư bản chu kỳ sau K1 = 10.000.000 + 5.600.000 = 15.600.000 USD."
+    },
+    {
+      q: "Câu 4: Hệ quả kinh tế tất yếu của tích lũy tư bản đối với cấu trúc tư bản là gì?",
+      options: [
+        "A. Cấu tạo hữu cơ tư bản (c/v) giảm xuống.",
+        "B. Cấu tạo hữu cơ tư bản (c/v) tăng lên.",
+        "C. Cấu tạo kỹ thuật không đổi.",
+        "D. Triệt tiêu tư bản bất biến."
+      ],
+      correct: 1,
+      explain: "Trong quá trình tích lũy, các nhà tư bản không ngừng cải tiến kỹ thuật, đổi mới công nghệ hiện đại. Do đó tỷ trọng tư bản bất biến c (máy móc, nguyên liệu) tăng nhanh hơn rất nhiều so với tư bản khả biến v (mua lao động), làm cấu tạo hữu cơ c/v có xu hướng tất yếu ngày càng tăng cao."
+    },
+    {
+      q: "Câu 5: Điểm khác biệt cơ bản giữa Tích tụ tư bản và Tập trung tư bản là gì?",
+      options: [
+        "A. Tích tụ làm tăng tổng tư bản xã hội; Tập trung chỉ trực tiếp làm tăng tư bản cá biệt mà KHÔNG làm tăng tổng tư bản xã hội.",
+        "B. Tích tụ không dựa vào giá trị thặng dư.",
+        "C. Tập trung làm giảm quy mô tư bản cá biệt.",
+        "D. Tích tụ do nhà nước thực hiện."
+      ],
+      correct: 0,
+      explain: "Tích tụ là tư bản hóa giá trị thặng dư mới tạo ra nên bổ sung thêm tư bản mới vào xã hội; còn tập trung chỉ là việc sáp nhập, phân chia lại các khối tư bản độc lập sẵn có trong xã hội nên không làm tăng tổng lượng tư bản xã hội tại thời điểm đó."
+    },
+    {
+      q: "Câu 6: Tình trạng \"Nhân khẩu thừa tương đối\" (thất nghiệp cơ cấu) xuất hiện do nguyên nhân nào trong quá trình tích lũy?",
+      options: [
+        "A. Dân số tăng quá nhanh.",
+        "B. Cấu tạo hữu cơ c/v tăng, máy móc thay thế sức lao động làm cầu về lao động giảm tương đối.",
+        "C. Người lao động không muốn đi làm.",
+        "D. Nhà nước cấm tuyển dụng."
+      ],
+      correct: 1,
+      explain: "Khi c/v tăng cao, nhu cầu về tư bản khả biến (v) để tuyển dụng lao động giảm đi tương đối so với tốc độ tăng của tổng tư bản, dẫn đến việc một bộ phận lớn lao động bị máy móc đào thải, trở thành đội quân thất nghiệp công nghiệp dự bị."
+    },
+    {
+      q: "Câu 7: Bộ phận tư bản sản xuất tham gia toàn bộ vào quá trình sản xuất nhưng chuyển giá trị từng phần (hao mòn) vào sản phẩm là bộ phận nào?",
+      options: [
+        "A. Tư bản lưu động.",
+        "B. Tư bản cố định.",
+        "C. Tư bản khả biến.",
+        "D. Tư bản tiền tệ."
+      ],
+      correct: 1,
+      explain: "Tư bản cố định gồm nhà xưởng, máy móc, thiết bị... Chúng tham gia toàn bộ vào quy trình chế tạo nhưng giá trị hao mòn chỉ được chuyển dịch dần từng phần vào sản phẩm qua từng chu kỳ sản xuất."
+    },
+    {
+      q: "Câu 8: Bộ phận tư bản tiêu dùng hoàn toàn trong một chu kỳ sản xuất và chuyển toàn bộ giá trị vào sản phẩm là bộ phận nào?",
+      options: [
+        "A. Tư bản cố định.",
+        "B. Tư bản lưu động.",
+        "C. Tư bản cho vay.",
+        "D. Tư bản bất biến cố định."
+      ],
+      correct: 1,
+      explain: "Tư bản lưu động (nguyên liệu, nhiên liệu, vật liệu phụ và tiền lương nhân công) sau mỗi chu kỳ sản xuất sẽ bị tiêu dùng hết và chuyển dịch toàn bộ giá trị một lần vào sản phẩm vừa tạo ra."
+    },
+    {
+      q: "Câu 9: Phân chia tư bản thành Tư bản cố định và Tư bản lưu động dựa trên tiêu chí nào?",
+      options: [
+        "A. Vai trò tạo ra giá trị thặng dư.",
+        "B. Phương thức chuyển giá trị của các bộ phận tư bản sang sản phẩm mới.",
+        "C. Quy mô vốn đầu tư.",
+        "D. Quyền sở hữu tài sản."
+      ],
+      correct: 1,
+      explain: "Tiêu chí phân chia tư bản cố định và lưu động là phương thức chu chuyển / chuyển dịch giá trị của từng bộ phận tư bản vào sản phẩm (chuyển từng phần hay chuyển toàn bộ trong 1 chu kỳ)."
+    },
+    {
+      q: "Câu 10: Việc VinFast đầu tư 1.200 robot tự động hóa xưởng hàn (tự động hóa 90%) là ví dụ điển hình của xu hướng nào?",
+      options: [
+        "A. Tăng cấu tạo hữu cơ tư bản c/v trong sản xuất hiện đại.",
+        "B. Chuyển sang sử dụng lao động thủ công.",
+        "C. Giảm quy mô tái sản xuất.",
+        "D. Giảm tỷ suất giá trị thặng dư."
+      ],
+      correct: 0,
+      explain: "Thay thế công nhân hàn bằng hệ thống robot hàn tự động hóa cao đồng nghĩa với việc doanh nghiệp tăng mạnh chi phí mua máy móc thiết bị (c) và giảm tỷ lệ chi trả tiền lương công nhân trực tiếp (v), đẩy cấu tạo hữu cơ c/v tăng vọt."
+    },
+    {
+      q: "Câu 11: Yếu tố nào KHÔNG phải là nhân tố ảnh hưởng trực tiếp đến quy mô tích lũy tư bản?",
+      options: [
+        "A. Tỷ suất giá trị thặng dư m'.",
+        "B. Năng suất lao động xã hội.",
+        "C. Địa điểm đặt trụ sở đăng ký kinh doanh.",
+        "D. Đại lượng tư bản ứng trước."
+      ],
+      correct: 2,
+      explain: "Quy mô tích lũy phụ thuộc vào 4 nhân tố: Trình độ bóc lột sức lao động (m'), Năng suất lao động xã hội, Chênh lệch giữa tư bản sử dụng và tiêu dùng, và Đại lượng tư bản ứng trước. Địa điểm đăng ký kinh doanh không phải nhân tố quyết định quy mô tích lũy."
+    },
+    {
+      q: "Câu 12: Khi năng suất lao động xã hội tăng lên, quy mô tích lũy tư bản thay đổi thế nào với cùng một lượng m tích lũy?",
+      options: [
+        "A. Giảm quy mô sản xuất.",
+        "B. Mua được nhiều tư liệu sản xuất và sức lao động hơn => tăng quy mô tích lũy.",
+        "C. Không thay đổi.",
+        "D. Phải ngừng sản xuất."
+      ],
+      correct: 1,
+      explain: "Năng suất lao động tăng làm rẻ hóa tư liệu sản xuất và tư liệu tiêu dùng, do đó với cùng một lượng giá trị thặng dư đem tích lũy bằng tiền, nhà tư bản có thể mua được khối lượng hiện vật tư liệu sản xuất và sức lao động lớn hơn trước."
+    },
+    {
+      q: "Câu 13: Cấu tạo hữu cơ tư bản (c/v) phản ánh mối quan hệ giữa các yếu tố nào?",
+      options: [
+        "A. Cấu tạo giá trị do cấu tạo kỹ thuật quyết định và phản ánh sự biến đổi của cấu tạo kỹ thuật.",
+        "B. Tỷ lệ giữa tiền lương và tiền thưởng.",
+        "C. Tỷ lệ giữa chi phí vận chuyển và chi phí nguyên liệu.",
+        "D. Tỷ lệ giữa giá bán và giá mua."
+      ],
+      correct: 0,
+      explain: "Cấu tạo hữu cơ của tư bản là cấu tạo giá trị của tư bản (tỷ lệ giữa c và v), do cấu tạo kỹ thuật (tỷ lệ giữa số lượng tư liệu sản xuất và số lao động sử dụng chúng) quyết định và phản ánh sự biến đổi của cấu tạo kỹ thuật đó."
+    },
+    {
+      q: "Câu 14: Nguồn gốc duy nhất của Tích lũy tư bản là gì?",
+      options: [
+        "A. Tiền vay ngân hàng thương mại.",
+        "B. Giá trị thặng dư m.",
+        "C. Khấu hao tài sản cố định.",
+        "D. Trợ cấp chính phủ."
+      ],
+      correct: 1,
+      explain: "C. Mác khẳng định nguồn gốc duy nhất của tích lũy tư bản là giá trị thặng dư (m). Bản chất của tích lũy chỉ là lấy một phần m do lao động của công nhân tạo ra để biến thành tư bản phụ thêm nhằm tiếp tục bóc lột công nhân ở quy mô lớn hơn."
+    },
+    {
+      q: "Câu 15: Sự sáp nhập 3 ngân hàng nhỏ thành 1 ngân hàng lớn thuộc hình thức nào?",
+      options: [
+        "A. Tích tụ tư bản.",
+        "B. Tập trung tư bản.",
+        "C. Cấu tạo kỹ thuật giảm.",
+        "D. Quốc hữu hóa tư bản."
+      ],
+      correct: 1,
+      explain: "Sáp nhập hoặc thôn tính giữa các doanh nghiệp độc lập có sẵn để hình thành một doanh nghiệp có quy mô lớn hơn chính là biểu hiện điển hình của Tập trung tư bản."
+    },
+    {
+      q: "Câu 16: Sự chuyển dịch cơ cấu lao động trong các doanh nghiệp hiện đại tại Việt Nam có xu hướng nào?",
+      options: [
+        "A. Tăng lao động thủ công giản đơn.",
+        "B. Giảm lao động giản đơn, tăng nhanh lao động kỹ thuật công nghệ cao.",
+        "C. Sa thải toàn bộ kỹ sư phần mềm.",
+        "D. Không cần người lao động."
+      ],
+      correct: 1,
+      explain: "Dưới tác động của tích lũy và chuyển dịch sang công nghệ số/tự động hóa, các công việc giản đơn lặp đi lặp lại bị máy móc thay thế, dẫn tới nhu cầu tuyển dụng dịch chuyển mạnh sang lực lượng lao động chất lượng cao, có kỹ năng công nghệ và quản trị."
+    },
+    {
+      q: "Câu 17: Tư bản ứng trước 800 USD, c/v = 1/1. Giá trị tư liệu sản xuất (c) là bao nhiêu?",
+      options: [
+        "A. 200 USD",
+        "B. 400 USD",
+        "C. 600 USD",
+        "D. 800 USD"
+      ],
+      correct: 1,
+      explain: "K = c + v = 800 USD. Vì c/v = 1/1 => c = v => c + c = 800 => c = 400 USD."
+    },
+    {
+      q: "Câu 18: Tư bản ứng trước 900 USD, c/v = 2/1. Giá trị tư liệu sản xuất (c) là bao nhiêu?",
+      options: [
+        "A. 300 USD",
+        "B. 450 USD",
+        "C. 600 USD",
+        "D. 200 USD"
+      ],
+      correct: 2,
+      explain: "K = c + v = 900 USD. Vì c/v = 2/1 => c = 2v => 2v + v = 3v = 900 USD => v = 300 USD => c = 2 * 300 = 600 USD."
+    },
+    {
+      q: "Câu 19: Doanh nghiệp sản xuất 6.000 sản phẩm, tư bản đầu tư 600.000 USD, c/v = 3/1, m' = 200%. Giá trị một đơn vị sản phẩm là bao nhiêu?",
+      options: [
+        "A. 120 USD",
+        "B. 150 USD",
+        "C. 200 USD",
+        "D. 300 USD"
+      ],
+      correct: 1,
+      explain: "K = c + v = 4v = 600.000 => v = 150.000 USD, c = 450.000 USD. m = 200% * 150.000 = 300.000 USD. Tổng giá trị W = c + v + m = 450.000 + 150.000 + 300.000 = 900.000 USD. Giá trị 1 sản phẩm = 900.000 / 6.000 = 150 USD."
+    },
+    {
+      q: "Câu 20: Sự khác biệt giữa Tư bản sử dụng và Tư bản tiêu dùng thể hiện rõ nhất ở yếu tố tư bản nào?",
+      options: [
+        "A. Tư bản khả biến (tiền lương).",
+        "B. Tư bản cố định (máy móc, thiết bị tham gia toàn bộ nhưng chỉ hao mòn từng phần).",
+        "C. Nguyên nhiên vật liệu phụ.",
+        "D. Sản phẩm tồn kho."
+      ],
+      correct: 1,
+      explain: "Tư bản sử dụng là toàn bộ giá trị hiện vật của máy móc tham gia vào quá trình vận hành, còn tư bản tiêu dùng chỉ là phần giá trị bị hao mòn được tính vào sản phẩm. Sự chênh lệch này thể hiện rõ nhất ở hệ thống tài sản máy móc, nhà xưởng (tư bản cố định)."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 4: Kinh tế nền tảng - Ôn tập & Kiểm tra</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* State Styles */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Floating Action / Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 4: KINH TẾ NỀN TẢNG VÀ SỰ THAY ĐỔI QUAN HỆ SẢN XUẤT - TIÊU DÙNG</h1>
+    <p>Hệ thống tự học và trắc nghiệm kiến thức Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN BÀI -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Mô hình kinh tế nền tảng (Platform Economy):</strong> Hạ tầng kỹ thuật số kết nối đa chiều người mua, người bán và bên thứ ba dựa trên hiệu ứng mạng lưới, thuật toán AI và Big Data.</li>
+        <li><strong>Sự thay đổi bản chất trung gian:</strong> Chuyển dịch từ <em>trung gian truyền thống</em> (mua đứt bán đoạn, sở hữu kho bãi vật lý) sang <em>trung gian số</em> (không sở hữu tài sản vật lý, kiến tạo hạ tầng kết nối kỹ thuật số).</li>
+        <li><strong>Tác động hai mặt:</strong>
+          <br>• <strong>Tích cực:</strong> Tăng tốc độ chu chuyển vốn, giảm chi phí giao dịch, kết nối thị trường trên quy mô lớn tức thời.
+          <br>• <strong>Tiêu cực:</strong> Phụ thuộc độc quyền số (ví dụ: Shopee & TikTok Shop chiếm >97% thị phần TMĐT Việt Nam), rủi ro "thuật toán hộp đen", bóc lột "địa tô số" (chiết khấu Grab lên tới 30%), nguy cơ rò rỉ dữ liệu cá nhân.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Công thức & Cụm từ chuyên ngành</h2>
+      <ul>
+        <li><span class="badge">Chi phí biên (Marginal Cost)</span> Chi phí bổ sung để phục vụ thêm 1 giao dịch mới trên nền tảng số xấp xỉ bằng 0 ($MC \approx 0$).</li>
+        <li><span class="badge">Hiệu ứng mạng lưới (Network Effect)</span> Giá trị của nền tảng gia tăng tỷ lệ thuận với số lượng người tham gia (càng nhiều người dùng thì nền tảng càng giá trị).</li>
+        <li><span class="badge">Địa tô số (Digital Rent)</span> Các khoản phí sàn, phí hoa hồng, chiết khấu và tiền quảng cáo mà người bán phải nộp định kỳ để được hiện diện và giao dịch trên hạ tầng số.</li>
+        <li><span class="badge">Bẫy giữ chân (Lock-in Effect)</span> Rào cản chuyển đổi sàn quá lớn (mất đánh giá, uy tín, tệp khách hàng quen) khiến người bán và người mua bị kẹt chặt vào một nền tảng cụ thể.</li>
+        <li><span class="badge">Winner-takes-all</span> Quy luật kẻ thắng chiếm trọn: Doanh nghiệp số dẫn đầu thâu tóm hầu hết thị phần và lợi nhuận của toàn ngành.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Danh sách câu hỏi render qua JS -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Mô hình kinh tế nền tảng số hoạt động dựa trên phương thức kết nối nào?",
+      options: [
+        "A. Tuyến tính mua đứt bán đoạn truyền thống.",
+        "B. Mạng lưới đa chiều (Multi-sided platform) kết nối trực tiếp trên hạ tầng số.",
+        "C. Độc quyền nhà nước tuyệt đối.",
+        "D. Giao dịch thủ công trực tiếp."
+      ],
+      correct: 1,
+      explain: "Kinh tế nền tảng chuyển từ mô hình tuyến tính (mua đứt bán đoạn) sang mô hình đa chiều (Multi-sided platform) kết nối các nhóm chủ thể khác nhau trên hạ tầng kỹ thuật số."
+    },
+    {
+      q: "Câu 2: Lợi thế cạnh tranh nổi bật về mặt chi phí của nền tảng số so với trung gian truyền thống là gì?",
+      options: [
+        "A. Chi phí cố định mở rộng mặt bằng đắt đỏ.",
+        "B. Chi phí biên (Marginal cost) cho một giao dịch bổ sung xấp xỉ bằng 0.",
+        "C. Miễn phí hoàn toàn dịch vụ cho mọi đối tượng.",
+        "D. Không tốn chi phí hạ tầng máy chủ."
+      ],
+      correct: 1,
+      explain: "Nhờ tự động hóa bằng phần mềm và Internet, chi phí biên để xử lý thêm 1 đơn hàng hay 1 giao dịch mới trên nền tảng xấp xỉ bằng 0."
+    },
+    {
+      q: "Câu 3: Thuật ngữ \"Địa tô số\" trong kinh tế nền tảng phản ánh khoản chi phí nào?",
+      options: [
+        "A. Tiền thuê đất đặt trung tâm dữ liệu.",
+        "B. Phí hoa hồng, phí sàn, chiết khấu quảng cáo mà người bán phải trả cho nền tảng.",
+        "C. Thuế thu nhập doanh nghiệp nền tảng.",
+        "D. Tiền mua thiết bị smartphone của tài xế."
+      ],
+      correct: 1,
+      explain: "\"Địa tô số\" là việc chủ sở hữu hạ tầng số độc quyền thu phí hoa hồng, chiết khấu, phí hiển thị quảng cáo tương tự như địa chủ phong kiến thu tô đất thời xưa."
+    },
+    {
+      q: "Câu 4: Thị phần thương mại điện tử tại Việt Nam tập trung chủ yếu vào hai nền tảng Shopee và TikTok Shop (chiếm hơn 97%) là biểu hiện của hiện tượng gì?",
+      options: [
+        "A. Cạnh tranh hoàn hảo.",
+        "B. Độc quyền số và hiệu ứng \"Winner-takes-all\".",
+        "C. Sản xuất hàng hóa nhỏ lẻ.",
+        "D. Kinh tế tự nhiên."
+      ],
+      correct: 1,
+      explain: "Quy luật quy mô và hiệu ứng mạng lưới tạo ra trạng thái \"Winner-takes-all\" (kẻ thắng thâu tóm tất cả), biến các nền tảng dẫn đầu thành những thực thể độc quyền số."
+    },
+    {
+      q: "Câu 5: Rủi ro nào xuất hiện khi người bán phụ thuộc hoàn toàn vào \"Thuật toán Hộp đen\" (Black Box) của nền tảng?",
+      options: [
+        "A. Người bán bị tăng giá nguyên liệu đầu vào.",
+        "B. Thiếu minh bạch trong hiển thị sản phẩm, bị bóp tương tác mà không có căn cứ đối soát.",
+        "C. Hàng hóa bị hư hỏng trong kho.",
+        "D. Không nhận được thanh toán từ khách hàng."
+      ],
+      correct: 1,
+      explain: "Thuật toán hộp đen là các cơ chế xếp hạng, phân phối lượt xem không được công khai, khiến người bán bị bóp tương tác hoặc hạ xếp hạng bất chợt mà không có cơ chế khiếu nại minh bạch."
+    },
+    {
+      q: "Câu 6: Bẫy giữ chân (Lock-in Effect) khiến người bán trên nền tảng gặp khó khăn gì?",
+      options: [
+        "A. Bị buộc phải bán hạ giá sản phẩm.",
+        "B. Khó chuyển sang nền tảng khác do đã tích lũy uy tín, điểm đánh giá và tệp khách hàng tại sàn cũ.",
+        "C. Bị cấm xuất khẩu hàng hóa.",
+        "D. Phải nộp phạt tiền mặt khi ngừng kinh doanh."
+      ],
+      correct: 1,
+      explain: "Bẫy giữ chân là rào cản chuyển đổi lớn do lịch sử đánh giá, cấp độ cửa hàng và tệp dữ liệu khách hàng đều thuộc quyền sở hữu của sàn cũ, không thể mang sang nền tảng khác."
+    },
+    {
+      q: "Câu 7: Xe công nghệ (Grab, Be) áp dụng thuật toán Tăng giá động (Surge Pricing) dựa trên cơ sở nào?",
+      options: [
+        "A. Mức giá cố định do Nhà nước niêm yết.",
+        "B. Dữ liệu thời gian thực về thời tiết, kẹt xe, số lượng khách đặt và số tài xế có sẵn.",
+        "C. Giá trị lịch sử của chiếc xe chở khách.",
+        "D. Độ tuổi của người đặt xe."
+      ],
+      correct: 1,
+      explain: "Giá cước động (Surge Pricing) được tính toán tự động bằng thuật toán dựa trên sự mất cân bằng giữa cung (tài xế) và cầu (khách đặt) theo thời gian thực kết hợp yếu tố môi trường."
+    },
+    {
+      q: "Câu 8: Người tiêu dùng trên nền tảng số thực chất bị đối xử như một dạng tài sản nào của nền tảng?",
+      options: [
+        "A. Cổ đông quản trị.",
+        "B. \"Hàng hóa dữ liệu\" cung cấp hành vi tiêu dùng miễn phí cho AI học tập.",
+        "C. Nhân viên chính thức.",
+        "D. Chủ sở hữu nền tảng."
+      ],
+      correct: 1,
+      explain: "Trong nền kinh tế dữ liệu số: \"Nếu bạn không trả tiền cho sản phẩm, chính bạn là sản phẩm\". Dữ liệu hành vi của người dùng được thu thập để làm giàu thuật toán và bán quảng cáo."
+    },
+    {
+      q: "Câu 9: Việc các tài xế công nghệ chịu mức chiết khấu Grab vọt lên khoảng 30% doanh thu là biểu hiện của điều gì?",
+      options: [
+        "A. Vị thế thế yếu của người lao động không có quyền thương lượng trước chủ thể hạ tầng số.",
+        "B. Sự gia tăng tiền lương thực tế.",
+        "C. Sự chia sẻ lợi nhuận bình đẳng.",
+        "D. Hợp đồng lao động dài hạn bền vững."
+      ],
+      correct: 0,
+      explain: "Tài xế bị định danh là \"đối tác\" thay vì người lao động chính thức, không có công đoàn và không có quyền thương lượng tập thể trước quy chế đơn phương từ chủ nền tảng."
+    },
+    {
+      q: "Câu 10: Điểm yếu khi áp dụng Luật Cạnh tranh dựa trên thị phần đối với các tập đoàn công nghệ số là gì?",
+      options: [
+        "A. Tập đoàn số không có doanh thu.",
+        "B. Quyền lực thực sự của tập đoàn số nằm ở Dữ liệu và Thuật toán chứ không chỉ là thị phần doanh thu.",
+        "C. Các ứng dụng số không thể định giá được.",
+        "D. Thị trường số không có người tiêu dùng."
+      ],
+      correct: 1,
+      explain: "Các phương pháp đo lường truyền thống chỉ nhìn vào doanh thu, trong khi sức mạnh chi phối thị trường của các Big Tech đến từ khả năng độc quyền dữ liệu người dùng và thuật toán phân phối."
+    },
+    {
+      q: "Câu 11: Chức năng cơ bản nhất của chủ thể trung gian theo lý luận Mác - Lênin là gì?",
+      options: [
+        "A. Trực tiếp sản xuất ra sản phẩm vật chất.",
+        "B. Tăng tốc độ chu chuyển hàng hóa và rút ngắn thời gian lưu thông.",
+        "C. Tiêu dùng sản phẩm cuối cùng.",
+        "D. Thu thuế cho nhà nước."
+      ],
+      correct: 1,
+      explain: "Trung gian thương nghiệp giúp giải quyết khâu lưu thông, đưa hàng hóa từ nơi sản xuất đến tay người tiêu dùng nhanh hơn, từ đó tăng tốc độ chu chuyển của tư bản."
+    },
+    {
+      q: "Câu 12: Khái niệm \"Chi phí giao dịch\" (Transaction Cost) trong kinh tế số được tối ưu hóa như thế nào?",
+      options: [
+        "A. Tăng chi phí đi lại tìm kiếm cửa hàng.",
+        "B. Rút ngắn thời gian tìm kiếm thông tin và kết nối trực tiếp giữa người mua và người bán.",
+        "C. Tăng thời gian đàm phán hợp đồng giấy.",
+        "D. Bắt buộc thanh toán bằng tiền mặt."
+      ],
+      correct: 1,
+      explain: "Nền tảng số giúp cắt giảm tối đa chi phí tìm kiếm (search cost), chi phí so sánh giá và chi phí thanh toán giữa hai bên."
+    },
+    {
+      q: "Câu 13: Hiện tượng người tiêu dùng bị hướng vào việc mua sắm bốc đồng xuất phát từ công cụ nào của nền tảng?",
+      options: [
+        "A. Đội ngũ nhân viên tư vấn trực tiếp.",
+        "B. Thuật toán đề xuất cá nhân hóa (Recommendation System) và livestream/flash sale.",
+        "C. Hệ thống kho bãi vật lý.",
+        "D. Giá niêm yết cố định cả năm."
+      ],
+      correct: 1,
+      explain: "Sự kết hợp giữa hệ thống gợi ý cá nhân hóa liên tục và các hiệu ứng tâm lý đếm ngược (flash sale/livestream chốt đơn) kích thích hành vi mua sắm cảm tính."
+    },
+    {
+      q: "Câu 14: Trong nền kinh tế số, ai là người kiến tạo ra \"Hiệu ứng mạng lưới\"?",
+      options: [
+        "A. Duy nhất ban giám đốc công ty nền tảng.",
+        "B. Sự tham gia đông đảo của cả tập hợp người bán và người mua.",
+        "C. Các cơ quan quản lý nhà nước.",
+        "D. Các ngân hàng thương mại."
+      ],
+      correct: 1,
+      explain: "Hiệu ứng mạng lưới được tạo nên bởi quy mô người dùng: càng nhiều người bán thì càng thu hút người mua, và càng nhiều người mua thì người bán càng phải đổ về nền tảng."
+    },
+    {
+      q: "Câu 15: Việc ứng dụng thuật toán tự động phân chia đơn hàng giúp trung gian số đạt được điều gì?",
+      options: [
+        "A. Tăng thời gian xử lý đơn hàng.",
+        "B. Tối ưu hóa lộ trình và ghép cặp người mua - người bán tức thời.",
+        "C. Tăng lượng hàng tồn kho.",
+        "D. Giảm độ chính xác của giao hàng."
+      ],
+      correct: 1,
+      explain: "Thuật toán ghép cặp (matching algorithm) xử lý dữ liệu vị trí và nhu cầu để kết nối tức thì người mua - người bán/tài xế với chi phí thời gian thấp nhất."
+    },
+    {
+      q: "Câu 16: \"Lao động gia công số\" là thuật ngữ dùng để chỉ ai trong nền kinh tế nền tảng?",
+      options: [
+        "A. Kỹ sư lập trình AI của tập đoàn Google.",
+        "B. Người bán nhỏ lẻ và tài xế công nghệ bị phụ thuộc, mất khả năng tự chủ kinh tế.",
+        "C. Giám đốc điều hành Shopee.",
+        "D. Khách hàng mua sắm hàng ngày."
+      ],
+      correct: 1,
+      explain: "Thuật ngữ chỉ những người lao động tự do/tiểu thương dù có tài sản (xe máy, cửa hàng online) nhưng hoàn toàn bị kiểm soát bởi thuật toán và tỷ lệ ăn chia của sàn."
+    },
+    {
+      q: "Câu 17: Một nền tảng số áp dụng chính sách \"đốt tiền\" (chịu lỗ nặng) giai đoạn đầu nhằm mục đích gì?",
+      options: [
+        "A. Làm từ thiện cho xã hội.",
+        "B. Thâu tóm dữ liệu người dùng và độc chiếm hiệu ứng mạng lưới để loại bỏ đối thủ.",
+        "C. Giảm giá trị hàng hóa xuống bằng 0.",
+        "D. Tránh nộp thuế doanh nghiệp."
+      ],
+      correct: 1,
+      explain: "Chiến lược trợ giá/đốt tiền nhằm nhanh chóng đạt được quy mô mạng lưới tới hạn (critical mass), triệt tiêu đối thủ cạnh tranh trước khi thiết lập vị thế thống lĩnh thị trường."
+    },
+    {
+      q: "Câu 18: Rủi ro lớn nhất đối với dữ liệu cá nhân khi tham gia giao dịch trên các nền tảng thương mại điện tử là gì?",
+      options: [
+        "A. Không mua được hàng giảm giá.",
+        "B. Dữ liệu bị rò rỉ, mua bán trái phép dẫn đến lừa đảo tài chính và mất quyền riêng tư.",
+        "C. Tốc độ internet bị chậm đi.",
+        "D. Máy tính bị khóa màn hình."
+      ],
+      correct: 1,
+      explain: "Rủi ro bảo mật dữ liệu dẫn đến việc thông tin danh tính, số điện thoại, địa chỉ và lịch sử giao dịch bị khai thác trái phép hoặc bị bán cho bên thứ ba."
+    },
+    {
+      q: "Câu 19: Khái niệm \"Winner-takes-all\" mô tả trạng thái thị trường nào?",
+      options: [
+        "A. Thị trường chia đều lợi nhuận cho mọi doanh nghiệp.",
+        "B. Doanh nghiệp nền tảng dẫn đầu thâu tóm hầu hết thị phần và lợi nhuận của toàn ngành.",
+        "C. Người tiêu dùng thắng tất cả các mã giảm giá.",
+        "D. Nhà nước thâu tóm toàn bộ nền tảng."
+      ],
+      correct: 1,
+      explain: "\"Winner-takes-all\" là hiện tượng mà nền tảng đứng đầu tạo ra khoảng cách quá lớn không thể bắt kịp đối với các nền tảng phía sau, thâu tóm gần như toàn bộ giá trị của thị trường."
+    },
+    {
+      q: "Câu 20: Giải pháp quan trọng nhất để kiểm soát tác động tiêu cực của độc quyền nền tảng số là gì?",
+      options: [
+        "A. Cấm hoàn toàn thương mại điện tử.",
+        "B. Hoàn thiện khung pháp lý về quản lý dữ liệu, minh bạch thuật toán và chống cạnh tranh phi bình đẳng.",
+        "C. Tăng phí internet đối với người dùng.",
+        "D. Bắt buộc người bán quay về chợ truyền thống."
+      ],
+      correct: 1,
+      explain: "Cần xây dựng thể chế pháp luật hiện đại về bảo vệ dữ liệu cá nhân, kiểm toán thuật toán hộp đen và ngăn chặn các hành vi áp đặt chiết khấu vô lý từ các nền tảng độc quyền."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Giải thích chi tiết:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 14: CNH, HĐH và Hội nhập quốc tế trong kỷ nguyên số</title>
+  <style>
+    :root {
+      --primary: #0891b2;
+      --primary-dark: #0e7490;
+      --primary-light: #cffafe;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #ecfeff;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(8, 145, 178, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Feedback & Highlight */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 14: CÔNG NGHIỆP HÓA, HIỆN ĐẠI HÓA & HỘI NHẬP TRONG KỶ NGUYÊN SỐ</h1>
+    <p>Hệ thống tự học và kiểm tra trắc nghiệm môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Bản chất Công nghiệp hóa, hiện đại hóa (CNH, HĐH):</strong> Quá trình chuyển đổi căn bản, toàn diện các hoạt động sản xuất kinh doanh từ sử dụng lao động thủ công là chính sang sử dụng phổ biến sức lao động dựa trên công nghệ, phương tiện và phương pháp tiên tiến, hiện đại nhằm tạo ra năng suất lao động xã hội cao.</li>
+        <li><strong>Nội dung CNH, HĐH trong kỷ nguyên số (CMCN 4.0):</strong>
+          <br>• Thúc đẩy <em>chuyển đổi số quốc gia</em> trên 3 trụ cột: <em>Chính phủ số, Kinh tế số và Xã hội số</em>.
+          <br>• Tích hợp các công nghệ trụ cột của CMCN 4.0: Trí tuệ nhân tạo (AI), Dữ liệu lớn (Big Data), Internet vạn vật (IoT), Điện toán đám mây (Cloud) và Tự động hóa vào toàn bộ các ngành kinh tế.
+          <br>• Phát triển <em>nguồn nhân lực chất lượng cao</em> gắn liền với đổi mới sáng tạo, coi đây là nhân tố quyết định hàng đầu cho sự thành công của CNH, HĐH.
+        </li>
+        <li><strong>Hội nhập kinh tế quốc tế:</strong>
+          <br>• <em>Cơ hội:</em> Mở rộng thị trường xuất khẩu, đón nhận dòng vốn FDI, tiếp nhận chuyển giao công nghệ mới và tham gia sâu vào chuỗi giá trị toàn cầu (thông qua CPTPP, EVFTA...).
+          <br>• <em>Thách thức:</em> Sức ép cạnh tranh khốc liệt trên sân nhà, rủi ro đứt gãy chuỗi cung ứng bên ngoài và nguy cơ rơi vào bẫy gia công chi phí thấp.
+        </li>
+        <li><strong>Thách thức và yêu cầu đối với lực lượng lao động trẻ/sinh viên:</strong>
+          <br>• Lao động giản đơn, lặp đi lặp lại có nguy cơ bị robot và thuật toán tự động hóa đào thải.
+          <br>• Người học cần trang bị bộ năng lực cốt lõi: <em>Năng lực số (Digital Literacy), ngoại ngữ, tư duy phản biện, kỹ năng làm việc đa văn hóa</em> và đặc biệt là tinh thần <em>học tập suốt đời (Lifelong learning)</em>.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Cụm từ dễ nhầm lẫn & Thuật ngữ cần lưu ý</h2>
+      <ul>
+        <li><span class="badge">Kinh tế tri thức (Knowledge Economy)</span> Nền kinh tế mà trong đó sự sản sinh, phổ biến và ứng dụng tri thức, thông tin giữ vai trò động lực chính tạo ra của cải và tăng trưởng kinh tế (khác với nền kinh tế thâm dụng tài nguyên và lao động giá rẻ).</li>
+        <li><span class="badge">CNH truyền thống vs CNH rút ngắn</span>
+          <br>• <em>CNH truyền thống:</em> Đi tuần tự từng bước từ cơ khí hóa, điện khí hóa rồi mới tới tự động hóa theo tiến trình lịch sử.
+          <br>• <em>CNH rút ngắn:</em> Tận dụng lợi thế của nước đi sau, "đi tắt đón đầu", bỏ qua các thế hệ công nghệ trung gian để ứng dụng thẳng vào các giải pháp công nghệ số 4.0 hiện đại.
+        </li>
+        <li><span class="badge">Bẫy thu nhập trung bình (Middle-Income Trap)</span> Trạng thái một quốc gia đã đạt mức thu nhập trung bình nhưng bị đình trệ, không thể bứt phá lên nhóm thu nhập cao do mất dần lợi thế nhân công giá rẻ nhưng chưa đủ năng lực cạnh tranh bằng tri thức và đổi mới sáng tạo.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render danh sách câu hỏi bằng JS -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Công nghiệp hóa, hiện đại hóa là quá trình chuyển đổi căn bản các hoạt động sản xuất từ sử dụng lao động nào sang lao động nào?",
+      options: [
+        "A. Từ lao động máy móc sang lao động thủ công.",
+        "B. Từ lao động thủ công là chính sang sử dụng một cách phổ biến sức lao động dựa trên công nghệ và phương pháp tiên tiến, hiện đại.",
+        "C. Từ lao động kỹ thuật cao sang lao động phổ thông.",
+        "D. Từ kinh tế số quay về kinh tế tự nhiên."
+      ],
+      correct: 1,
+      explain: "CNH, HĐH là quá trình cơ bản thay thế phương thức sản xuất thủ công, năng suất thấp bằng phương thức sản xuất công nghiệp hiện đại dựa trên tiến bộ khoa học công nghệ để tạo ra năng suất lao động xã hội vượt trội."
+    },
+    {
+      q: "Câu 2: Cuộc Cách mạng công nghiệp lần thứ tư (CMCN 4.0) được đặc trưng bởi sự hợp nhất của các công nghệ trong những lĩnh vực nào?",
+      options: [
+        "A. Động cơ hơi nước và xe cơ giới.",
+        "B. Điện năng và dây chuyền sản xuất hàng loạt.",
+        "C. Kỹ thuật số, vật lý và sinh học (AI, IoT, Big Data, Cloud, Automation).",
+        "D. Máy tính cá nhân thuần túy."
+      ],
+      correct: 2,
+      explain: "CMCN 4.0 dựa trên nền tảng của cuộc cách mạng số, đặc trưng bởi sự xóa nhòa ranh giới giữa các lĩnh vực vật lý, kỹ thuật số và sinh học với các công nghệ lõi như AI, IoT, Big Data, Cloud và in 3D."
+    },
+    {
+      q: "Câu 3: Yếu tố nào giữ vai trò quyết định hàng đầu đến sự thành công của quá trình CNH, HĐH trong kỷ nguyên số tại Việt Nam?",
+      options: [
+        "A. Nguồn tài nguyên khoáng sản dồi dào.",
+        "B. Lực lượng lao động giá rẻ đông đảo.",
+        "C. Nguồn nhân lực chất lượng cao và năng lực khoa học công nghệ.",
+        "D. Diện tích đất nông nghiệp rộng lớn."
+      ],
+      correct: 2,
+      explain: "Trong nền kinh tế số và kinh tế tri thức, con người với chất xám, khả năng sáng tạo và làm chủ công nghệ cao là nhân tố quyết định trực tiếp đến năng lực cạnh tranh và sự phát triển bứt phá của quốc gia."
+    },
+    {
+      q: "Câu 4: Khái niệm \"Kinh tế tri thức\" được hiểu như thế nào?",
+      options: [
+        "A. Nền kinh tế chỉ bao gồm các trường đại học.",
+        "B. Nền kinh tế trong đó sự sản xuất, sở hữu, phân phối và sử dụng tri thức, thông tin đóng vai trò là động lực chính của tăng trưởng.",
+        "C. Nền kinh tế xuất khẩu nhiều nông sản nhất.",
+        "D. Nền kinh tế không sử dụng máy tính."
+      ],
+      correct: 1,
+      explain: "Tổ chức OECD định nghĩa: Kinh tế tri thức là nền kinh tế mà trong đó sự sản sinh, truyền bá và sử dụng tri thức đóng vai trò là động lực then chốt cho tăng trưởng kinh tế, tạo việc làm và của cải."
+    },
+    {
+      q: "Câu 5: Mô hình CNH, HĐH rút ngắn ở Việt Nam có đặc điểm nổi bật gì?",
+      options: [
+        "A. Lần lượt đi qua từng bước công nghệ từ thế kỷ 18.",
+        "B. Bỏ qua các bước công nghệ trung gian lỗi thời, tận dụng thành tựu CMCN 4.0 để đi thẳng vào công nghệ hiện đại.",
+        "C. Từ bỏ hoàn toàn ngành nông nghiệp.",
+        "D. Chỉ tập trung vào khai thác dầu khí."
+      ],
+      correct: 1,
+      explain: "CNH rút ngắn cho phép Việt Nam đi tắt đón đầu, kết hợp tuần tự với nhảy vọt, tiếp thu ngay các giải pháp công nghệ tiên tiến nhất của thế giới để tiết kiệm thời gian và tài nguyên phát triển."
+    },
+    {
+      q: "Câu 6: Tác động hai mặt của hội nhập kinh tế quốc tế đối với nền kinh tế Việt Nam là gì?",
+      options: [
+        "A. Chỉ mang lại tác động tích cực không có rủi ro.",
+        "B. Mở rộng thị trường, thu hút FDI, chuyển giao công nghệ; nhưng đồng thời gia tăng áp lực cạnh tranh gay gắt và nguy cơ lệ thuộc ngoài.",
+        "C. Làm đóng cửa toàn bộ doanh nghiệp trong nước.",
+        "D. Triệt tiêu hoàn toàn hoạt động xuất nhập khẩu."
+      ],
+      correct: 1,
+      explain: "Hội nhập kinh tế mang tính hai mặt biện chứng: mở ra cơ hội tiếp cận thị trường và công nghệ lớn, nhưng cũng đặt các doanh nghiệp trong nước trước áp lực cạnh tranh sinh tử với các tập đoàn đa quốc gia hùng mạnh."
+    },
+    {
+      q: "Câu 7: Thách thức lớn nhất của kỷ nguyên số đối với lao động phổ thông giá rẻ tại Việt Nam là gì?",
+      options: [
+        "A. Giá sinh hoạt giảm xuống.",
+        "B. Nguy cơ bị máy móc, Robot và thuật toán AI thay thế trong các công việc lắp ráp, lặp đi lặp lại.",
+        "C. Không có điện thoại thông minh để sử dụng.",
+        "D. Bị buộc phải đi làm xa nhà."
+      ],
+      correct: 1,
+      explain: "Khi tự động hóa và AI ngày càng rẻ và chính xác, các công việc giản đơn, lặp đi lặp lại trong dệt may, da giày, lắp ráp điện tử sẽ dần bị thay thế, làm mất đi lợi thế nhân công rẻ truyền thống."
+    },
+    {
+      q: "Câu 8: Để chủ động hội nhập và thích ứng với CMCN 4.0, sinh viên Việt Nam cần trang bị những năng lực cốt lõi nào?",
+      options: [
+        "A. Kỹ năng số (Digital literacy), trình độ ngoại ngữ, tư duy phản biện, sáng tạo và năng lực tự học suốt đời (Lifelong learning).",
+        "B. Chỉ cần kỹ năng lao động chân tay.",
+        "C. Trông chờ vào sự phân công công việc của nhà trường.",
+        "D. Học thuộc lòng các tài liệu cũ không cần cập nhật."
+      ],
+      correct: 0,
+      explain: "Thế giới việc làm số đòi hỏi thế hệ trẻ phải thành thạo kỹ năng số, ngoại ngữ toàn cầu, tư duy logic phản biện và khả năng liên tục học hỏi để thích nghi với tốc độ đổi mới công nghệ chóng mặt."
+    },
+    {
+      q: "Câu 9: Việc tham gia các Hiệp định thương mại tự do thế hệ mới (CPTPP, EVFTA) mang lại cơ hội gì cho doanh nghiệp Việt Nam?",
+      options: [
+        "A. Được miễn hoàn toàn nghĩa vụ nộp thuế nội địa.",
+        "B. Cắt giảm thuế quan xuất khẩu về 0%, mở rộng thị trường toàn cầu và tiếp cận chuỗi giá trị quốc tế.",
+        "C. Cấm các công ty nước ngoài vào Việt Nam.",
+        "D. Tự động nhận được vốn viện trợ không hoàn lại."
+      ],
+      correct: 1,
+      explain: "Các FTA thế hệ mới giúp dỡ bỏ hàng rào thuế quan về gần 0%, tạo lợi thế cạnh tranh vượt bậc cho hàng hóa Việt Nam vươn tới các thị trường tiêu dùng lớn như châu Âu, Nhật Bản, Canada."
+    },
+    {
+      q: "Câu 10: Chuyển đổi số quốc gia bao gồm ba trụ cột chính nào?",
+      options: [
+        "A. Chính phủ số, Kinh tế số và Xã hội số.",
+        "B. Phần cứng, Phần mềm và Dây cáp mạng.",
+        "C. Điện thoại, Máy tính và Tivi.",
+        "D. Nông nghiệp số, Lâm nghiệp số và Ngư nghiệp số."
+      ],
+      correct: 0,
+      explain: "Chương trình Chuyển đổi số quốc gia của Việt Nam được xây dựng trên 3 trụ cột đồng bộ: Chính phủ số (quản trị công), Kinh tế số (sản xuất kinh doanh) và Xã hội số (đời sống công dân)."
+    },
+    {
+      q: "Câu 11: Khái niệm \"Bẫy thu nhập trung bình\" (Middle-income trap) đe dọa quốc gia nào trong quá trình CNH?",
+      options: [
+        "A. Quốc gia đã giàu có từ lâu.",
+        "B. Quốc gia đạt đến mức thu nhập trung bình nhưng không thể bứt phá lên mức thu nhập cao do mất lợi thế lao động giá rẻ mà chưa có năng lực đổi mới sáng tạo.",
+        "C. Quốc gia nghèo nhất thế giới.",
+        "D. Quốc gia không có giao thương quốc tế."
+      ],
+      correct: 1,
+      explain: "Bẫy thu nhập trung bình là hiện tượng quốc gia bị mắc kẹt ở mức thu nhập trung bình khi chi phí lao động tăng làm mất lợi thế gia công, trong khi năng suất và hàm lượng công nghệ chưa đủ tầm cạnh tranh với các nước phát triển."
+    },
+    {
+      q: "Câu 12: Động lực cốt lõi thúc đẩy chuyển đổi mô hình tăng trưởng từ \"chiều rộng\" sang \"chiều sâu\" ở Việt Nam là gì?",
+      options: [
+        "A. Tăng thêm số lượng công nhân làm ca đêm.",
+        "B. Dựa vào ứng dụng tiến bộ khoa học công nghệ, đổi mới sáng tạo và tăng năng suất lao động tổng hợp (TFP).",
+        "C. Khai thác thêm nhiều mỏ than đá.",
+        "D. Vay thêm nhiều nợ nước ngoài."
+      ],
+      correct: 1,
+      explain: "Tăng trưởng theo chiều sâu không dựa vào việc tăng vốn hay lao động đơn thuần, mà dựa vào ứng dụng khoa học kỹ thuật, nâng cao trình độ quản lý và năng suất các nhân tố tổng hợp (TFP)."
+    },
+    {
+      q: "Câu 13: Nội dung nào KHÔNG phải là đặc trưng của hội nhập kinh tế quốc tế?",
+      options: [
+        "A. Mở cửa thị trường hàng hóa, dịch vụ và đầu tư.",
+        "B. Tuân thủ các quy tắc và cam kết thương mại quốc tế.",
+        "C. Đóng cửa thị trường tài chính và cấm đầu tư nước ngoài.",
+        "D. Tham gia vào các chuỗi cung ứng toàn cầu."
+      ],
+      correct: 2,
+      explain: "Đóng cửa thị trường và cấm đầu tư nước ngoài là biểu hiện của nền kinh tế đóng, cô lập và tự cung tự cấp, hoàn toàn đi ngược lại bản chất mở cửa liên kết của hội nhập kinh tế quốc tế."
+    },
+    {
+      q: "Câu 14: Năng lực \"Tự học suốt đời\" (Lifelong learning) có vai trò gì đối với người lao động trong thời đại số?",
+      options: [
+        "A. Là sở thích cá nhân lúc rảnh rỗi.",
+        "B. Giúp liên tục cập nhật kiến thức, làm mới kỹ năng để không bị đào thải trước sự thay đổi công nghệ nhanh chóng.",
+        "C. Giúp kéo dài thời gian đi học đại học.",
+        "D. Là hình thức để nhận trợ cấp thất nghiệp."
+      ],
+      correct: 1,
+      explain: "Chu kỳ đào thải của kiến thức và công nghệ trong kỷ nguyên số diễn ra rất nhanh; năng lực tự học và liên tục nâng cấp kỹ năng (reskilling/upskilling) là vũ khí sinh tồn của người lao động hiện đại."
+    },
+    {
+      q: "Câu 15: Yếu tố nào giúp nâng cao vị thế của hàng hóa xuất khẩu Việt Nam trên thị trường quốc tế?",
+      options: [
+        "A. Giá rẻ bất chấp chất lượng kém.",
+        "B. Nâng cao tiêu chuẩn chất lượng, đáp ứng quy chuẩn xanh (ESG), nguồn gốc xuất xứ minh bạch và thương hiệu uy tín.",
+        "C. Tăng chi phí vận chuyển.",
+        "D. Bán hàng không qua kiểm định."
+      ],
+      correct: 1,
+      explain: "Các thị trường nhập khẩu tiên tiến hiện nay đặt ra các rào cản kỹ thuật khắt khe về phát thải carbon, tiêu chuẩn lao động và tính bền vững (ESG), buộc hàng xuất khẩu phải chuyển dịch sang chất lượng cao."
+    },
+    {
+      q: "Câu 16: Phát triển Kinh tế xanh và Kinh tế tuần hoàn trong quá trình CNH, HĐH nhằm mục đích gì?",
+      options: [
+        "A. Tối đa hóa lợi nhuận ngắn hạn bất chấp ô nhiễm.",
+        "B. Đảm bảo phát triển bền vững, tiết kiệm tài nguyên, giảm phát thải khí nhà kính và bảo vệ môi trường sinh thái.",
+        "C. Ngừng toàn bộ hoạt động sản xuất công nghiệp.",
+        "D. Quay về phương thức sản xuất tự cung tự cấp."
+      ],
+      correct: 1,
+      explain: "Kinh tế xanh và kinh tế tuần hoàn (tái chế, giảm thiểu rác thải) giúp dung hòa giữa tăng trưởng kinh tế và bảo vệ môi trường, hướng tới mục tiêu phát thải ròng bằng 0 (Net Zero)."
+    },
+    {
+      q: "Câu 17: Nguy cơ tiêu cực nào có thể xảy ra nếu Việt Nam hội nhập kinh tế quốc tế một cách thụ động, thiếu chuẩn bị?",
+      options: [
+        "A. Bị các tập đoàn nước ngoài thâu tóm các ngành then chốt, biến thành nơi gia công chi phí thấp và ô nhiễm môi trường.",
+        "B. Hàng hóa trong nước quá rẻ.",
+        "C. Lao động trong nước được trả lương quá cao.",
+        "D. Thiếu hụt vốn đầu tư."
+      ],
+      correct: 0,
+      explain: "Hội nhập thụ động dẫn tới nguy cơ doanh nghiệp nội địa bị bóp nghẹt ngay trên sân nhà, tài nguyên cạn kiệt và nền kinh tế trở thành bãi thải công nghệ cũ và nơi gia công giá trị thấp cho nước ngoài."
+    },
+    {
+      q: "Câu 18: Khái niệm \"Công nghiệp văn hóa\" và \"Kinh tế sáng tạo\" trong kỷ nguyên số dựa trên nguồn lực nào?",
+      options: [
+        "A. Nguồn than đá và quặng sắt.",
+        "B. Tri thức, sự sáng tạo nghệ thuật, công nghệ số và bản quyền sở hữu trí tuệ.",
+        "C. Đất đai làm nhà xưởng.",
+        "D. Số lượng lao động tay chân."
+      ],
+      correct: 1,
+      explain: "Kinh tế sáng tạo và công nghiệp văn hóa khai thác chất xám, di sản văn hóa kết hợp với công nghệ số để tạo ra các sản phẩm giá trị gia tăng cao (game, điện ảnh, nội dung số, âm nhạc)."
+    },
+    {
+      q: "Câu 19: Chủ trương \"Đổi mới sáng tạo\" (Innovation) có vai trò gì trong phát triển doanh nghiệp Việt Nam hiện nay?",
+      options: [
+        "A. Là chi phí phát sinh không cần thiết.",
+        "B. Tạo ra sản phẩm mới, quy trình mới, giá trị gia tăng cao và lợi thế cạnh tranh vượt trội trên thị trường.",
+        "C. Chỉ áp dụng cho các công ty phần mềm.",
+        "D. Do Nhà nước bắt buộc làm thay doanh nghiệp."
+      ],
+      correct: 1,
+      explain: "Đổi mới sáng tạo giúp doanh nghiệp tối ưu chi phí, nâng cấp chất lượng sản phẩm dịch vụ, thích ứng linh hoạt với thị hiếu người tiêu dùng và duy trì vị thế cạnh tranh bền vững."
+    },
+    {
+      q: "Câu 20: Yêu cầu quan trọng nhất đối với sinh viên khi ra trường trong bối cảnh toàn cầu hóa là gì?",
+      options: [
+        "A. Chỉ nắm vững lý thuyết trong sách giáo khoa cũ.",
+        "B. Sở hữu năng lực làm việc đa văn hóa, thích ứng nhanh với công nghệ mới, chủ động đổi mới sáng tạo và đáp ứng tiêu chuẩn tuyển dụng toàn cầu.",
+        "C. Trông chờ vào sự nâng đỡ của gia đình.",
+        "D. Tránh né việc sử dụng tiếng Anh và máy tính."
+      ],
+      correct: 1,
+      explain: "Trong thị trường lao động phẳng, sinh viên tốt nghiệp cần sở hữu năng lực chuyên môn vững vàng, khả năng giao tiếp ngoại ngữ linh hoạt, kỹ năng mềm và tinh thần chủ động đổi mới sáng tạo để cạnh tranh với nhân sự toàn cầu."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ôn tập & Kiểm tra: Quy luật Giá trị</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #dbeafe;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study Mode Styling */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .study-section li {
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Quiz Mode Styling */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Explanation & Result highlights */
+    .option-item.correct-ans {
+      background: var(--success-light);
+      border-color: var(--success);
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light);
+      border-color: var(--danger);
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 3: QUY LUẬT GIÁ TRỊ VÀ ÁP LỰC CẠNH TRANH</h1>
+    <p>Hệ thống tự học và kiểm tra kiến thức Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Nội dung quy luật giá trị:</strong> Sản xuất và trao đổi hàng hóa phải dựa trên cơ sở hao phí lao động xã hội cần thiết.</li>
+        <li><strong>Điều kiện trong sản xuất:</strong> Hao phí lao động cá biệt &le; Hao phí lao động xã hội cần thiết ($t_{cb} \le t_{xh}$).</li>
+        <li><strong>Nguyên tắc trong trao đổi:</strong> Theo nguyên tắc ngang giá (giá cả thị trường xoay quanh trục giá trị dưới tác động của quan hệ cung - cầu).</li>
+        <li><strong>Ba tác động cốt lõi của quy luật giá trị:</strong>
+          <ol style="padding-left: 20px; margin-top: 6px;">
+            <li>Điều tiết sản xuất và lưu thông hàng hóa.</li>
+            <li>Kích thích cải tiến kỹ thuật, hợp lý hóa sản xuất, tăng năng suất lao động.</li>
+            <li>Phân hóa những người sản xuất hàng hóa thành người giàu và người nghèo (phá sản).</li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Công thức, Ký hiệu & Cụm từ chuyên ngành</h2>
+      <ul>
+        <li><span class="badge">t_cb</span> <strong>Hao phí lao động cá biệt:</strong> Thời gian / hao phí lao động riêng biệt của từng doanh nghiệp/chủ thể sản xuất.</li>
+        <li><span class="badge">t_xh</span> <strong>Hao phí lao động xã hội cần thiết:</strong> Thời gian cần thiết để sản xuất hàng hóa trong điều kiện sản xuất bình thường, trình độ kỹ thuật trung bình và cường độ lao động trung bình của xã hội (thước đo giá trị chung của thị trường).</li>
+        <li><span class="badge">W = c + v + m</span> <strong>Cấu thành lượng giá trị hàng hóa:</strong>
+          <br>• $c$: Hao phí tư liệu sản xuất (giá trị cũ chuyển vào sản phẩm).
+          <br>• $v$: Chi phí tiền lương/tiền công cho lao động.
+          <br>• $m$: Giá trị thặng dư do lao động sống tạo ra.
+        </li>
+        <li><span class="badge">Lao động cụ thể vs Trừu tượng:</span> Lao động cụ thể tạo ra <em>giá trị sử dụng</em>; lao động trừu tượng của người sản xuất kết tinh tạo ra <em>giá trị của hàng hóa</em> (phát hiện của C. Mác).</li>
+        <li><span class="badge">Lao động giản đơn vs Phức tạp:</span> Trong cùng một đơn vị thời gian, lao động phức tạp tạo ra nhiều giá trị hơn lao động giản đơn (lao động phức tạp là bội số của lao động giản đơn).</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: KIỂM TRA TRẮC NGHIỆM -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Danh sách câu hỏi sẽ được sinh tự động bằng Javascript -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Dữ liệu 20 câu hỏi trắc nghiệm kèm đáp án và giải thích
+  const quizData = [
+    {
+      q: "Câu 1: Quy luật giá trị yêu cầu việc sản xuất và trao đổi hàng hóa phải dựa trên cơ sở nào?",
+      options: [
+        "A. Hao phí lao động cá biệt của người sản xuất.",
+        "B. Hao phí lao động xã hội cần thiết.",
+        "C. Chi phí nguyên vật liệu đầu vào.",
+        "D. Sự quy định giá của Nhà nước."
+      ],
+      correct: 1,
+      explain: "Quy luật giá trị yêu cầu việc sản xuất và trao đổi hàng hóa phải dựa trên cơ sở hao phí lao động xã hội cần thiết làm thước đo chung."
+    },
+    {
+      q: "Câu 2: Tình huống xưởng C may 1 chiếc áo mất 25 phút, trong khi hao phí xã hội cần thiết là 15 phút. Xưởng C sẽ gặp kết quả gì?",
+      options: [
+        "A. Bán được giá cao gấp đôi để bù chi phí.",
+        "B. Thu được lợi nhuận siêu ngạch.",
+        "C. Bị thua lỗ và đối mặt nguy cơ phá sản do giá bán bị khống chế theo mức chuẩn xã hội.",
+        "D. Được nhà nước trợ cấp phần hao phí thừa."
+      ],
+      correct: 2,
+      explain: "Vì t_cb (25 phút) > t_xh (15 phút), thị trường chỉ chấp nhận mức thanh toán theo hao phí xã hội cần thiết nên xưởng C bù đắp không đủ chi phí và rơi vào thua lỗ."
+    },
+    {
+      q: "Câu 3: Yếu tố nào quyết định giá trị cá biệt của hàng hóa?",
+      options: [
+        "A. Hao phí lao động cá biệt của người sản xuất quyết định.",
+        "B. Hao phí lao động xã hội cần thiết.",
+        "C. Công dụng của hàng hóa.",
+        "D. Quan hệ cung cầu trên thị trường."
+      ],
+      correct: 0,
+      explain: "Giá trị cá biệt của hàng hóa do lượng hao phí lao động cá biệt thực tế của chính chủ thể/doanh nghiệp đó sản xuất ra quyết định."
+    },
+    {
+      q: "Câu 4: Giá cả hàng hóa là gì?",
+      options: [
+        "A. Giá trị sử dụng của hàng hóa.",
+        "B. Biểu hiện bằng tiền của giá trị hàng hóa.",
+        "C. Tổng chi phí nguyên vật liệu.",
+        "D. Tỷ lệ trao đổi giữa hai hàng hóa bất kỳ."
+      ],
+      correct: 1,
+      explain: "Giá cả là hình thức biểu hiện bằng tiền của giá trị hàng hóa trên thị trường."
+    },
+    {
+      q: "Câu 5: Một doanh nghiệp dệt may sản xuất 1.000 sản phẩm với tổng hao phí c = 40.000 USD, v = 10.000 USD, m = 10.000 USD. Giá trị của 1 đơn vị sản phẩm là bao nhiêu?",
+      options: [
+        "A. 40 USD",
+        "B. 50 USD",
+        "C. 60 USD",
+        "D. 70 USD"
+      ],
+      correct: 2,
+      explain: "Tổng giá trị W = c + v + m = 40.000 + 10.000 + 10.000 = 60.000 USD. Giá trị 1 đơn vị = 60.000 / 1.000 = 60 USD."
+    },
+    {
+      q: "Câu 6: Đâu KHÔNG phải là tác động của quy luật giá trị?",
+      options: [
+        "A. Điều tiết sản xuất và lưu thông hàng hóa.",
+        "B. Kích thích cải tiến kỹ thuật, tăng năng suất lao động.",
+        "C. Triệt tiêu hoàn toàn sự cạnh tranh giữa các doanh nghiệp.",
+        "D. Phân hóa những người sản xuất hàng hóa."
+      ],
+      correct: 2,
+      explain: "Quy luật giá trị không triệt tiêu cạnh tranh mà ngược lại càng làm cho cạnh tranh giữa các nhà sản xuất trở nên gay gắt hơn."
+    },
+    {
+      q: "Câu 7: Cơ chế tác động của quy luật giá trị trong trao đổi hàng hóa thể hiện qua sự vận động của yếu tố nào?",
+      options: [
+        "A. Giá cả hàng hóa dao động xoay quanh trục giá trị hàng hóa.",
+        "B. Giá cả luôn luôn bằng giá trị hàng hóa.",
+        "C. Giá cả do người bán tự quyết định không phụ thuộc thị trường.",
+        "D. Giá cả cố định theo thời gian."
+      ],
+      correct: 0,
+      explain: "Dưới tác động của quan hệ cung - cầu, giá cả thị trường lên xuống dao động xoay quanh trục giá trị của hàng hóa."
+    },
+    {
+      q: "Câu 8: Doanh nghiệp thu được lợi nhuận siêu ngạch khi nào?",
+      options: [
+        "A. Bán hàng hóa cao hơn giá trị xã hội.",
+        "B. Hao phí lao động cá biệt thấp hơn hao phí lao động xã hội cần thiết.",
+        "C. Kéo dài ngày lao động của công nhân.",
+        "D. Tăng giá bán khi thị trường thiếu hàng."
+      ],
+      correct: 1,
+      explain: "Khi t_cb < t_xh (nhờ kỹ thuật vượt trội, năng suất cao hơn), doanh nghiệp bán theo giá trị xã hội sẽ thu được phần chênh lệch thặng dư gọi là lợi nhuận siêu ngạch."
+    },
+    {
+      q: "Câu 9: Lao động phức tạp khác lao động giản đơn ở điểm nào?",
+      options: [
+        "A. Lao động phức tạp là lao động tạo ra ít giá trị hơn.",
+        "B. Lao động phức tạp là lao động trải qua đào tạo, huấn luyện và là lao động giản đơn nhân bội lên.",
+        "C. Lao động phức tạp chỉ xuất hiện trong nông nghiệp.",
+        "D. Lao động phức tạp không tạo ra giá trị sử dụng."
+      ],
+      correct: 1,
+      explain: "Lao động phức tạp đòi hỏi phải qua đào tạo chuyên môn; trong cùng thời gian, nó tạo ra lượng giá trị lớn hơn lao động giản đơn (được coi là lao động giản đơn nhân bội lên)."
+    },
+    {
+      q: "Câu 10: Tỷ lệ trao đổi về lượng giữa hai hàng hóa khác nhau gọi là gì?",
+      options: [
+        "A. Giá trị sử dụng.",
+        "B. Giá trị trao đổi.",
+        "C. Giá trị thực tế.",
+        "D. Chi phí sản xuất."
+      ],
+      correct: 1,
+      explain: "Giá trị trao đổi là một quan hệ về tỷ lệ số lượng mà giá trị sử dụng này trao đổi lấy giá trị sử dụng khác."
+    },
+    {
+      q: "Câu 11: Nếu lao động xã hội cần thiết để làm ra 1 sản phẩm là 4 giờ, doanh nghiệp A làm mất 3 giờ, B mất 4 giờ, C mất 5 giờ. Doanh nghiệp nào thu lợi nhuận cao nhất?",
+      options: [
+        "A. Doanh nghiệp C.",
+        "B. Doanh nghiệp B.",
+        "C. Doanh nghiệp A.",
+        "D. Cả 3 doanh nghiệp bằng nhau."
+      ],
+      correct: 2,
+      explain: "Doanh nghiệp A có hao phí cá biệt (3h) thấp hơn mức trung bình của xã hội (4h) nên chi phí sản xuất thấp nhất, thu được lợi nhuận cao nhất khi bán theo giá thị trường."
+    },
+    {
+      q: "Câu 12: Đâu là công thức lưu thông hàng hóa giản đơn?",
+      options: [
+        "A. T – H – T’",
+        "B. H – T – H",
+        "C. H – H",
+        "D. T – T’"
+      ],
+      correct: 1,
+      explain: "Công thức lưu thông hàng hóa giản đơn là H – T – H (Bán hàng lấy tiền rồi dùng tiền mua hàng hóa khác phục vụ tiêu dùng)."
+    },
+    {
+      q: "Câu 13: Yếu tố nào quyết định đến lượng giá trị của hàng hóa?",
+      options: [
+        "A. Thời gian lao động cá biệt của người sản xuất giỏi nhất.",
+        "B. Thời gian lao động xã hội cần thiết.",
+        "C. Bằng cấp của người lao động.",
+        "D. Mức độ hiếm có của tài nguyên."
+      ],
+      correct: 1,
+      explain: "Thước đo lượng giá trị của hàng hóa được tính bằng thời gian lao động xã hội cần thiết chứ không tính bằng thời gian cá biệt."
+    },
+    {
+      q: "Câu 14: Khi năng suất lao động tăng lên thì lượng giá trị trong một đơn vị hàng hóa sẽ thay đổi như thế nào?",
+      options: [
+        "A. Tăng lên.",
+        "B. Giảm xuống.",
+        "C. Không đổi.",
+        "D. Tăng gấp đôi."
+      ],
+      correct: 1,
+      explain: "Tăng năng suất lao động làm tăng tổng số lượng sản phẩm tạo ra trong 1 đơn vị thời gian, do đó lượng hao phí thời gian để làm ra 1 đơn vị sản phẩm giảm đi -> giá trị 1 đơn vị hàng hóa giảm."
+    },
+    {
+      q: "Câu 15: Khi cường độ lao động tăng lên thì tổng số sản phẩm và tổng giá trị tạo ra trong một đơn vị thời gian thay đổi như thế nào?",
+      options: [
+        "A. Tổng sản phẩm tăng, tổng giá trị tăng tương ứng.",
+        "B. Tổng sản phẩm tăng, giá trị 1 sản phẩm giảm.",
+        "C. Tổng sản phẩm giảm, tổng giá trị không đổi.",
+        "D. Tổng sản phẩm tăng, tổng giá trị không đổi."
+      ],
+      correct: 0,
+      explain: "Tăng cường độ lao động nghĩa là mức độ khẩn trương, nặng nhọc tăng lên (tương tự như kéo dài ngày lao động), nên cả tổng số sản phẩm và tổng giá trị tạo ra đều tăng tỷ lệ thuận."
+    },
+    {
+      q: "Câu 16: Lao động cụ thể tạo ra thuộc tính nào của hàng hóa?",
+      options: [
+        "A. Giá trị hàng hóa.",
+        "B. Giá trị sử dụng của hàng hóa.",
+        "C. Giá cả hàng hóa.",
+        "D. Giá trị trao đổi."
+      ],
+      correct: 1,
+      explain: "Lao động cụ thể với phương pháp, công cụ và mục đích riêng biệt tạo nên công dụng đặc thù của sản phẩm, tức là tạo ra giá trị sử dụng."
+    },
+    {
+      q: "Câu 17: Lao động trừu tượng tạo ra thuộc tính nào của hàng hóa?",
+      options: [
+        "A. Giá trị sử dụng.",
+        "B. Giá trị của hàng hóa.",
+        "C. Mẫu mã hàng hóa.",
+        "D. Tính năng kỹ thuật."
+      ],
+      correct: 1,
+      explain: "Lao động trừu tượng là sự tiêu hao sức lao động nói chung của con người (cơ bắp, thần kinh), kết tinh trong hàng hóa tạo nên giá trị của hàng hóa."
+    },
+    {
+      q: "Câu 18: Ai là người phát hiện ra tính chất hai mặt của lao động sản xuất hàng hóa (lao động cụ thể và lao động trừu tượng)?",
+      options: [
+        "A. A. Smith",
+        "B. D. Ricardo",
+        "C. C. Mác",
+        "D. V.I. Lênin"
+      ],
+      correct: 2,
+      explain: "C. Mác là người đầu tiên phát hiện ra tính chất hai mặt của lao động sản xuất hàng hóa, tạo tiền đề hoàn chỉnh học thuyết giá trị lao động."
+    },
+    {
+      q: "Câu 19: Lượng giá trị xã hội của hàng hóa do thời gian lao động xã hội cần thiết quyết định, thời gian này thường sát với thời gian lao động cá biệt của nhóm người sản xuất nào?",
+      options: [
+        "A. Nhóm cung ứng phần lớn số lượng hàng hóa đó trên thị trường.",
+        "B. Nhóm người sản xuất có máy móc hiện đại nhất.",
+        "C. Nhóm người sản xuất nhỏ lẻ nhất.",
+        "D. Nhóm người sản xuất nghèo nhất."
+      ],
+      correct: 0,
+      explain: "Thời gian lao động xã hội cần thiết là mức trung bình và trên thực tế thường sát với mức hao phí cá biệt của nhóm người sản xuất cung ứng đại bộ phận (phần lớn) hàng hóa đó ra thị trường."
+    },
+    {
+      q: "Câu 20: Việc phân hóa giàu nghèo giữa những người sản xuất hàng hóa là kết quả tất yếu của tác động nào?",
+      options: [
+        "A. Sự can thiệp của chính phủ.",
+        "B. Quy luật giá trị.",
+        "C. Sự lạm phát tiền tệ.",
+        "D. Thương mại quốc tế."
+      ],
+      correct: 1,
+      explain: "Đây là tác động thứ ba của quy luật giá trị: người có điều kiện sản xuất tốt (t_cb < t_xh) sẽ giàu lên; người có điều kiện kém (t_cb > t_xh) sẽ thua lỗ, khánh kiệt dẫn đến phá sản."
+    }
+  ];
+
+  // Khởi tạo giao diện câu hỏi
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Giải thích chi tiết:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  // Chuyển đổi giữa 2 tab: Ôn bài & Kiểm tra
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  // Chấm điểm và hiển thị kết quả
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block"; // Hiện giải thích
+
+      // Reset style các options
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      // Đánh dấu đáp án đúng
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  // Làm lại bài test
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Chạy lần đầu khi load trang
+  renderQuiz();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 6: Các phương pháp sản xuất GTTD & Quan hệ lợi ích</title>
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #ccfbf1;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f0fdfa;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .math-formula {
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* States & Feedback */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 6: CÁC PHƯƠNG PHÁP SẢN XUẤT GIÁ TRỊ THẶNG DƯ & QUAN HỆ LỢI ÍCH</h1>
+    <p>Hệ thống tự học và kiểm tra trắc nghiệm môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Giá trị thặng dư tuyệt đối:</strong> Thu được bằng cách <em>kéo dài ngày lao động vượt quá thời gian lao động tất yếu</em> (hoặc tăng cường độ lao động) trong điều kiện năng suất lao động và thời gian tất yếu không đổi. Bị giới hạn bởi giới hạn sinh học (thể lực, 24 giờ/ngày) và phong trào đấu tranh của công nhân.</li>
+        <li><strong>Giá trị thặng dư tương đối:</strong> Thu được nhờ <em>rút ngắn thời gian lao động tất yếu</em> bằng cách tăng năng suất lao động xã hội (đặc biệt trong các ngành sản xuất tư liệu sinh hoạt), qua đó kéo dài thời gian lao động thặng dư trong điều kiện độ dài ngày lao động không đổi.</li>
+        <li><strong>Giá trị thặng dư siêu ngạch:</strong> Thu được do doanh nghiệp cá biệt áp dụng kỹ thuật mới sớm nhất, làm cho <em>giá trị cá biệt thấp hơn giá trị thị trường (xã hội)</em>. Mang tính <em>tạm thời</em> đối với từng doanh nghiệp, nhưng <em>vĩnh viễn</em> đối với toàn bộ giai cấp tư bản (động lực mạnh nhất thúc đẩy đổi mới công nghệ).</li>
+        <li><strong>Quan hệ lợi ích kinh tế giữa người lao động và người sử dụng lao động:</strong>
+          <br>• <strong>Thống nhất:</strong> Phụ thuộc nhau trong một chỉnh thể doanh nghiệp (doanh nghiệp phát triển thì công nhân có việc làm, thu nhập và phúc lợi).
+          <br>• <strong>Mâu thuẫn:</strong> Trực tiếp trong việc phân chia phần <em>giá trị mới (v + m)</em>: Giới chủ muốn tối đa hóa m (lợi nhuận), còn người lao động muốn tối đa hóa v (tiền lương, thu nhập).
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Công thức & Cụm từ chuyên ngành cốt lõi</h2>
+      <ul>
+        <li><span class="badge">Độ dài ngày lao động</span> <span class="math-formula">T = t + t'</span>
+          <br>• <span class="math-formula">t</span>: Thời gian lao động tất yếu (tạo ra giá trị ngang bằng giá trị sức lao động v).
+          <br>• <span class="math-formula">t'</span>: Thời gian lao động thặng dư (tạo ra giá trị thặng dư m).
+        </li>
+        <li><span class="badge">Giá trị thặng dư siêu ngạch</span> <span class="math-formula">m_sn = Giá trị xã hội - Giá trị cá biệt</span></li>
+        <li><span class="badge">Phân chia giá trị mới</span> <span class="math-formula">Giá trị mới = v + m</span> (Vừa thống nhất cùng tạo ra, vừa mâu thuẫn đối kháng trong tỷ lệ phân chia).</li>
+        <li><span class="badge">Các hình thái biến tướng của m</span> Bao gồm: <em>Lợi nhuận công nghiệp, Lợi nhuận thương nghiệp, Lợi tức ngân hàng, Địa tô tư bản chủ nghĩa</em>. (Tiền lương là giá cả của hàng hóa sức lao động, không phải hình thức biểu hiện của m).</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Danh sách câu hỏi render qua JS -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Điểm giống nhau giữa phương pháp sản xuất giá trị thặng dư tuyệt đối và tương đối là gì?",
+      options: [
+        "A. Kéo dài độ dài ngày lao động.",
+        "B. Đều làm tăng tỷ suất giá trị thặng dư m' và kéo dài thời gian lao động thặng dư.",
+        "C. Đều dựa trên giảm giá trị sức lao động.",
+        "D. Đều làm giảm sản lượng hàng hóa."
+      ],
+      correct: 1,
+      explain: "Cả hai phương pháp đều có chung bản chất và mục đích là kéo dài thời gian lao động thặng dư (t') và nâng cao trình độ bóc lột của tư bản biểu hiện qua tỷ suất giá trị thặng dư m' = (t' / t) * 100%."
+    },
+    {
+      q: "Câu 2: Ngày công nhân làm việc 8 giờ, m' = 100%. Sau đó nhà tư bản kéo dài ngày làm việc lên 10 giờ (giá trị sức lao động không đổi). Trình độ bóc lột mới là bao nhiêu?",
+      options: [
+        "A. 120%",
+        "B. 150%",
+        "C. 200%",
+        "D. 250%"
+      ],
+      correct: 1,
+      explain: "Ban đầu T = 8h, m' = 100% => t = 4h và t' = 4h. Khi kéo dài ngày làm việc lên 10h mà giá trị sức lao động không đổi => t vẫn là 4h, do đó t' mới = 10 - 4 = 6h. Tỷ suất bóc lột mới m' = (6 / 4) * 100% = 150%."
+    },
+    {
+      q: "Câu 3: Giá trị thặng dư siêu ngạch thu được do đâu?",
+      options: [
+        "A. Kéo dài ngày lao động của toàn ngành.",
+        "B. Giá trị cá biệt của hàng hóa thấp hơn giá trị xã hội nhờ cải tiến kỹ thuật cá biệt.",
+        "C. Trốn thuế nhà nước.",
+        "D. Giảm chất lượng sản phẩm."
+      ],
+      correct: 1,
+      explain: "Giá trị thặng dư siêu ngạch phát sinh khi doanh nghiệp cá biệt ứng dụng công nghệ/kỹ thuật vượt trội làm tăng năng suất lao động cá biệt, giúp giá trị cá biệt của sản phẩm thấp hơn mức trung bình xã hội nhưng vẫn bán theo giá xã hội."
+    },
+    {
+      q: "Câu 4: Xét về tính chất, giá trị thặng dư siêu ngạch có đặc điểm gì?",
+      options: [
+        "A. Vĩnh viễn đối với từng doanh nghiệp cá biệt.",
+        "B. Tạm thời đối với từng doanh nghiệp cá biệt, nhưng vĩnh viễn đối với toàn bộ giai cấp tư bản.",
+        "C. Chỉ xuất hiện trong nông nghiệp.",
+        "D. Do nhà nước chi trả."
+      ],
+      correct: 1,
+      explain: "Đối với từng doanh nghiệp, siêu ngạch chỉ mang tính tạm thời vì các đối thủ sẽ nhanh chóng bắt chước kỹ thuật. Nhưng đối với toàn bộ giai cấp tư bản thì đây là hiện tượng vĩnh viễn vì các nhà tư bản luôn không ngừng chạy đua cải tiến kỹ thuật."
+    },
+    {
+      q: "Câu 5: Phương pháp sản xuất giá trị thặng dư tương đối dựa trên tiền đề nào?",
+      options: [
+        "A. Tăng năng suất lao động xã hội để rút ngắn thời gian lao động tất yếu.",
+        "B. Kéo dài ngày lao động đến 12 giờ.",
+        "C. Bắt công nhân làm việc không nghỉ trưa.",
+        "D. Giảm quy mô nhà máy."
+      ],
+      correct: 0,
+      explain: "Sản xuất giá trị thặng dư tương đối được thực hiện bằng cách tăng năng suất lao động xã hội trong các ngành sản xuất tư liệu sinh hoạt, làm giảm giá trị sức lao động, từ đó rút ngắn thời gian tất yếu (t) trong khi độ dài ngày lao động (T) không đổi."
+    },
+    {
+      q: "Câu 6: Bản chất của lợi nhuận thương nghiệp trong chủ nghĩa tư bản là gì?",
+      options: [
+        "A. Tiền thưởng của nhà nước.",
+        "B. Sự mua rẻ bán đắt lừa đảo.",
+        "C. Một phần giá trị thặng dư do tư bản công nghiệp nhượng lại cho tư bản thương nghiệp.",
+        "D. Tiền công lao động của nhân viên bán hàng."
+      ],
+      correct: 2,
+      explain: "Tư bản thương nghiệp đảm nhận khâu lưu thông, giúp tư bản công nghiệp tiêu thụ hàng hóa nhanh hơn. Đổi lại, tư bản công nghiệp bán hàng với giá thấp hơn giá trị để nhượng lại một phần giá trị thặng dư cho tư bản thương nghiệp dưới dạng lợi nhuận thương nghiệp."
+    },
+    {
+      q: "Câu 7: Bản chất địa tô tư bản chủ nghĩa là gì?",
+      options: [
+        "A. Toàn bộ lợi nhuận bình quân.",
+        "B. Phần giá trị thặng dư siêu ngạch ngoài lợi nhuận bình quân mà nhà tư bản kinh doanh nông nghiệp trả cho chủ đất.",
+        "C. Tiền thuê máy cày.",
+        "D. Thuế tài nguyên của nhà nước."
+      ],
+      correct: 1,
+      explain: "Địa tô tư bản chủ nghĩa là phần giá trị thặng dư dôi ra ngoài lợi nhuận bình quân (lợi nhuận siêu ngạch) do công nhân nông nghiệp tạo ra mà nhà tư bản thuê đất phải trích ra nộp cho địa chủ để được quyền sử dụng đất."
+    },
+    {
+      q: "Câu 8: Mâu thuẫn cốt lõi về lợi ích kinh tế trong doanh nghiệp giữa chủ và thợ là việc phân chia yếu tố nào?",
+      options: [
+        "A. Tư bản bất biến (c).",
+        "B. Phần giá trị mới tạo ra (v + m).",
+        "C. Khấu hao tài sản cố định.",
+        "D. Chi phí nguyên liệu."
+      ],
+      correct: 1,
+      explain: "Lao động sống tạo ra giá trị mới (v + m). Vì tổng lượng giá trị mới trong một chu kỳ là có hạn, nếu tỷ lệ phân chia cho v (tiền lương công nhân) tăng thì m (lợi nhuận nhà tư bản) giảm và ngược lại, tạo ra mâu thuẫn đối kháng về lợi ích."
+    },
+    {
+      q: "Câu 9: Giới hạn tự nhiên của phương pháp sản xuất giá trị thặng dư tuyệt đối là gì?",
+      options: [
+        "A. Giới hạn 24 giờ trong ngày và thể lực, tâm sinh lý của con người.",
+        "B. Giới hạn về tiền tệ của ngân hàng.",
+        "C. Diện tích nhà xưởng.",
+        "D. Số lượng máy tính."
+      ],
+      correct: 0,
+      explain: "Ngày lao động không thể vượt quá 24 giờ và con người cần thời gian nghỉ ngơi, ăn uống để phục hồi thể lực và duy trì các nhu cầu sinh hoạt tâm lý tự nhiên."
+    },
+    {
+      q: "Câu 10: Tại Vinamilk, việc áp dụng chỉ tiêu KPI khắt khe và tăng cường tự động hóa phản ánh hình thức sản xuất giá trị thặng dư nào là chủ đạo?",
+      options: [
+        "A. Giá trị thặng dư tuyệt đối thuần túy.",
+        "B. Giá trị thặng dư tương đối và siêu ngạch dựa trên công nghệ.",
+        "C. Giá trị thặng dư từ buôn bán bất động sản.",
+        "D. Giá trị thặng dư từ đầu tư chứng khoán."
+      ],
+      correct: 1,
+      explain: "Tự động hóa dây chuyền sản xuất và áp dụng quản trị KPI khoa học giúp nâng cao năng suất lao động cá biệt vượt trội, phản ánh rõ nét phương thức bóc lột giá trị thặng dư tương đối và siêu ngạch dựa trên công nghệ hiện đại."
+    },
+    {
+      q: "Câu 11: Giá trị thặng dư siêu ngạch là hình thái biến tướng của phương pháp sản xuất giá trị thặng dư nào?",
+      options: [
+        "A. Tuyệt đối.",
+        "B. Tương đối.",
+        "C. Lưu thông.",
+        "D. Độc quyền."
+      ],
+      correct: 1,
+      explain: "Cả hai đều dựa trên cơ sở tăng năng suất lao động để rút ngắn thời gian tất yếu. Điểm khác là thặng dư siêu ngạch dựa trên tăng năng suất cá biệt ở doanh nghiệp đi đầu, còn thặng dư tương đối dựa trên tăng năng suất xã hội trong toàn ngành."
+    },
+    {
+      q: "Câu 12: Khi tất cả các doanh nghiệp trong ngành đều áp dụng công nghệ mới giống nhau thì giá trị thặng dư siêu ngạch của doanh nghiệp đi đầu sẽ thế nào?",
+      options: [
+        "A. Tăng lên gấp đôi.",
+        "B. Biến mất (chuyển hóa thành giá trị thặng dư tương đối cho toàn xã hội).",
+        "C. Trở thành tài sản cố định.",
+        "D. Được nhà nước đền bù."
+      ],
+      correct: 1,
+      explain: "Khi kỹ thuật mới phổ biến toàn ngành, giá trị xã hội của hàng hóa sẽ hạ xuống ngang bằng với giá trị cá biệt mới. Phần chênh lệch siêu ngạch biến mất, chuyển hóa thành giá trị thặng dư tương đối cho toàn xã hội."
+    },
+    {
+      q: "Câu 13: Tăng cường độ lao động thực chất giống với phương pháp sản xuất giá trị thặng dư nào?",
+      options: [
+        "A. Tương đối.",
+        "B. Tuyệt đối (vì làm tăng hao phí lao động trong cùng một khoảng thời gian).",
+        "C. Siêu ngạch.",
+        "D. Độc quyền."
+      ],
+      correct: 1,
+      explain: "Tăng cường độ lao động làm người công nhân phải làm việc khẩn trương và tiêu hao sức lực nhiều hơn trong cùng một thời gian, thực chất tương đương với việc kéo dài ngày lao động (phương pháp tuyệt đối)."
+    },
+    {
+      q: "Câu 14: Lợi tức là hình thái biến tướng của yếu tố nào?",
+      options: [
+        "A. Tiền lương công nhân.",
+        "B. Một phần giá trị thặng dư tạo ra trong sản xuất.",
+        "C. Chi phí khấu hao.",
+        "D. Thuế VAT."
+      ],
+      correct: 1,
+      explain: "Lợi tức (z) là một phần của lợi nhuận bình quân (vốn bắt nguồn từ giá trị thặng dư trong sản xuất) mà nhà tư bản đi vay phải trả cho nhà tư bản cho vay để được quyền sử dụng tiền tệ."
+    },
+    {
+      q: "Câu 15: Ngày lao động 8h, t = 4h, t' = 4h. Nhờ tăng năng suất lao động, t giảm xuống 2h. Tỷ suất m' thay đổi thế nào?",
+      options: [
+        "A. Tăng từ 100% lên 300%.",
+        "B. Tăng từ 100% lên 200%.",
+        "C. Giảm xuống 50%.",
+        "D. Không đổi."
+      ],
+      correct: 0,
+      explain: "Ban đầu m' = 4/4 * 100% = 100%. Khi t giảm xuống 2h trong khi tổng ngày lao động T = 8h không đổi => t' mới = 8 - 2 = 6h. Tỷ suất mới m' = 6/2 * 100% = 300% (tăng từ 100% lên 300%)."
+    },
+    {
+      q: "Câu 16: Đâu KHÔNG phải là hình thức biểu hiện của giá trị thặng dư?",
+      options: [
+        "A. Lợi nhuận.",
+        "B. Lợi tức.",
+        "C. Địa tô.",
+        "D. Tiền lương công nhân."
+      ],
+      correct: 3,
+      explain: "Lợi nhuận, lợi tức và địa tô đều là các hình thức chuyển hóa/biểu hiện của giá trị thặng dư (m). Tiền lương là biểu hiện bằng tiền của giá trị hàng hóa sức lao động (v), không phải là m."
+    },
+    {
+      q: "Câu 17: Động lực mạnh mẽ nhất thúc đẩy các nhà tư bản cải tiến kỹ thuật là gì?",
+      options: [
+        "A. Đạt danh hiệu doanh nghiệp uy tín.",
+        "B. Săn tìm giá trị thặng dư siêu ngạch.",
+        "C. Tăng tiền lương cho công nhân.",
+        "D. Giúp đỡ các đối thủ cạnh tranh."
+      ],
+      correct: 1,
+      explain: "Khát khao thu được giá trị thặng dư siêu ngạch và áp lực cạnh tranh sinh tồn là động lực kinh tế trực tiếp và mạnh mẽ nhất thúc đẩy các nhà tư bản liên tục đổi mới công nghệ và hợp lý hóa sản xuất."
+    },
+    {
+      q: "Câu 18: Khi nhà tư bản trả tiền công đúng bằng giá trị sức lao động thì có còn bóc lột giá trị thặng dư không?",
+      options: [
+        "A. Không còn bóc lột.",
+        "B. Vẫn còn bóc lột (vì giá trị thặng dư do công nhân tạo ra trong thời gian thặng dư, ngoài giá trị sức lao động).",
+        "C. Công nhân bị lỗ vốn.",
+        "D. Nhà tư bản bị phá sản."
+      ],
+      correct: 1,
+      explain: "Bóc lột giá trị thặng dư hoàn toàn diễn ra trên cơ sở mua bán sức lao động đúng giá trị. Nhà tư bản trả đúng giá trị sức lao động (v), nhưng công nhân phải làm việc thêm thời gian thặng dư (t') để tạo ra giá trị thặng dư (m) cho chủ sở hữu."
+    },
+    {
+      q: "Câu 19: Sự thống nhất về lợi ích kinh tế giữa doanh nghiệp và người lao động thể hiện rõ nhất khi nào?",
+      options: [
+        "A. Doanh nghiệp hoạt động có hiệu quả, mở rộng sản xuất, tạo thêm việc làm và nâng cao phúc lợi.",
+        "B. Doanh nghiệp thua lỗ kéo dài.",
+        "C. Người lao động đình công bãi công.",
+        "D. Nhà nước đóng cửa doanh nghiệp."
+      ],
+      correct: 0,
+      explain: "Khi doanh nghiệp làm ăn có lãi và mở rộng sản xuất, người lao động được bảo đảm việc làm ổn định, cơ hội tăng lương, thưởng và hưởng thêm các chế độ phúc lợi tập thể."
+    },
+    {
+      q: "Câu 20: Biện pháp nào giúp giải quyết hòa nhã mâu thuẫn lợi ích giữa chủ sử dụng lao động và người lao động?",
+      options: [
+        "A. Thương lượng tập thể, ký kết Thỏa ước lao động tập thể minh bạch và chia sẻ lợi ích.",
+        "B. Đơn phương cắt giảm lương.",
+        "C. Sa thải toàn bộ công nhân cũ.",
+        "D. Bỏ qua các quy định an toàn lao động."
+      ],
+      correct: 0,
+      explain: "Thông qua đối thoại xã hội, thương lượng tập thể và ký kết Thỏa ước lao động tập thể có sự tham gia của tổ chức Công đoàn, hai bên có thể hài hòa lợi ích, phòng ngừa tranh chấp và đình công."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

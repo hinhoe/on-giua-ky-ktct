@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 9: Độc quyền & Cạnh tranh ngành Hàng không (Case ACV)</title>
+  <style>
+    :root {
+      --primary: #0369a1;
+      --primary-dark: #075985;
+      --primary-light: #e0f2fe;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(3, 105, 161, 0.25);
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 9: ĐỘC QUYỀN VÀ CẠNH TRANH TRONG NGÀNH HÀNG KHÔNG</h1>
+    <p>Case Study: ACV và các hãng hàng không - Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (10 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Quan hệ giữa độc quyền và cạnh tranh:</strong> Theo luận điểm của V.I. Lênin, độc quyền sinh ra từ cạnh tranh tự do nhưng <em>không loại bỏ hay thủ tiêu cạnh tranh</em>, mà trái lại nó cùng tồn tại song song, làm cho cạnh tranh mang tính chất phức tạp và gay gắt hơn.</li>
+        <li><strong>Độc quyền hạ tầng cảng hàng không (ACV):</strong>
+          <br>• Tổng công ty Cảng hàng không Việt Nam (ACV) độc quyền quản lý và khai thác 22 sân bay trên toàn quốc.
+          <br>• Mang tính chất của <strong>Độc quyền tự nhiên (Natural Monopoly)</strong> do chi phí vốn ban đầu khổng lồ, tính hiệu quả theo quy mô và sự gắn liền với an ninh, chủ quyền lãnh thổ quốc gia.
+        </li>
+        <li><strong>Cạnh tranh trong thị trường vận tải hành khách:</strong>
+          <br>• Tồn tại cạnh tranh khốc liệt giữa các hãng hàng không về thị phần, giá vé, slot bay và chất lượng dịch vụ.
+          <br>• Cấu trúc thị trường mang tính chất thiểu quyền (Oligopoly), nổi bật là thế lưỡng độc quyền giữa <em>Vietnam Airlines (~42%)</em> và <em>Vietjet Air (~44%)</em>, cùng các hãng nhỏ hơn như Bamboo Airways, Vietravel Airlines.
+        </li>
+        <li><strong>Công cụ kiểm soát và điều tiết của Nhà nước:</strong>
+          <br>• <strong>Công cụ sở hữu:</strong> Nhà nước giữ chi phối 95,4% cổ phần tại ACV để trực tiếp quản lý hạ tầng giao thông huyết mạch.
+          <br>• <strong>Công cụ pháp lý & chuyên ngành:</strong> Áp dụng Luật Cạnh tranh 2018 và thẩm quyền quản lý chuyên ngành của Cục Hàng không Việt Nam (cấp phép vận chuyển, điều phối slot bay, giám sát khung giá trần) nhằm ngăn ngừa lạm dụng vị thế độc quyền.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Cụm từ dễ nhầm lẫn & Ký hiệu cần lưu ý</h2>
+      <ul>
+        <li><span class="badge">Độc quyền tự nhiên (Natural Monopoly)</span> Tình huống kinh tế mà chỉ một doanh nghiệp duy nhất cung cấp toàn bộ dịch vụ cho thị trường với mức chi phí bình quân thấp nhất nhờ lợi thế quy mô cực lớn (điển hình: hạ tầng nhà ga, đường băng sân bay của ACV).</li>
+        <li><span class="badge">Độc quyền thống lĩnh (Dominant Monopoly)</span> Doanh nghiệp hoặc nhóm doanh nghiệp sở hữu sức mạnh thị trường vượt trội (thị phần áp đảo), có khả năng chi phối giá cả và điều kiện giao dịch mà không bị hạn chế đáng kể bởi các đối thủ.</li>
+        <li><span class="badge">Slot bay (Giờ cất/hạ cánh)</span> Giới hạn hạ tầng không gian và thời gian tại các sân bay. Việc phân bổ slot bay là công cụ then chốt để quản lý cạnh tranh bình đẳng, chống thiên vị giữa các hãng hàng không.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render câu hỏi qua Javascript -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Theo lý luận Kinh tế chính trị Mác - Lênin, mối quan hệ giữa độc quyền và cạnh tranh được xác định như thế nào?",
+      options: [
+        "A. Độc quyền xuất hiện sẽ tiêu diệt hoàn toàn cạnh tranh.",
+        "B. Độc quyền sinh ra từ cạnh tranh tự do nhưng không thủ tiêu cạnh tranh mà tồn tại song song với cạnh tranh.",
+        "C. Cạnh tranh và độc quyền hoàn toàn không liên quan đến nhau.",
+        "D. Cạnh tranh chỉ xuất hiện khi không có độc quyền."
+      ],
+      correct: 1,
+      explain: "V.I. Lênin khẳng định: Độc quyền sinh ra từ cạnh tranh tự do, nhưng nó không thể thủ tiêu được cạnh tranh, mà tồn tại bên cạnh cạnh tranh và trên cạnh tranh, tạo nên các hình thái cạnh tranh mới gay gắt hơn."
+    },
+    {
+      q: "Câu 2: Việc Tổng công ty Cảng hàng không Việt Nam (ACV) quản lý, khai thác 22 sân bay tại Việt Nam là biểu hiện của dạng độc quyền nào?",
+      options: [
+        "A. Độc quyền nhà nước thuần túy.",
+        "B. Độc quyền tự nhiên trong lĩnh vực hạ tầng.",
+        "C. Độc quyền thương mại dịch vụ.",
+        "D. Cạnh tranh hoàn hảo."
+      ],
+      correct: 1,
+      explain: "Hạ tầng sân bay (đường băng, nhà ga) đòi hỏi suất đầu tư cực lớn và không thể xây dựng nhiều sân bay trùng lặp cạnh tranh nhau trong cùng một khu vực, do đó việc một đơn vị như ACV vận hành mang bản chất của độc quyền tự nhiên."
+    },
+    {
+      q: "Câu 3: Yếu tố nào tạo nên tính chất độc quyền tự nhiên của hạ tầng cảng hàng không?",
+      options: [
+        "A. Chi phí đầu tư ban đầu cực kỳ lớn, rào cản gia nhập cao và tính chiến lược quốc gia.",
+        "B. Giá vé máy bay liên tục biến động.",
+        "C. Số lượng hành khách đi máy bay ngày càng đông.",
+        "D. Do các hãng hàng không tư nhân không muốn đầu tư."
+      ],
+      correct: 0,
+      explain: "Độc quyền tự nhiên hình thành do tính hiệu quả quy mô: chi phí cố định ban đầu bỏ ra để xây dựng hạ tầng cảng hàng không là khổng lồ, rào cản vốn và pháp lý cực lớn gắn liền với quốc phòng - an ninh quốc gia."
+    },
+    {
+      q: "Câu 4: Trên thị trường vận tải hành khách hàng không nội địa Việt Nam, hai hãng bay nào nắm giữ vị thế thống lĩnh thị trường với tổng thị phần hơn 80%?",
+      options: [
+        "A. Bamboo Airways và Vietravel Airlines.",
+        "B. Vietnam Airlines và Vietjet Air.",
+        "C. Vietnam Airlines và Bamboo Airways.",
+        "D. Vietjet Air và Pacific Airlines."
+      ],
+      correct: 1,
+      explain: "Thị trường hàng không nội địa Việt Nam có cấu trúc nhóm thống lĩnh (duopoly), trong đó Vietnam Airlines (khoảng 42%) và Vietjet Air (khoảng 44%) nắm giữ trên 80% tổng thị phần vận tải hành khách."
+    },
+    {
+      q: "Câu 5: Nhà nước Việt Nam nắm giữ 95,4% cổ phần tại ACV nhằm mục đích cốt lõi gì?",
+      options: [
+        "A. Tối đa hóa lợi nhuận thương mại cho ngân sách.",
+        "B. Trực tiếp kiểm soát hạ tầng chiến lược, tránh rơi vào tay tư nhân thiếu cơ chế giám sát.",
+        "C. Tự quyết định giá vé máy bay cho người dân.",
+        "D. Cấm các hãng hàng không tư nhân cất cánh."
+      ],
+      correct: 1,
+      explain: "Nhà nước duy trì tỷ lệ cổ phần chi phối tuyệt đối (95,4%) nhằm bảo toàn quyền kiểm soát đối với hệ thống hạ tầng an ninh hàng không và quốc phòng chiến lược, ngăn ngừa tình trạng tư nhân hóa độc quyền gây tổn hại lợi ích công cộng."
+    },
+    {
+      q: "Câu 6: Rào cản gia nhập thị trường cao trong ngành hàng không bao gồm những yếu tố nào?",
+      options: [
+        "A. Yêu cầu vốn đầu tư lớn, đội tàu bay đắt đỏ, quy định an toàn nghiêm ngặt và giới hạn slot bay.",
+        "B. Giá nguyên liệu xăng dầu luôn rẻ.",
+        "C. Thủ tục đăng ký kinh doanh đơn giản.",
+        "D. Không cần đội ngũ kỹ sư bảo trì."
+      ],
+      correct: 0,
+      explain: "Để tham gia ngành hàng không, doanh nghiệp phải đáp ứng vốn pháp định lớn, chi phí thuê/mua máy bay hàng triệu USD, tiêu chuẩn an toàn bay khắt khe và phải xin được slot cất/hạ cánh tại các sân bay."
+    },
+    {
+      q: "Câu 7: Công cụ pháp lý chung nào được Nhà nước sử dụng để kiểm soát hành vi lạm dụng vị thế thống lĩnh thị trường?",
+      options: [
+        "A. Luật Lao động.",
+        "B. Luật Cạnh tranh 2018.",
+        "C. Luật Doanh nghiệp.",
+        "D. Luật Đầu tư công."
+      ],
+      correct: 1,
+      explain: "Luật Cạnh tranh 2018 là khung pháp lý chung của Nhà nước để xác định hành vi lạm dụng vị thế thống lĩnh, vị thế độc quyền, thỏa thuận hạn chế cạnh tranh và các hành vi cạnh tranh không lành mạnh."
+    },
+    {
+      q: "Câu 8: Các hãng hàng không (Vietnam Airlines, Vietjet Air, Bamboo Airways) cạnh tranh trực tiếp với nhau ở những khía cạnh nào?",
+      options: [
+        "A. Sở hữu đường may băng sân bay.",
+        "B. Giá vé, chất lượng dịch vụ, giờ bay (slot), công nghệ và đội tàu bay.",
+        "C. Quy hoạch hệ thống quản lý bay quốc gia.",
+        "D. Cấp phép thành lập cảng hàng không mới."
+      ],
+      correct: 1,
+      explain: "Các hãng hàng không thương mại cạnh tranh trực tiếp trên thị trường dịch vụ khách hàng: chiến lược giá vé (vé giá rẻ vs dịch vụ đầy đủ), tỷ lệ đúng giờ (OTP), chất lượng phục vụ, slot bay đẹp và sự tiện nghi của đội máy bay."
+    },
+    {
+      q: "Câu 9: Mặt trái của sự tập trung thị phần quá lớn vào một vài hãng bay hàng không là gì?",
+      options: [
+        "A. Giá vé máy bay luôn giảm liên tục.",
+        "B. Tăng nguy cơ bắt tay ngầm về giá, giảm sự lựa chọn của người tiêu dùng và tăng rào cản cho hãng mới.",
+        "C. Chất lượng phục vụ tăng đột biến.",
+        "D. Sân bay bị bỏ hoang."
+      ],
+      correct: 1,
+      explain: "Khi thị trường tập trung vào một nhóm thiểu quyền thống lĩnh, nguy cơ xuất hiện thỏa thuận ngầm nâng giá, phân chia slot thuận lợi và triệt tiêu khả năng phát triển của các hãng bay mới gia nhập thị trường."
+    },
+    {
+      q: "Câu 10: Cơ quan chuyên ngành nào có thẩm quyền phân bổ slot cất/hạ cánh tại các sân bay để đảm bảo cạnh tranh?",
+      options: [
+        "A. Bộ Tài chính.",
+        "B. Cục Hàng không Việt Nam.",
+        "C. Cục Quản lý Giá.",
+        "D. Tổng cục Thống kê."
+      ],
+      correct: 1,
+      explain: "Cục Hàng không Việt Nam (trực thuộc Bộ Giao thông Vận tải) là cơ quan nhà nước chuyên ngành chịu trách nhiệm điều phối, cấp phép và phân bổ slot bay nhằm đảm bảo tính cạnh tranh minh bạch và an toàn khai thác không gian bay."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

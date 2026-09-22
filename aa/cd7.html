@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 7: Tiền công, Giá trị sức lao động & Đời sống người lao động</title>
+  <style>
+    :root {
+      --primary: #ea580c;
+      --primary-dark: #c2410c;
+      --primary-light: #ffedd5;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #fff7ed;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .math-formula {
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Feedback & Highlight */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 7: TIỀN CÔNG, GIÁ TRỊ SỨC LAO ĐỘNG & ĐỜI SỐNG NGƯỜI LAO ĐỘNG</h1>
+    <p>Hệ thống tự học và kiểm tra trắc nghiệm môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Điều kiện để sức lao động trở thành hàng hóa:</strong> Phải thỏa mãn đồng thời 2 điều kiện:
+          <ol style="padding-left: 20px; margin-top: 4px;">
+            <li>Người lao động được tự do về mặt thân thể.</li>
+            <li>Người lao động bị tước đoạt hết tư liệu sản xuất, buộc phải bán sức lao động để kiếm sống.</li>
+          </ol>
+        </li>
+        <li><strong>Hai thuộc tính của hàng hóa sức lao động:</strong>
+          <br>• <strong>Giá trị:</strong> Được đo gián tiếp bằng giá trị của các tư liệu sinh hoạt cần thiết để duy trì bản thân người lao động + nuôi sống gia đình họ + chi phí đào tạo nâng cao tay nghề (mang yếu tố lịch sử và tinh thần).
+          <br>• <strong>Giá trị sử dụng:</strong> Đặc tính kỳ diệu - khi được tiêu dùng (quá trình lao động), nó tạo ra một lượng giá trị mới lớn hơn giá trị của chính bản thân nó (<span class="math-formula">v + m</span>).
+        </li>
+        <li><strong>Bản chất của tiền công:</strong> Là <em>giá cả của hàng hóa sức lao động</em> (hình thức biểu hiện bằng tiền của giá trị sức lao động), <strong>KHÔNG PHẢI</strong> là giá cả của lao động.</li>
+        <li><strong>Tiền công danh nghĩa vs Tiền công thực tế:</strong>
+          <br>• <strong>Tiền công danh nghĩa:</strong> Số tiền tệ mặt mà người lao động nhận được từ người sử dụng lao động.
+          <br>• <strong>Tiền công thực tế:</strong> Số lượng hàng hóa và dịch vụ mà người lao động thực sự mua được bằng số tiền công danh nghĩa đó sau khi tính đến chỉ số giá cả và lạm phát.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Công thức & Cụm từ chuyên ngành cốt lõi</h2>
+      <ul>
+        <li><span class="badge">Mối quan hệ tiền công</span> <span class="math-formula">Tiền công thực tế = Tiền công danh nghĩa / Chỉ số giá cả hàng tiêu dùng (CPI)</span></li>
+        <li><span class="badge">Thời gian lao động tất yếu (t)</span> Khoảng thời gian người công nhân sản xuất ra lượng giá trị bù đắp ngang bằng giá trị sức lao động của chính mình (tương ứng với tiền công <span class="math-formula">v</span>).</li>
+        <li><span class="badge">Thời gian lao động thặng dư (t')</span> Khoảng thời gian người công nhân làm việc vượt quá thời gian tất yếu, tạo ra giá trị thặng dư <span class="math-formula">m</span> bị nhà tư bản chiếm đoạt.</li>
+        <li><span class="badge">Tái sản xuất sức lao động</span> Quá trình hồi phục thể lực, trí lực đã hao phí của người lao động và nuôi dạy, đào tạo thế hệ lao động kế tiếp để cung cấp liên tục sức lao động cho xã hội.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render câu hỏi bằng Javascript -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Bản chất biểu hiện của tiền công trong xã hội tư bản là gì?",
+      options: [
+        "A. Giá cả của lao động.",
+        "B. Biểu hiện bằng tiền của giá trị hàng hóa sức lao động.",
+        "C. Toàn bộ giá trị mới do công nhân tạo ra.",
+        "D. Lợi nhuận do công nhân làm ra."
+      ],
+      correct: 1,
+      explain: "Tiền công trong chủ nghĩa tư bản bản chất là biểu hiện bằng tiền của giá trị hàng hóa sức lao động (giá cả của sức lao động), nhưng bị che đậy dưới hình thái giả tạo là 'giá cả của lao động'."
+    },
+    {
+      q: "Câu 2: Bộ phận nào KHÔNG thuộc giá trị hàng hóa sức lao động?",
+      options: [
+        "A. Chi phí đào tạo công nhân.",
+        "B. Tư liệu sinh hoạt cho bản thân công nhân và gia đình họ.",
+        "C. Khấu hao máy móc nhà xưởng.",
+        "D. Nhu cầu văn hóa tinh thần tối thiểu của công nhân."
+      ],
+      correct: 2,
+      explain: "Khấu hao máy móc nhà xưởng thuộc về tư bản bất biến (c), là giá trị của tư liệu sản xuất chứ không cấu thành nên giá trị của hàng hóa sức lao động (v)."
+    },
+    {
+      q: "Câu 3: Tiền công thực tế phụ thuộc trực tiếp vào các yếu tố nào?",
+      options: [
+        "A. Tiền công danh nghĩa và chỉ số giá cả hàng hóa dịch vụ tiêu dùng.",
+        "B. Số lượng máy móc trong nhà xưởng.",
+        "C. Trình độ của chủ tư bản.",
+        "D. Thuế xuất khẩu hàng hóa."
+      ],
+      correct: 0,
+      explain: "Tiền công thực tế đo lường lượng hàng hóa, dịch vụ mua được; nó tỷ lệ thuận với tiền công danh nghĩa và tỷ lệ nghịch với mức giá cả hàng hóa, dịch vụ tiêu dùng."
+    },
+    {
+      q: "Câu 4: Trường hợp nào làm tiền công thực tế GIẢM mặc dù tiền công danh nghĩa KHÔNG ĐỔI?",
+      options: [
+        "A. Giá cả hàng tiêu dùng giảm 10%.",
+        "B. Giá cả hàng tiêu dùng và dịch vụ tăng do lạm phát.",
+        "C. Nhà nước giảm thuế thu nhập.",
+        "D. Doanh nghiệp thưởng thêm cổ phiếu."
+      ],
+      correct: 1,
+      explain: "Khi lạm phát xảy ra làm giá cả hàng hóa tiêu dùng tăng cao, cùng một lượng tiền mặt danh nghĩa như cũ sẽ mua được ít hàng hóa hơn, làm tiền công thực tế bị bào mòn và sụt giảm."
+    },
+    {
+      q: "Câu 5: Hàng hóa sức lao động có giá trị sử dụng đặc biệt ở chỗ nào?",
+      options: [
+        "A. Mất đi giá trị sau khi tiêu dùng.",
+        "B. Khi sử dụng, nó tạo ra một lượng giá trị mới lớn hơn giá trị của bản thân nó.",
+        "C. Có thể cất trữ trong kho nhiều năm không hỏng.",
+        "D. Giá trị sử dụng không thay đổi theo thời gian."
+      ],
+      correct: 1,
+      explain: "Đặc tính riêng có của hàng hóa sức lao động là khi người mua sử dụng nó (đưa vào quá trình lao động), nó có khả năng sáng tạo ra một lượng giá trị mới (v + m) lớn hơn giá trị của chính nó (v)."
+    },
+    {
+      q: "Câu 6: Vì sao người lao động dễ nhầm tưởng tiền công là \"giá cả của lao động\"?",
+      options: [
+        "A. Vì họ nhận lương sau khi đã hoàn thành công việc và lương tính theo giờ/ngày/sản phẩm.",
+        "B. Vì chủ trả lương rất cao.",
+        "C. Vì tiền công bằng với tổng giá trị hàng hóa tạo ra.",
+        "D. Vì pháp luật quy định như vậy."
+      ],
+      correct: 0,
+      explain: "Do tiền công thường được chi trả sau khi người lao động đã làm việc xong và được định lượng theo thời gian (giờ/ngày) hoặc số lượng sản phẩm làm ra, tạo ảo giác rằng toàn bộ lao động đã được trả thù lao sòng phẳng."
+    },
+    {
+      q: "Câu 7: Anh Nam nhận lương danh nghĩa 12.000.000 VNĐ/tháng. Năm sau lạm phát làm giá cả hàng hóa tăng 20%. Để giữ nguyên tiền công thực tế, lương danh nghĩa của anh Nam phải tăng lên bao nhiêu?",
+      options: [
+        "A. 13.000.000 VNĐ",
+        "B. 14.400.000 VNĐ",
+        "C. 15.000.000 VNĐ",
+        "D. 12.500.000 VNĐ"
+      ],
+      correct: 1,
+      explain: "Để bù đắp mức trượt giá 20% và bảo toàn sức mua thực tế, lương danh nghĩa mới = 12.000.000 * (1 + 0.2) = 14.400.000 VNĐ."
+    },
+    {
+      q: "Câu 8: Theo quy định pháp luật lao động Việt Nam, làm thêm giờ vào ngày nghỉ lễ, Tết được hưởng tối thiểu bao nhiêu % lương?",
+      options: [
+        "A. 150%",
+        "B. 200%",
+        "C. 300%",
+        "D. 400%"
+      ],
+      correct: 2,
+      explain: "Theo Điều 98 Bộ luật Lao động Việt Nam, làm thêm giờ vào ngày nghỉ lễ, tết, ngày nghỉ có hưởng lương được tính ít nhất bằng 300% (chưa kể tiền lương ngày lễ, tết đối với người lao động hưởng lương ngày)."
+    },
+    {
+      q: "Câu 9: Tiền lương tối thiểu vùng do Nhà nước quy định có vai trò cốt lõi gì?",
+      options: [
+        "A. Mức lương cố định cho mọi kỹ sư.",
+        "B. Mức sàn lưới an toàn bảo vệ người lao động yếu thế, đảm bảo mức sống tối thiểu.",
+        "C. Mức lương tối đa doanh nghiệp được trả.",
+        "D. Thay thế tiền thưởng Tết."
+      ],
+      correct: 1,
+      explain: "Lương tối thiểu vùng đóng vai trò như một tấm lưới an sinh xã hội, thiết lập mức sàn pháp lý thấp nhất mà người sử dụng lao động không được phép trả dưới mức đó nhằm bảo vệ quyền lợi của người lao động có vị thế yếu."
+    },
+    {
+      q: "Câu 10: Hiện tượng công nhân phổ thông thiếu tiền học nghề => thu nhập thấp => không tích lũy được tiền học nghề được gọi là gì?",
+      options: [
+        "A. Vòng xoáy lạm phát.",
+        "B. Vòng luẩn quẩn của chi phí tái sản xuất sức lao động.",
+        "C. Bẫy thu nhập trung bình của quốc gia.",
+        "D. Thất nghiệp tự nguyện."
+      ],
+      correct: 1,
+      explain: "Đây là vòng lặp bế tắc khi tiền lương chỉ vừa đủ sống qua ngày, không bù đắp được chi phí đào tạo nâng cao trình độ, dẫn tới người lao động bị kẹt lại ở phân khúc lao động giản đơn giá trị thấp."
+    },
+    {
+      q: "Câu 11: Chi phí đào tạo nâng cao tay nghề cho công nhân thuộc bộ phận nào của giá trị sức lao động?",
+      options: [
+        "A. Tư bản bất biến.",
+        "B. Bộ phận cấu thành giá trị sức lao động.",
+        "C. Lợi nhuận siêu ngạch.",
+        "D. Chi phí quản lý."
+      ],
+      correct: 1,
+      explain: "Cơ cấu giá trị của hàng hóa sức lao động gồm 3 phần: tư liệu sinh hoạt cho bản thân, tư liệu sinh hoạt cho gia đình và chi phí đào tạo tay nghề."
+    },
+    {
+      q: "Câu 12: Điều kiện để sức lao động trở thành hàng hóa là gì?",
+      options: [
+        "A. Người lao động tự do thân thể AND không có tư liệu sản xuất.",
+        "B. Người lao động có bằng đại học.",
+        "C. Xã hội có nhà máy tự động hóa.",
+        "D. Thị trường chứng khoán phát triển."
+      ],
+      correct: 0,
+      explain: "Sức lao động chỉ trở thành hàng hóa khi đồng thời: người lao động được tự do định đoạt thân thể mình và họ bị tước đoạt toàn bộ tư liệu sản xuất nên không thể tự tổ chức sản xuất kiếm sống."
+    },
+    {
+      q: "Câu 13: Tiền công danh nghĩa tăng 10%, nhưng chỉ số giá hàng tiêu dùng tăng 15%. Tiền công thực tế thay đổi thế nào?",
+      options: [
+        "A. Tăng 5%.",
+        "B. Giảm (vì tốc độ tăng lương danh nghĩa chậm hơn tốc độ tăng giá cả).",
+        "C. Không đổi.",
+        "D. Tăng 25%."
+      ],
+      correct: 1,
+      explain: "Vì tốc độ tăng của giá cả hàng hóa tiêu dùng (15%) cao hơn tốc độ tăng của tiền công nhận được (10%), nên sức mua thực tế của số tiền đó bị giảm sút."
+    },
+    {
+      q: "Câu 14: Tiền công tính theo thời gian và tiền công tính theo sản phẩm có mối quan hệ gì?",
+      options: [
+        "A. Tiền công tính theo sản phẩm là hình thái biến tướng của tiền công tính theo thời gian.",
+        "B. Hai hình thức hoàn toàn độc lập không liên quan.",
+        "C. Tiền công sản phẩm luôn cao hơn tiền công thời gian.",
+        "D. Tiền công thời gian do Nhà nước trả."
+      ],
+      correct: 0,
+      explain: "C. Mác đã chỉ ra rằng tiền công tính theo sản phẩm chỉ là hình thái biến tướng của tiền công tính theo thời gian; đơn giá sản phẩm thực chất được xác định dựa trên tiền công ngày chia cho định mức sản phẩm sản xuất trong ngày đó."
+    },
+    {
+      q: "Câu 15: Thời gian lao động tất yếu là gì?",
+      options: [
+        "A. Khoảng thời gian người lao động tạo ra giá trị ngang bằng giá trị sức lao động (tiền công).",
+        "B. Thời gian làm ca đêm.",
+        "C. Thời gian học nghề.",
+        "D. Thời gian công nhân tạo ra giá trị thặng dư."
+      ],
+      correct: 0,
+      explain: "Thời gian lao động tất yếu (t) là khoảng thời gian trong ngày làm việc mà người công nhân tạo ra một lượng giá trị mới ngang bằng đúng với giá trị sức lao động của bản thân (phần bù đắp tiền lương v)."
+    },
+    {
+      q: "Câu 16: Thời gian lao động thặng dư là gì?",
+      options: [
+        "A. Thời gian làm việc ngoài giờ tự nguyện không lấy tiền.",
+        "B. Khoảng thời gian lao động tạo ra giá trị thặng dư cho nhà tư bản.",
+        "C. Thời gian nghỉ giải lao.",
+        "D. Thời gian đi đường từ nhà đến công ty."
+      ],
+      correct: 1,
+      explain: "Thời gian lao động thặng dư (t') là khoảng thời gian kéo dài ngoài thời gian tất yếu, người công nhân tiếp tục lao động để tạo ra giá trị thặng dư (m) mà nhà tư bản chiếm đoạt."
+    },
+    {
+      q: "Câu 17: Luận điểm \"Lao động là cha, đất là mẹ của mọi của cải\" của William Petty đề cập đến loại lao động nào?",
+      options: [
+        "A. Lao động trừu tượng.",
+        "B. Lao động cụ thể tạo ra giá trị sử dụng.",
+        "C. Lao động phức tạp.",
+        "D. Lao động thặng dư."
+      ],
+      correct: 1,
+      explain: "Của cải vật chất ở đây là giá trị sử dụng của sản phẩm, được tạo ra từ sự kết hợp giữa lao động cụ thể của con người với giới tự nhiên (đất đai, tài nguyên)."
+    },
+    {
+      q: "Câu 18: Khi trình độ tay nghề của công nhân tăng lên (lao động phức tạp), giá trị sức lao động của họ sẽ:",
+      options: [
+        "A. Tăng lên (vì chi phí đào tạo tái sản xuất cao hơn).",
+        "B. Giảm xuống.",
+        "C. Bằng 0.",
+        "D. Không đổi."
+      ],
+      correct: 0,
+      explain: "Lao động có trình độ chuyên môn cao đòi hỏi xã hội và bản thân phải đầu tư nhiều thời gian, tiền bạc vào quá trình đào tạo và rèn luyện kỹ năng, do đó giá trị sức lao động sẽ tăng lên tương ứng."
+    },
+    {
+      q: "Câu 19: Khái niệm \"Tái sản xuất sức lao động\" bao gồm những nội dung nào?",
+      options: [
+        "A. Hồi phục thể lực, trí lực và đào tạo thế hệ lao động kế tiếp.",
+        "B. Mua sắm xe hơi đắt tiền.",
+        "C. Mua cổ phiếu công ty.",
+        "D. Gửi tiền tiết kiệm ngân hàng."
+      ],
+      correct: 0,
+      explain: "Tái sản xuất sức lao động vừa có tính chất cá nhân (ăn uống, nghỉ ngơi phục hồi thể lực và năng lượng thần kinh), vừa có tính chất xã hội (chăm sóc, nuôi dưỡng con cái để tạo nguồn lao động kế thừa thay thế)."
+    },
+    {
+      q: "Câu 20: Yếu tố tinh thần và lịch sử có ảnh hưởng đến giá trị hàng hóa sức lao động không?",
+      options: [
+        "A. Không, chỉ có yếu tố vật chất.",
+        "B. Có, giá trị sức lao động bao gồm cả nhu cầu tinh thần và phụ thuộc vào điều kiện lịch sử của từng quốc gia.",
+        "C. Chỉ ảnh hưởng ở các nước phát triển.",
+        "D. Do nhà tư bản quyết định đơn phương."
+      ],
+      correct: 1,
+      explain: "Khác với hàng hóa thông thường, giá trị sức lao động gắn liền với con người sống nên ngoài nhu cầu vật chất tối thiểu còn bao gồm nhu cầu văn hóa, tinh thần và chịu sự chi phối bởi tập quán, trình độ văn minh của từng giai đoạn lịch sử và từng quốc gia."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

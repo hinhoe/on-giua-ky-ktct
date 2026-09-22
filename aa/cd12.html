@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 12: Kinh tế thị trường định hướng XHCN ở Việt Nam</title>
+  <style>
+    :root {
+      --primary: #b91c1c;
+      --primary-dark: #991b1b;
+      --primary-light: #fee2e2;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #fef2f2;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(185, 28, 28, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Feedback & Highlight */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 12: KINH TẾ THỊ TRƯỜNG ĐỊNH HƯỚNG XÃ HỘI CHỦ NGHĨA Ở VIỆT NAM</h1>
+    <p>Đối chiếu từ tài liệu Chủ đề 12 KTCT (Nhóm 14) - Môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Tính tất yếu khách quan:</strong> Phát triển kinh tế thị trường định hướng XHCN không phải là sự áp đặt chủ quan mà là quy luật phát triển khách quan của lực lượng sản xuất trong thời kỳ quá độ lên CNXH. Kinh tế thị trường là thành tựu chung của văn minh nhân loại, không phải sản phẩm độc quyền của chủ nghĩa tư bản.</li>
+        <li><strong>Mốc lịch sử Đổi mới (1986):</strong> Chuyển dịch căn bản từ <em>cơ chế tập trung quan liêu bao cấp</em> sang <em>kinh tế thị trường định hướng XHCN</em> nhằm cởi trói và giải phóng sức sản xuất, đưa đất nước thoát khỏi khủng hoảng kinh tế - xã hội trầm trọng.</li>
+        <li><strong>Bốn đặc trưng cốt lõi của mô hình:</strong>
+          <br>• <strong>Mục tiêu phát triển:</strong> Thực hiện "Dân giàu, nước mạnh, dân chủ, công bằng, văn minh"; giải phóng mạnh mẽ lực lượng sản xuất đi đôi với cải thiện đời sống nhân dân.
+          <br>• <strong>Quan hệ sở hữu & Thành phần kinh tế:</strong> Đa dạng hình thức sở hữu, nhiều thành phần kinh tế bình đẳng cùng phát triển. Trong đó: <em>Kinh tế nhà nước giữ vai trò chủ đạo</em>, <em>Kinh tế tư nhân là một động lực quan trọng</em> của nền kinh tế quốc dân.
+          <br>• <strong>Quan hệ phân phối:</strong> Kết hợp đa dạng các hình thức: phân phối theo kết quả lao động và hiệu quả kinh tế (chủ đạo), phân phối theo mức đóng góp vốn và tài sản, và phân phối thông qua hệ thống an sinh xã hội.
+          <br>• <strong>Quan hệ quản lý:</strong> Nền kinh tế vận hành theo các quy luật thị trường, đặt dưới sự quản lý của Nhà nước pháp quyền XHCN do Đảng Cộng sản Việt Nam lãnh đạo.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Cụm từ dễ nhầm lẫn & Thuật ngữ cần lưu ý</h2>
+      <ul>
+        <li><span class="badge">Kinh tế nhà nước giữ vai trò chủ đạo</span> Không đồng nghĩa với việc doanh nghiệp nhà nước ôm đồm mọi ngành nghề, mà là nắm giữ các huyết mạch kinh tế, hạ tầng chiến lược, công cụ tài chính then chốt để định hướng và điều tiết ổn định kinh tế vĩ mô.</li>
+        <li><span class="badge">Kinh tế tư nhân là động lực quan trọng</span> Đóng góp lớn vào GDP, tạo phần lớn việc làm xã hội và đi đầu trong đổi mới sáng tạo, hoạt động bình đẳng theo pháp luật và chịu sự điều tiết của Nhà nước.</li>
+        <li><span class="badge">Phân phối theo lao động vs Phân phối theo vốn</span>
+          <br>• <em>Phân phối theo lao động:</em> Nhận thu nhập căn cứ vào số lượng, chất lượng lao động bỏ ra (đặc trưng cốt lõi phản ánh định hướng xã hội chủ nghĩa).
+          <br>• <em>Phân phối theo vốn:</em> Nhận cổ tức/lợi nhuận căn cứ vào tài sản hoặc vốn góp (đặc trưng tất yếu của kinh tế thị trường).
+        </li>
+        <li><span class="badge">Tiến bộ & Công bằng xã hội</span> Nguyên tắc thực hiện tiến bộ và công bằng xã hội <em>ngay trong từng bước đi, từng chính sách</em> phát triển kinh tế, không chờ kinh tế phát triển cao rồi mới giải quyết vấn đề xã hội.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render danh sách câu hỏi qua Javascript -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Khẳng định nào sau đây là ĐÚNG về bản chất của Kinh tế thị trường?",
+      options: [
+        "A. Kinh tế thị trường là sản phẩm riêng có của chủ nghĩa tư bản.",
+        "B. Kinh tế thị trường là phương thức tổ chức kinh tế chung của nhân loại, tồn tại ở nhiều mô hình xã hội khác nhau.",
+        "C. Kinh tế thị trường không tuân theo các quy luật giá trị và cung cầu.",
+        "D. Kinh tế thị trường chỉ xuất hiện trong thời kỳ quá độ lên chủ nghĩa xã hội."
+      ],
+      correct: 1,
+      explain: "Kinh tế thị trường là kết quả phát triển tự nhiên lâu dài của văn minh nhân loại, là một phương thức tổ chức và vận hành kinh tế chung chứ không phải sản phẩm riêng có của bất kỳ một hình thái kinh tế - xã hội nào."
+    },
+    {
+      q: "Câu 2: Việc Việt Nam phát triển nền kinh tế thị trường định hướng xã hội chủ nghĩa xuất phát từ nguyên nhân nào?",
+      options: [
+        "A. Ý muốn chủ quan của Nhà nước.",
+        "B. Tính tất yếu khách quan phù hợp với quy luật phát triển của lực lượng sản xuất trong thời kỳ quá độ.",
+        "C. Sự ép buộc từ các tổ chức tài chính quốc tế.",
+        "D. Yêu cầu của các tập đoàn tư bản nước ngoài."
+      ],
+      correct: 1,
+      explain: "Đây là sự lựa chọn mang tính tất yếu khách quan, phù hợp với trình độ phát triển của lực lượng sản xuất còn nhiều tầng nấc ở Việt Nam trong thời kỳ quá độ lên chủ nghĩa xã hội."
+    },
+    {
+      q: "Câu 3: Trong nền kinh tế thị trường định hướng XHCN ở Việt Nam, thành phần kinh tế nào giữ vai trò chủ đạo?",
+      options: [
+        "A. Kinh tế tư nhân.",
+        "B. Kinh tế nhà nước.",
+        "C. Kinh tế tập thể.",
+        "D. Kinh tế có vốn đầu tư nước ngoài (FDI)."
+      ],
+      correct: 1,
+      explain: "Hiến pháp và các văn kiện Đại hội Đảng khẳng định nhất quán: Kinh tế nhà nước giữ vai trò chủ đạo, là công cụ vật chất đắc lực để Nhà nước định hướng và điều tiết nền kinh tế vĩ mô."
+    },
+    {
+      q: "Câu 4: Nghị quyết Đại hội Đảng xác định thành phần kinh tế nào là \"một động lực quan trọng\" của nền kinh tế?",
+      options: [
+        "A. Kinh tế nhà nước.",
+        "B. Kinh tế tư nhân.",
+        "C. Kinh tế có vốn đầu tư nước ngoài.",
+        "D. Kinh tế thể thao."
+      ],
+      correct: 1,
+      explain: "Nghị quyết Trung ương 5 khóa XII và Văn kiện Đại hội XIII xác định rõ: Kinh tế tư nhân là một động lực quan trọng của nền kinh tế thị trường định hướng xã hội chủ nghĩa."
+    },
+    {
+      q: "Câu 5: Hình thức phân phối nào phản ánh bản chất định hướng xã hội chủ nghĩa trong nền kinh tế thị trường ở Việt Nam?",
+      options: [
+        "A. Phân phối theo số lượng cổ phiếu sở hữu.",
+        "B. Phân phối theo kết quả lao động và hiệu quả kinh tế.",
+        "C. Phân phối bình quân chia đều cho mọi người.",
+        "D. Phân phối dựa trên diện tích đất đai sở hữu."
+      ],
+      correct: 1,
+      explain: "Phân phối theo kết quả lao động và hiệu quả kinh tế là hình thức phân phối căn bản nhất thể hiện bản chất của chủ nghĩa xã hội (làm nhiều hưởng nhiều, làm ít hưởng ít, không làm không hưởng nếu có khả năng lao động)."
+    },
+    {
+      q: "Câu 6: Điểm khác biệt căn bản giữa Kinh tế thị trường định hướng XHCN ở Việt Nam và Kinh tế thị trường TBCN là gì?",
+      options: [
+        "A. Việt Nam không sử dụng tiền tệ trong lưu thông.",
+        "B. Nhắm tới mục tiêu tối đa hóa lợi nhuận cho giai cấp tư sản.",
+        "C. Nhắm tới mục tiêu \"Dân giàu, nước mạnh, dân chủ, công bằng, văn minh\" và không để ai bị bỏ lại phía sau.",
+        "D. Việt Nam cấm các doanh nghiệp tư nhân hoạt động."
+      ],
+      correct: 2,
+      explain: "Kinh tế thị trường TBCN lấy việc tối đa hóa lợi nhuận của giai cấp tư sản làm mục đích tối thượng; trong khi Việt Nam phát triển kinh tế thị trường nhằm phục vụ lợi ích của nhân dân, gắn tăng trưởng kinh tế với công bằng xã hội."
+    },
+    {
+      q: "Câu 7: Trước năm 1986, nền kinh tế Việt Nam vận hành theo cơ chế quản lý nào?",
+      options: [
+        "A. Cơ chế thị trường tự do hoàn toàn.",
+        "B. Cơ chế tập trung quan liêu bao cấp.",
+        "C. Nền kinh tế số tự động hóa.",
+        "D. Mô hình kinh tế trang trại tư nhân."
+      ],
+      correct: 1,
+      explain: "Giai đoạn trước Đổi mới 1986, nền kinh tế Việt Nam vận hành theo cơ chế kế hoạch hóa tập trung, quan liêu, bao cấp thông qua chỉ tiêu pháp lệnh và phân phối bằng tem phiếu."
+    },
+    {
+      q: "Câu 8: Công cụ nào được Nhà nước Việt Nam sử dụng để định hướng và điều tiết nền kinh tế thị trường?",
+      options: [
+        "A. Mệnh lệnh hành chính cá nhân.",
+        "B. Hệ thống pháp luật, chiến lược, quy hoạch, chính sách kinh tế và lực lượng kinh tế nhà nước.",
+        "C. Tự do để thị trường tự điều tiết hoàn toàn không can thiệp.",
+        "D. Đóng cửa toàn bộ biên giới."
+      ],
+      correct: 1,
+      explain: "Nhà nước pháp quyền XHCN quản lý nền kinh tế bằng pháp luật, chiến lược, quy hoạch, kế hoạch và các công cụ chính sách vĩ mô (thuế, tiền tệ) kết hợp với sức mạnh vật chất của kinh tế nhà nước."
+    },
+    {
+      q: "Câu 9: Việc tồn tại nhiều hình thức sở hữu tư liệu sản xuất ở Việt Nam dẫn đến hệ quả kinh tế nào?",
+      options: [
+        "A. Tồn tại nhiều thành phần kinh tế bình đẳng trước pháp luật và hợp tác, cạnh tranh cùng phát triển.",
+        "B. Nền kinh tế rơi vào tình trạng hỗn loạn không quản lý được.",
+        "C. Triệt tiêu hoàn toàn sự cạnh tranh.",
+        "D. Làm giảm tốc độ tăng trưởng kinh tế."
+      ],
+      correct: 0,
+      explain: "Cơ cấu sở hữu đa dạng (toàn dân, tập thể, tư nhân) là cơ sở hình thành nhiều thành phần kinh tế, các thành phần này đều là bộ phận cấu thành hữu cơ, bình đẳng trước pháp luật và cạnh tranh lành mạnh."
+    },
+    {
+      q: "Câu 10: Trong nền kinh tế thị trường định hướng XHCN, các quy luật kinh tế khách quan (quy luật giá trị, cung cầu, cạnh tranh) có vai trò gì?",
+      options: [
+        "A. Bị Nhà nước xóa bỏ hoàn toàn.",
+        "B. Hoạt động như những công cụ điều tiết cơ sở hạ tầng, phân bổ nguồn lực xã hội.",
+        "C. Chỉ áp dụng cho khu vực kinh tế tư nhân.",
+        "D. Do các tập đoàn nước ngoài thao túng."
+      ],
+      correct: 1,
+      explain: "Các quy luật kinh tế của kinh tế thị trường phát huy tác dụng đầy đủ, đóng vai trò trực tiếp điều tiết sản xuất, lưu thông và phân bổ tối ưu các nguồn lực trong toàn xã hội."
+    },
+    {
+      q: "Câu 11: Thành phần kinh tế tập thể (mà nòng cốt là các hợp tác xã) có vai trò gì trong nền kinh tế Việt Nam?",
+      options: [
+        "A. Giữ vai trò chủ đạo thay thế kinh tế nhà nước.",
+        "B. Là nền tảng quan trọng giúp liên kết những người sản xuất nhỏ, tăng sức mạnh cạnh tranh và đảm bảo an sinh.",
+        "C. Là thành phần kinh tế phi pháp.",
+        "D. Chỉ tồn tại trong lĩnh vực công nghiệp nặng."
+      ],
+      correct: 1,
+      explain: "Kinh tế tập thể (hợp tác xã, tổ hợp tác) cùng với kinh tế nhà nước tạo thành nền tảng vững chắc của nền kinh tế, hỗ trợ kinh tế hộ gia đình tăng năng lực sản xuất kinh doanh."
+    },
+    {
+      q: "Câu 12: Quan hệ phân phối thông qua quỹ an sinh xã hội và phúc lợi tập thể có ý nghĩa gì?",
+      options: [
+        "A. Giúp triệt tiêu hoàn toàn sự khác biệt về tiền lương.",
+        "B. Đảm bảo công bằng xã hội, hỗ trợ nhóm yếu thế và giảm bớt sự phân hóa giàu nghèo quá mức.",
+        "C. Khuyến khích người dân không cần đi làm.",
+        "D. Tăng lợi nhuận cho các tập đoàn tư nhân."
+      ],
+      correct: 1,
+      explain: "Phân phối thông qua an sinh xã hội (bảo hiểm xã hội, bảo hiểm y tế, trợ cấp) giúp bảo vệ các đối tượng dễ bị tổn thương trước các cú sốc thị trường, thu hẹp khoảng cách phân hóa xã hội."
+    },
+    {
+      q: "Câu 13: Hạn chế lớn nhất của cơ chế tập trung quan liêu bao cấp ở Việt Nam trước năm 1986 là gì?",
+      options: [
+        "A. Tốc độ phát triển công nghệ quá nhanh.",
+        "B. Triệt tiêu động lực sáng tạo của người lao động và doanh nghiệp, dẫn đến suy thoái và khủng hoảng kinh tế.",
+        "C. Hàng hóa trên thị trường quá dư thừa.",
+        "D. Thu hút quá nhiều vốn đầu tư nước ngoài."
+      ],
+      correct: 1,
+      explain: "Cơ chế bao cấp triệt tiêu cạnh tranh và động lực cá nhân, sinh ra tâm lý ỷ lại, biến sản xuất thành quan liêu giấy tờ dẫn tới khan hiếm hàng hóa và khủng hoảng kinh tế - xã hội nghiêm trọng."
+    },
+    {
+      q: "Câu 14: Sự quản lý của Nhà nước pháp quyền XHCN trong nền kinh tế thị trường được thực hiện dưới sự lãnh đạo của tổ chức nào?",
+      options: [
+        "A. Các hội đồng quản trị doanh nghiệp tư nhân.",
+        "B. Đảng Cộng sản Việt Nam.",
+        "C. Các quỹ đầu tư tài chính quốc tế.",
+        "D. Các hiệp hội thương mại tự do."
+      ],
+      correct: 1,
+      explain: "Sự lãnh đạo của Đảng Cộng sản Việt Nam là nhân tố quyết định giữ vững định hướng xã hội chủ nghĩa của nền kinh tế thị trường, đảm bảo quyền lực nhà nước thuộc về nhân dân."
+    },
+    {
+      q: "Câu 15: Yếu tố nào giữ vai trò là \"thước đo\" hiệu quả sản xuất kinh doanh của các chủ thể trong kinh tế thị trường?",
+      options: [
+        "A. Số lượng quyết định khen thưởng của cấp trên.",
+        "B. Lợi nhuận và khả năng tiêu thụ hàng hóa trên thị trường.",
+        "C. Chi phí thời gian đi lại của giám đốc.",
+        "D. Diện tích nhà xưởng của doanh nghiệp."
+      ],
+      correct: 1,
+      explain: "Trong kinh tế thị trường, hiệu quả kinh tế được kiểm chứng bằng khả năng thị trường chấp nhận sản phẩm (tiêu thụ được) và mức lợi nhuận hợp pháp mà doanh nghiệp thu về."
+    },
+    {
+      q: "Câu 16: Khu vực kinh tế có vốn đầu tư nước ngoài (FDI) đóng góp vai trò gì cho nền kinh tế Việt Nam?",
+      options: [
+        "A. Giữ vai trò chủ đạo thay thế kinh tế nhà nước.",
+        "B. Bổ sung nguồn vốn, công nghệ hiện đại, nâng cao năng lực xuất khẩu và tạo việc làm.",
+        "C. Không có đóng góp nào đáng kể.",
+        "D. Làm suy yếu nền kinh tế quốc dân."
+      ],
+      correct: 1,
+      explain: "Khu vực FDI là bộ phận quan trọng của nền kinh tế, được khuyến khích phát triển nhằm khơi thông dòng vốn ngoại, tiếp thu chuyển giao công nghệ tiên tiến và thúc đẩy hội nhập quốc tế."
+    },
+    {
+      q: "Câu 17: Khái niệm \"Thể chế kinh tế thị trường định hướng XHCN\" bao gồm các yếu tố nào?",
+      options: [
+        "A. Hệ thống luật pháp, quy tắc, bộ máy quản lý và cơ chế vận hành thị trường.",
+        "B. Chỉ bao gồm các quyết định của Tòa án.",
+        "C. Các quy định riêng của từng doanh nghiệp tư nhân.",
+        "D. Lời hứa của các nhà đầu tư."
+      ],
+      correct: 0,
+      explain: "Thể chế kinh tế bao gồm các quy tắc pháp lý, cơ chế vận hành, tổ chức thực thi và hệ thống các thị trường bộ phận đảm bảo cho nền kinh tế vận động đúng quỹ đạo."
+    },
+    {
+      q: "Câu 18: Để hoàn thiện thể chế kinh tế thị trường định hướng XHCN, Việt Nam cần ưu tiên giải pháp nào?",
+      options: [
+        "A. Hoàn thiện hệ thống pháp luật, đảm bảo quyền sở hữu, tạo môi trường cạnh tranh bình đẳng và nâng cao năng lực quản lý vĩ mô.",
+        "B. Cấm hoàn toàn hàng hóa nhập khẩu.",
+        "C. Quốc hữu hóa tất cả các công ty tư nhân.",
+        "D. Ngừng giao thương với các nước tư bản."
+      ],
+      correct: 0,
+      explain: "Giải pháp trọng tâm là xây dựng đồng bộ khung pháp luật minh bạch, bảo vệ quyền tài sản hợp pháp, cải cách thủ tục hành chính và nâng cao hiệu lực quản lý nhà nước."
+    },
+    {
+      q: "Câu 19: Tác động tích cực nhất của việc chuyển sang kinh tế thị trường ở Việt Nam là gì?",
+      options: [
+        "A. Xóa bỏ hoàn toàn khoảng cách giàu nghèo ngay lập tức.",
+        "B. Giải phóng sức sản xuất, thúc đẩy tăng trưởng kinh tế cao và liên tục, cải thiện rõ rệt đời sống nhân dân.",
+        "C. Triệt tiêu các rủi ro biến động giá cả.",
+        "D. Làm cho tất cả mọi người đều trở thành chủ doanh nghiệp."
+      ],
+      correct: 1,
+      explain: "Kinh tế thị trường đã kích thích mọi tiềm năng trong dân cư, đưa quy mô nền kinh tế Việt Nam tăng trưởng vượt bậc, xóa đói giảm nghèo đạt thành tựu ấn tượng được quốc tế công nhận."
+    },
+    {
+      q: "Câu 20: Nguyên tắc cốt lõi trong việc kết hợp giữa phát triển kinh tế thị trường và tiến bộ, công bằng xã hội ở Việt Nam là gì?",
+      options: [
+        "A. Tăng trưởng kinh tế trước, giải quyết công bằng xã hội sau.",
+        "B. Thực hiện tiến bộ và công bằng xã hội ngay trong từng bước đi, từng chính sách phát triển kinh tế.",
+        "C. Chỉ chú trọng công bằng xã hội, bỏ qua tăng trưởng kinh tế.",
+        "D. Để các quỹ từ thiện tự giải quyết vấn đề xã hội."
+      ],
+      correct: 1,
+      explain: "Quan điểm nhất quán của Đảng ta là không chờ kinh tế đạt trình độ cao rồi mới thực hiện tiến bộ xã hội, cũng không hy sinh tiến bộ và công bằng xã hội để chạy theo tăng trưởng kinh tế đơn thuần."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

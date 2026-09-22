@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Ôn Tập & Kiểm Tra - Kinh Tế Chính Trị</title>
+  <style>
+    :root {
+      --sidebar-width: 320px;
+      --primary: #1e40af;
+      --primary-hover: #1d4ed8;
+      --bg-dark: #0f172a;
+      --text-gray: #94a3b8;
+      --border-color: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      background: #f8fafc;
+    }
+
+    /* Sidebar Styling */
+    aside {
+      width: var(--sidebar-width);
+      min-width: var(--sidebar-width);
+      background: var(--bg-dark);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-color);
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      padding: 20px 16px;
+      border-bottom: 1px solid var(--border-color);
+      background: #020617;
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-header p {
+      font-size: 0.8rem;
+      color: var(--text-gray);
+    }
+
+    .menu-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 8px;
+      list-style: none;
+    }
+
+    .menu-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .menu-list::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    .menu-item {
+      margin-bottom: 4px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      transition: all 0.18s ease;
+      cursor: pointer;
+    }
+
+    .menu-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      transform: translateX(3px);
+    }
+
+    .menu-link.active {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.35);
+    }
+
+    .badge-cd {
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .menu-link.special {
+      background: #7c2d12;
+      color: #fed7aa;
+      margin-top: 10px;
+      border: 1px dashed #ea580c;
+    }
+
+    .menu-link.special:hover {
+      background: #9a3412;
+      color: white;
+    }
+
+    .menu-link.special.active {
+      background: #ea580c;
+      color: white;
+    }
+
+    /* Content Area Styling */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      height: 48px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .content-frame {
+      flex: 1;
+      width: 100%;
+      height: calc(100vh - 48px);
+      border: none;
+      background: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR BÊN TRÁI -->
+  <aside>
+    <div class="sidebar-header">
+      <h2>ÔN THI KTCT</h2>
+      <p>Chọn chủ đề để chuyển bài học</p>
+    </div>
+
+    <ul class="menu-list">
+      <li class="menu-item">
+        <a class="menu-link active" onclick="loadTopic('cd3.html', 'Chủ đề 3: Quy luật giá trị & Áp lực cạnh tranh', this)">
+          <span class="badge-cd">CĐ 3</span>
+          <span>Quy luật giá trị & Cạnh tranh</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd4.html', 'Chủ đề 4: Kinh tế nền tảng & Quan hệ trung gian', this)">
+          <span class="badge-cd">CĐ 4</span>
+          <span>Kinh tế nền tảng số</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd5.html', 'Chủ đề 5: Nguồn gốc GTTD & Vấn đề Robot, Tự động hóa', this)">
+          <span class="badge-cd">CĐ 5</span>
+          <span>Nguồn gốc GTTD & Tự động hóa</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd6.html', 'Chủ đề 6: Các phương pháp sản xuất GTTD & Quan hệ lợi ích', this)">
+          <span class="badge-cd">CĐ 6</span>
+          <span>Phương pháp sản xuất GTTD</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd7.html', 'Chủ đề 7: Tiền công, Giá trị sức lao động & Đời sống', this)">
+          <span class="badge-cd">CĐ 7</span>
+          <span>Tiền công & Giá trị sức lao động</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd8.html', 'Chủ đề 8: Tích lũy tư bản & Cơ cấu lao động hiện đại', this)">
+          <span class="badge-cd">CĐ 8</span>
+          <span>Tích lũy tư bản & Mở rộng SX</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd9.html', 'Chủ đề 9: Độc quyền & Cạnh tranh hàng không (Case ACV)', this)">
+          <span class="badge-cd">CĐ 9</span>
+          <span>Độc quyền hàng không (ACV)</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd10.html', 'Chủ đề 10: Độc quyền kinh tế số (Case Google)', this)">
+          <span class="badge-cd">CĐ 10</span>
+          <span>Độc quyền số (Google)</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd11.html', 'Chủ đề 11: Tập đoàn lớn & Cạnh tranh (Case Petrolimex)', this)">
+          <span class="badge-cd">CĐ 11</span>
+          <span>Tập đoàn lớn (Petrolimex)</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd12.html', 'Chủ đề 12: Kinh tế thị trường định hướng XHCN', this)">
+          <span class="badge-cd">CĐ 12</span>
+          <span>KTTT định hướng XHCN</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd13.html', 'Chủ đề 13: Quan hệ lợi ích kinh tế (Case PouYuen)', this)">
+          <span class="badge-cd">CĐ 13</span>
+          <span>Mâu thuẫn lợi ích (PouYuen)</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link" onclick="loadTopic('cd14.html', 'Chủ đề 14: CNH, HĐH & Hội nhập trong kỷ nguyên số', this)">
+          <span class="badge-cd">CĐ 14</span>
+          <span>CNH, HĐH kỷ nguyên số</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a class="menu-link special" onclick="loadTopic('giuaki.html', 'Đề Ôn Tập / Thi Giữa Kỳ', this)">
+          <span>🎯</span>
+          <span>ĐỀ THI GIỮA KỲ</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- KHUNG HIỂN THỊ NỘI DUNG BÊN PHẢI -->
+  <main>
+    <div class="top-bar">
+      <span id="currentTopicTitle">Chủ đề 3: Quy luật giá trị & Áp lực cạnh tranh</span>
+      <span style="font-weight: normal; color: #64748b; font-size: 0.8rem;">Trình duyệt nội bộ</span>
+    </div>
+    <!-- Load mặc định file cd3.html khi mới mở -->
+    <iframe id="mainFrame" class="content-frame" src="cd3.html"></iframe>
+  </main>
+
+  <script>
+    function loadTopic(fileUrl, title, element) {
+      // Đổi đường dẫn iframe
+      document.getElementById('mainFrame').src = fileUrl;
+      
+      // Cập nhật tiêu đề thanh top-bar
+      document.getElementById('currentTopicTitle').innerText = title;
+
+      // Xóa active cũ và gán active cho nút vừa click
+      const links = document.querySelectorAll('.menu-link');
+      links.forEach(link => link.classList.remove('active'));
+      element.classList.add('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ôn Tập & Kiểm Tra: Kinh Tế Chính Trị Mác - Lênin (50 Câu)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Google: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-200">
+          <i data-lucide="book-open" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Trắc Nghiệm Kinh Tế Chính Trị Mác - Lênin</h1>
+          <p class="text-xs text-slate-500 hidden sm:block">Trọn bộ 50 câu hỏi có đáp án & lời giải chi tiết</p>
+        </div>
+      </div>
+
+      <!-- Control Toolbar -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Chuyển chế độ -->
+        <div class="bg-slate-100 p-1 rounded-lg flex items-center text-xs font-semibold border border-slate-200">
+          <button id="btnModePractice" onclick="switchMode('practice')" class="px-2.5 py-1.5 rounded-md transition-all bg-white text-indigo-700 shadow-sm">
+            <span class="flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Luyện tập</span>
+          </button>
+          <button id="btnModeExam" onclick="switchMode('exam')" class="px-2.5 py-1.5 rounded-md transition-all text-slate-600 hover:text-slate-900">
+            <span class="flex items-center gap-1.5"><i data-lucide="timer" class="w-3.5 h-3.5"></i> Thi thử</span>
+          </button>
+        </div>
+
+        <!-- Timer (chỉ hiện khi thi) -->
+        <div id="examTimer" class="hidden items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-sm font-bold">
+          <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
+          <span id="timerDisplay">45:00</span>
+        </div>
+
+        <!-- Nộp bài (Thi) / Làm lại -->
+        <button id="btnSubmitExam" onclick="submitExam()" class="hidden px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold rounded-lg shadow-sm transition-colors">
+          Nộp bài
+        </button>
+        <button onclick="resetAll()" title="Làm lại từ đầu" class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition-colors">
+          <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Cột trái: Danh sách câu hỏi (8/12) -->
+    <section class="lg:col-span-8 flex flex-col gap-4">
+      
+      <!-- Thanh công cụ tìm kiếm và lọc -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap gap-3 items-center justify-between">
+        <div class="relative flex-1 min-w-[200px]">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            oninput="handleSearch(this.value)" 
+            placeholder="Tìm theo từ khóa (vd: thặng dư, cấu tạo hữu cơ, tiền tệ)..." 
+            class="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
+        <div class="flex items-center gap-2 text-xs font-medium">
+          <span class="text-slate-500">Lọc:</span>
+          <select id="filterSelect" onchange="handleFilter(this.value)" class="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="all">Tất cả câu hỏi</option>
+            <option value="unanswered">Chưa làm</option>
+            <option value="answered">Đã làm</option>
+            <option value="wrong">Câu làm sai (Luyện tập)</option>
+            <option value="bookmarked">Đã đánh dấu (★)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Danh sách câu hỏi hiển thị -->
+      <div id="questionsContainer" class="flex flex-col gap-4">
+        <!-- Questions will be rendered here dynamically -->
+      </div>
+    </section>
+
+    <!-- Cột phải: Bảng điều hướng nhanh & Kết quả (4/12) -->
+    <aside class="lg:col-span-4">
+      <div class="sticky top-20 flex flex-col gap-5">
+        
+        <!-- Thẻ thống kê điểm số & tiến độ -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-600">Tiến độ hoàn thành</h2>
+            <span id="progressText" class="text-sm font-bold text-indigo-600">0 / 50</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-2.5 mb-4 overflow-hidden">
+            <div id="progressBar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <!-- Chi tiết kết quả -->
+          <div class="grid grid-cols-3 gap-2 text-center">
+            <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+              <span class="block text-xs text-slate-500">Đã trả lời</span>
+              <span id="statAnswered" class="text-base font-bold text-slate-800">0</span>
+            </div>
+            <div class="p-2.5 bg-emerald-50 rounded-lg border border-emerald-100">
+              <span class="block text-xs text-emerald-600">Số câu đúng</span>
+              <span id="statCorrect" class="text-base font-bold text-emerald-700">0</span>
+            </div>
+            <div class="p-2.5 bg-rose-50 rounded-lg border border-rose-100">
+              <span class="block text-xs text-rose-600">Số câu sai</span>
+              <span id="statWrong" class="text-base font-bold text-rose-700">0</span>
+            </div>
+          </div>
+
+          <!-- Kết quả thi sau khi nộp (Chỉ hiện khi chấm bài) -->
+          <div id="examResultBox" class="hidden mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded-xl text-center">
+            <p class="text-xs uppercase font-semibold text-indigo-600 tracking-wider">Điểm số đạt được</p>
+            <div class="text-3xl font-extrabold text-indigo-900 my-1" id="examScoreText">0.0 / 10</div>
+            <p class="text-xs text-indigo-700" id="examRateText">Tỷ lệ chính xác: 0%</p>
+          </div>
+        </div>
+
+        <!-- Bảng điều hướng câu hỏi số 1 - 50 -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-sm font-bold text-slate-800">Bảng điều hướng câu hỏi</h3>
+            <span class="text-xs text-slate-400">50 câu</span>
+          </div>
+
+          <!-- Chú giải màu sắc -->
+          <div class="flex flex-wrap gap-2 text-[11px] text-slate-500 mb-3">
+            <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-slate-100 border border-slate-300"></span> Chưa làm</span>
+            <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-indigo-600 text-white"></span> Đã chọn</span>
+            <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-500 text-white"></span> Đúng</span>
+            <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-rose-500 text-white"></span> Sai</span>
+            <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-400 text-white"></span> Đánh dấu</span>
+          </div>
+
+          <!-- Lưới nút số câu -->
+          <div id="navGrid" class="grid grid-cols-5 sm:grid-cols-10 lg:grid-cols-5 gap-2 max-h-[340px] overflow-y-auto custom-scrollbar p-1">
+            <!-- 50 buttons generated dynamically -->
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-4 mt-auto text-center text-xs text-slate-500">
+    Hệ thống hỗ trợ tự ôn tập và thi thử trắc nghiệm Môn Kinh Tế Chính Trị Mác - Lênin.
+  </footer>
+
+  <!-- SCRIPT DỮ LIỆU VÀ LOGIC ỨNG DỤNG -->
+  <script>
+    // Dữ liệu 50 câu hỏi chuẩn xác, có đáp án và phân tích chi tiết
+    const rawQuestions = [
+      {
+        id: 1,
+        q: "Giá trị thặng dư được tạo ra ở đâu?",
+        opts: [
+          "Vừa trong sản xuất vừa trong lưu thông.",
+          "Trong sản xuất.",
+          "Trong lưu thông.",
+          "Trong trao đổi."
+        ],
+        ans: 1, // B
+        explain: "Theo C.Mác: Tư bản không thể xuất hiện từ lưu thông và cũng không thể xuất hiện ở bên ngoài lưu thông. Lưu thông chỉ là điều kiện tiền đề để mua yếu tố sản xuất và bán hàng hóa, nhưng giá trị thặng dư thực sự chỉ được tạo ra trong quá trình sản xuất nhờ tiêu dùng hàng hóa đặc biệt - sức lao động."
+      },
+      {
+        id: 2,
+        q: "Chức năng nhận thức của kinh tế- chính trị là nhằm:",
+        opts: [
+          "Phát hiện bản chất của các hiện tượng và quá trình kinh tế.",
+          "Tất cả các đáp án trên",
+          "Cung cấp hệ thống tri thức mở về những qui luật chi phối sự phát triển của sản xuất và trao đổi gắn với phương thức sản xuất",
+          "Sự liên hệ tác động biện chứng giữa người với người trong sản xuất và trao đổi với lực lượng sản xuất và kiến trúc thượng tầng tương ứng"
+        ],
+        ans: 1, // B
+        explain: "Chức năng nhận thức của KTCT Mác - Lênin bao gồm toàn diện: phát hiện bản chất, trang bị hệ thống tri thức về quy luật vận động của nền sản xuất - trao đổi và vạch rõ mối quan hệ sản xuất tác động qua lại với LLSX và KTTT."
+      },
+      {
+        id: 3,
+        q: "Giá trị thặng dư siêu ngạch là giá trị thặng dư có được do?",
+        opts: [
+          "Giá trị cá biệt của hàng hóa thấp hơn giá trị xã hội.",
+          "Giá trị cá biệt của hàng hóa bằng giá trị xã hội.",
+          "Giá cả cá biệt của hàng hóa thấp hơn giá trị xã hội.",
+          "Giá trị xã hội của hàng hóa thấp hơn giá trị cá biệt."
+        ],
+        ans: 0, // A
+        explain: "Giá trị thặng dư siêu ngạch là phần giá trị thặng dư dôi ra ngoài giá trị thặng dư thông thường, thu được do doanh nghiệp áp dụng kỹ thuật tiên tiến làm tăng năng suất lao động cá biệt, khiến giá trị cá biệt của hàng hóa thấp hơn giá trị thị trường (giá trị xã hội), nhưng vẫn bán theo giá trị xã hội."
+      },
+      {
+        id: 4,
+        q: "Bộ phận nào hợp thành giá trị hàng hoá sức lao động?",
+        opts: [
+          "Phí tổn đào tạo công nhân",
+          "Giá trị những tư liệu sinh hoạt về vật chất và tinh thần để tái sản xuất sức lao động và duy trì đời sống công nhân",
+          "Giá trị những tư liệu sinh hoạt vật chất và tinh thần thỏa mãn nhu cầu cho gia đình công nhân",
+          "Cả ba phương án kia đều đúng."
+        ],
+        ans: 3, // D
+        explain: "Giá trị hàng hóa sức lao động bằng giá trị những tư liệu sinh hoạt cần thiết để duy trì cuộc sống của người công nhân, gia đình con cái họ, cộng với phí tổn đào tạo theo trình độ chuyên môn kỹ thuật."
+      },
+      {
+        id: 5,
+        q: "Hình thái chung của giá trị được biểu hiện như thế nào? Chọn phương án sai.",
+        opts: [
+          "Vật trung gian cố định ở một hàng hóa được nhiều người ưa chuộng.",
+          "Giá trị của mọi hàng hóa biểu hiện tập trung ở một hàng hóa.",
+          "Giá trị mọi hàng hóa được biểu hiện bằng tiền kim loại.",
+          "Vật trung gian cố định ở một số hàng hóa được nhiều người ưa chuộng."
+        ],
+        ans: 2, // C
+        explain: "Phương án C sai vì: Việc giá trị của mọi hàng hóa được đo lường và biểu hiện bằng kim loại quý (tiền tệ như vàng, bạc) thuộc về 'Hình thái tiền tệ' - bước phát triển cao nhất của hình thái giá trị, chứ không còn là 'Hình thái chung'."
+      },
+      {
+        id: 6,
+        q: "Động cơ chủ yếu của tích lũy tư bản là gì?",
+        opts: [
+          "Là giá trị thặng dư.",
+          "Là quy luật giá trị.",
+          "Là quy luật giá cả sản xuất.",
+          "Là quy luật cung, cầu."
+        ],
+        ans: 0, // A
+        explain: "Động cơ thôi thúc trực tiếp và chủ yếu của tích lũy tư bản chính là khát khao chiếm đoạt giá trị thặng dư ngày càng nhiều hơn dưới sự tác động của quy luật giá trị thặng dư và áp lực cạnh tranh gay gắt."
+      },
+      {
+        id: 7,
+        q: "Chức năng thực tiễn của kinh tế- chính trị Mác- Lênin đối với sinh viên là:",
+        opts: [
+          "Trang bị phương pháp để xem xét thế giới nói chung",
+          "Phát hiện bản chất của các hiện tượng và quá trình kinh tế.",
+          "Cơ sở khoa học lý luận để nhận diện và định vị vai trò, trách nhiệm và sáng tạo.",
+          "Cơ sở để nhận thức được các qui luật và tính qui luật trong kinh tế"
+        ],
+        ans: 2, // C
+        explain: "Đối với thế hệ trẻ và sinh viên, chức năng thực tiễn của môn học là cung cấp cơ sở khoa học lý luận để nhận diện, định vị vị trí, vai trò, trách nhiệm công dân cũng như tư duy sáng tạo trong hoạt động kinh tế - xã hội."
+      },
+      {
+        id: 8,
+        q: "Điểm giống nhau giữa phương pháp giá trị thặng dư tuyệt đối và phương pháp giá trị thặng dư tương đối là gì?",
+        opts: [
+          "Công nhân tạo ra giá trị thặng dư và bị nhà tư bản chiếm không.",
+          "Cả ba phương án kia đều đúng.",
+          "Đều làm cho tỷ suất giá trị thặng dư tăng lên.",
+          "Đều làm cho thời gian lao động thặng dư tăng lên."
+        ],
+        ans: 1, // B
+        explain: "Cả 2 phương pháp đều nhằm nâng cao tỷ suất giá trị thặng dư (m'), kéo dài thời gian lao động thặng dư và đều phản ánh bản chất bóc lột của tư bản đối với lao động làm thuê."
+      },
+      {
+        id: 9,
+        q: "Giá trị cá biệt của hàng hóa do yếu tố nào quyết định?",
+        opts: [
+          "Hao phí lao động cá biệt của người sản xuất quyết định",
+          "Hao phí lao động của ngành quyết định",
+          "Hao phí lao động xã hội cần thiết quyết định",
+          "Giá trị sử dụng của hàng hóa quyết định"
+        ],
+        ans: 0, // A
+        explain: "Giá trị cá biệt của hàng hóa được đo bằng thời gian lao động cá biệt hay hao phí lao động cá biệt của chính chủ thể/doanh nghiệp sản xuất ra hàng hóa đó."
+      },
+      {
+        id: 10,
+        q: "Chọn phán đoán sai về lao động phức tạp?",
+        opts: [
+          "Lao động phức tạp là lao động giản đơn nhân bội lên.",
+          "Trong cùng một thời gian lao động, lao động phức tạp tạo ra nhiều giá trị hơn lao động giản đơn.",
+          "Lao động phức tạp là lao động trải qua đào tạo, huấn luyện.",
+          "Lao động phức tạp là lao động trong môi trường đặc biệt."
+        ],
+        ans: 3, // D
+        explain: "Lao động trong môi trường đặc biệt (độc hại, nguy hiểm) không đồng nghĩa với lao động phức tạp. Lao động phức tạp là lao động đòi hỏi phải qua đào tạo, bồi dưỡng tay nghề, kỹ năng chuyên môn."
+      },
+      {
+        id: 11,
+        q: "Một tư bản cấu tạo theo sơ đồ: 80c + 30v + 60m. Nếu thời gian lao động thặng dư là 6 giờ thì ngày lao động là mấy giờ?",
+        opts: [
+          "9 giờ",
+          "7 giờ",
+          "6 giờ",
+          "8 giờ"
+        ],
+        ans: 0, // A
+        explain: "Tỷ suất giá trị thặng dư: m' = (m / v) * 100% = (60 / 30) = 200%. Ta có m' = t' / t = 2 => t = t' / 2 = 6 / 2 = 3 giờ (thời gian lao động tất yếu). Độ dài ngày lao động = t + t' = 3 + 6 = 9 giờ."
+      },
+      {
+        id: 12,
+        q: "Bản chất của lợi nhuận thương nghiệp trong chủ nghĩa tư bản là gì?",
+        opts: [
+          "Là kết quả của quá trình trao đổi không ngang giá.",
+          "Là tiền công lao động do công nhân thương nghiệp tạo ra.",
+          "Là số tiền lời do nhà tư bản mua rẻ bán đắt mà có.",
+          "Là một phần giá trị thặng dư do tư bản công nghiệp nhượng cho tư bản thương nghiệp vì họ đã tiêu thụ hàng hóa cho mình."
+        ],
+        ans: 3, // D
+        explain: "Tư bản thương nghiệp không trực tiếp tạo ra giá trị thặng dư. Để tư bản thương nghiệp đảm nhận khâu lưu thông, tư bản công nghiệp phải bán hàng hóa cho tư bản thương nghiệp với giá thấp hơn giá trị thị trường, qua đó nhượng lại một phần giá trị thặng dư."
+      },
+      {
+        id: 13,
+        q: "Tư bản đầu tư 300.000 USD, cấu tạo hữu cơ tư bản 2/1, tỷ suất giá trị thặng dư 100%, xác định giá trị mới?",
+        opts: [
+          "100.000 USD",
+          "400.000 USD",
+          "200.000 USD",
+          "500.000 USD"
+        ],
+        ans: 2, // C
+        explain: "Tổng tư bản: c + v = 300.000 USD. Cấu tạo hữu cơ c/v = 2/1 => c = 200.000 USD và v = 100.000 USD. Khối lượng thặng dư m = m' * v = 100% * 100.000 = 100.000 USD. Giá trị mới do lao động sống tạo ra = v + m = 100.000 + 100.000 = 200.000 USD."
+      },
+      {
+        id: 14,
+        q: "Ai là người phát hiện ra tính chất hai mặt của lao động sản xuất hàng hóa?",
+        opts: [
+          "C.Mác",
+          "D.Ricardo",
+          "Ph.Ăngghen",
+          "A.Smith"
+        ],
+        ans: 0, // A
+        explain: "C.Mác là người đầu tiên phát hiện ra tính hai mặt của lao động sản xuất hàng hóa (lao động cụ thể và lao động trừu tượng), xem đây là viên đá tảng tạo nên lý luận giá trị - lao động khoa học."
+      },
+      {
+        id: 15,
+        q: "Ngày công nhân làm việc 8 giờ, m'=100%. Sau đó nhà tư bản kéo dài ngày làm việc đến 10 giờ. Trình độ bóc lột sẽ thay đổi như thế nào nếu giá trị sức lao động không thay đổi?",
+        opts: [
+          "150%",
+          "200%",
+          "100%",
+          "250%"
+        ],
+        ans: 0, // A
+        explain: "Ban đầu: ngày 8h, m' = 100% => t = t' = 4 giờ. Khi ngày làm việc tăng lên 10 giờ mà giá trị SLĐ (t) không đổi (vẫn bằng 4 giờ), thời gian lao động thặng dư mới t' = 10 - 4 = 6 giờ. Trình độ bóc lột mới: m' = (6 / 4) * 100% = 150%."
+      },
+      {
+        id: 16,
+        q: "Giá trị sử dụng của hàng hóa sức lao động được coi là:",
+        opts: [
+          "Chìa khóa để giải quyết mâu thuẫn công thức chung của tư bản.",
+          "Chìa khóa để giải quyết mâu thuẫn của xã hội tư bản.",
+          "Chìa khóa để giải quyết mâu thuẫn giữa tư bản và lao động.",
+          "Chìa khóa để giải quyết mâu thuẫn giữa tư bản và tư bản."
+        ],
+        ans: 0, // A
+        explain: "Giá trị sử dụng của sức lao động có đặc tính độc nhất vô nhị: khi tiêu dùng, nó tạo ra một lượng giá trị lớn hơn giá trị của bản thân nó. Đây chính là 'chìa khóa vàng' giải quyết mâu thuẫn công thức chung của tư bản T - H - T'."
+      },
+      {
+        id: 17,
+        q: "Tư bản có vốn đầu tư 2.000.000 USD, cấu tạo hữu cơ 4/1, m'=400%, có 70% giá trị thặng dư được tư bản hóa. Xác định qui mô tư bản khi tái sản xuất?",
+        opts: [
+          "1.120.000 USD.",
+          "3.120.000 USD.",
+          "2.000.000 USD.",
+          "1.600.000 USD."
+        ],
+        ans: 1, // B
+        explain: "Vốn ban đầu: K0 = c + v = 2.000.000 USD. Với c/v = 4/1 => v = 400.000 USD; c = 1.600.000 USD. Giá trị thặng dư: m = 400% * 400.000 = 1.600.000 USD. Tích lũy (tư bản hóa 70%): m_tl = 70% * 1.600.000 = 1.120.000 USD. Quy mô tư bản mới = K0 + m_tl = 2.000.000 + 1.120.000 = 3.120.000 USD."
+      },
+      {
+        id: 18,
+        q: "Biểu hiện của tiền công trong xã hội tư bản là gì?",
+        opts: [
+          "Là giá cả của hàng hóa sức lao động.",
+          "Là giá cả của lao động.",
+          "Là giá trị tư liệu tiêu dùng của giai cấp công nhân.",
+          "Là giá trị của hàng hóa sức lao động."
+        ],
+        ans: 1, // B
+        explain: "Bản chất tiền công là giá cả của hàng hóa sức lao động, nhưng trên bề mặt xã hội tư bản, nó lại biểu hiện ra một cách xuyên tạc là 'giá cả của lao động' (trả công theo giờ hoặc theo sản phẩm đã hoàn thành)."
+      },
+      {
+        id: 19,
+        q: "Giá trị thặng dư tương đối là giá trị thặng dư có được do đâu? Chọn phương án sai.",
+        opts: [
+          "Tăng năng suất lao động cá biệt, làm rút ngắn thời gian lao động cá biệt.",
+          "Tăng năng suất lao động xã hội, làm rút ngắn thời gian lao động cần thiết.",
+          "Tăng cường độ lao động, làm rút ngắn thời gian lao động cần thiết.",
+          "Tăng sản lượng, làm rút ngắn thời gian lao động cần thiết."
+        ],
+        ans: 0, // A
+        explain: "Phương án A là bản chất của phương pháp thu 'giá trị thặng dư siêu ngạch' (dựa trên năng suất lao động cá biệt của doanh nghiệp đi đầu). Thặng dư tương đối dựa trên việc tăng năng suất lao động xã hội trong các ngành sản xuất tư liệu sinh hoạt."
+      },
+      {
+        id: 20,
+        q: "Đâu không phải ưu thế của sản xuất hàng hóa?",
+        opts: [
+          "Phân hóa giàu - nghèo",
+          "Gia tăng không hạn chế của thị trường là động lực mạnh mẽ thúc đẩy sản xuất phát triển",
+          "Cạnh tranh là động lực thúc đẩy lực lượng sản xuất phát triển",
+          "Giao lưu kinh tế và văn hóa trong nước và quốc tế ngày càng phát triển"
+        ],
+        ans: 0, // A
+        explain: "Phân hóa giàu - nghèo và nguy cơ khủng hoảng là mặt hạn chế, khuyết tật tất yếu của sản xuất hàng hóa, không phải là ưu thế tích cực."
+      },
+      {
+        id: 21,
+        q: "Bản chất địa tô tư bản chủ nghĩa là gì?",
+        opts: [
+          "Là một phần lợi nhuận bình quân.",
+          "Là toàn bộ lợi nhuận mà nhà tư bản thu được.",
+          "Là một phần giá trị thặng dư ngoài lợi nhuận bình quân.",
+          "Là toàn bộ giá trị thặng dư."
+        ],
+        ans: 2, // C
+        explain: "Địa tô TBCN là phần giá trị thặng dư siêu ngạch dôi ra ngoài lợi nhuận bình quân mà nhà tư bản kinh doanh nông nghiệp phải nộp cho địa chủ để được quyền sử dụng đất đai."
+      },
+      {
+        id: 22,
+        q: "Thời kỳ nào được xem là hệ thống lý luận kinh tế chính trị đầu tiên nghiên cứu về nền sản xuất tư bản chủ nghĩa?",
+        opts: [
+          "Thời kỳ cổ đại",
+          "Chủ nghĩa trọng nông",
+          "Thời kỳ trung đại",
+          "Chủ nghĩa trọng thương"
+        ],
+        ans: 3, // D
+        explain: "Chủ nghĩa trọng thương (xuất hiện vào thế kỷ XV - XVII ở Tây Âu) là hệ thống lý luận kinh tế chính trị đầu tiên nghiên cứu về phương thức sản xuất tư bản chủ nghĩa, dù mới dừng lại ở lĩnh vực lưu thông."
+      },
+      {
+        id: 23,
+        q: "Bộ phận tư bản biểu hiện dưới hình thái giá trị những máy móc, thiết bị, nhà xưởng... tham gia toàn bộ vào quá trình sản xuất, nhưng giá trị của nó không chuyển hết một lần vào sản phẩm, mà chuyển từng phần vào sản phẩm trong quá trình sản xuất là bộ phận tư bản gì?",
+        opts: [
+          "Tư bản lưu động",
+          "Tư bản bất biến",
+          "Tư bản khả biến",
+          "Tư bản cố định"
+        ],
+        ans: 3, // D
+        explain: "Đó chính là định nghĩa của tư bản cố định (c1): tham gia toàn bộ vào quy trình chế tạo nhưng giá trị hao mòn và chuyển dịch dần dần qua từng chu kỳ sản xuất."
+      },
+      {
+        id: 24,
+        q: "Giá cả hàng hóa là gì?",
+        opts: [
+          "Giá trị của hàng hóa",
+          "Tổng của chi phí sản xuất và lợi nhuận",
+          "Quan hệ về lượng giữa hàng và tiền.",
+          "Biểu hiện bằng tiền của giá trị hàng hóa"
+        ],
+        ans: 3, // D
+        explain: "Giá cả là hình thức biểu hiện bằng tiền của giá trị hàng hóa; giá trị là cơ sở nội dung, còn giá cả là hình thức biểu hiện bên ngoài của giá trị."
+      },
+      {
+        id: 25,
+        q: "Đâu là công thức lưu thông hàng hóa giản đơn?",
+        opts: [
+          "T – H – T’.",
+          "H – H.",
+          "T – T.",
+          "H – T – H."
+        ],
+        ans: 3, // D
+        explain: "Công thức lưu thông hàng hóa giản đơn là H - T - H (Hàng - Tiền - Hàng), mục đích là giá trị sử dụng để tiêu dùng. Ngược lại, công thức chung của tư bản là T - H - T' với mục đích là giá trị thặng dư."
+      },
+      {
+        id: 26,
+        q: "Bản chất kinh tế của tiền tệ được xác định là gì?",
+        opts: [
+          "Là vàng, bạc",
+          "Là hàng hóa đặc biệt đóng vai trò là vật ngang giá chung thống nhất",
+          "Là phương tiện để lưu thông hàng hóa và để thanh toán",
+          "Là thước đo giá trị của hàng hóa"
+        ],
+        ans: 1, // B
+        explain: "Tiền tệ có bản chất là một loại hàng hóa đặc biệt được tách ra từ thế giới hàng hóa để làm vật ngang giá chung thống nhất cho tất cả các hàng hóa khác."
+      },
+      {
+        id: 27,
+        q: "Giá cả sản xuất được xác định bằng công thức nào?",
+        opts: [
+          "Tính bằng chi phí sản xuất tư bản cộng với giá trị thặng dư",
+          "Tính bằng chi phí sản xuất tư bản cộng với tỷ suất lợi nhuận bình quân",
+          "Tính bằng chi phí sản xuất tư bản cộng với lợi nhuận",
+          "Tính bằng chi phí sản xuất tư bản cộng với lợi nhuận bình quân"
+        ],
+        ans: 3, // D
+        explain: "Trong giai đoạn tự do cạnh tranh, sự hình thành tỷ suất lợi nhuận bình quân dẫn tới việc giá trị hàng hóa chuyển hóa thành giá cả sản xuất. Công thức: Giá cả sản xuất = k + p̄ (Chi phí sản xuất tư bản k + Lợi nhuận bình quân p̄)."
+      },
+      {
+        id: 28,
+        q: "Việc phân chia tư bản thành tư bản bất biến và tư bản khả biến căn cứ vào tiêu chí nào?",
+        opts: [
+          "Vai trò các bộ phận tư bản trong quá trình sản xuất giá trị thặng dư",
+          "Phương thức chuyển giá trị các bộ phận tư bản sang sản phẩm",
+          "Tốc độ chu chuyển chung của tư bản",
+          "Sự thay đổi về lượng trong quá trình sản xuất"
+        ],
+        ans: 0, // A
+        explain: "Căn cứ phân chia c và v bắt nguồn từ vai trò của từng bộ phận đối với việc tạo ra giá trị thặng dư: c chỉ bảo tồn/chuyển dịch giá trị cũ, còn v là bộ phận duy nhất trực tiếp sinh ra giá trị thặng dư m. (Còn tiêu chí phương thức chuyển giá trị là để chia thành tư bản cố định và lưu động)."
+      },
+      {
+        id: 29,
+        q: "Một doanh nghiệp tư bản sản xuất 6.000 sản phẩm với số tư bản đầu tư là 600.000 USD, cấu tạo hữu cơ 3/1, m' = 200%. Tính giá trị của một đơn vị sản phẩm?",
+        opts: [
+          "120 USD",
+          "150 USD",
+          "300 USD",
+          "240 USD"
+        ],
+        ans: 1, // B
+        explain: "K = c + v = 600.000 USD, c/v = 3/1 => c = 450.000 USD, v = 150.000 USD. Khối lượng thặng dư m = 200% * 150.000 = 300.000 USD. Tổng giá trị W = c + v + m = 450.000 + 150.000 + 300.000 = 900.000 USD. Giá trị 1 đơn vị = 900.000 / 6.000 = 150 USD."
+      },
+      {
+        id: 30,
+        q: "Xuất khẩu tư bản là đặc điểm kinh tế điển hình của giai đoạn nào?",
+        opts: [
+          "Của chủ nghĩa tư bản tự do cạnh tranh",
+          "Của chủ nghĩa tư bản",
+          "Các nước giàu có",
+          "Của chủ nghĩa tư bản độc quyền"
+        ],
+        ans: 3, // D
+        explain: "Theo V.I. Lênin: Nếu xuất khẩu hàng hóa là nét đặc trưng của CNTB tự do cạnh tranh thì xuất khẩu tư bản (đầu tư ra nước ngoài chiếm đoạt m) là một trong 5 đặc điểm kinh tế cơ bản của CNTB độc quyền."
+      },
+      {
+        id: 31,
+        q: "\"Lao động là cha, còn đất là mẹ của mọi của cải\". Khái niệm lao động trong câu nói này là lao động gì?",
+        opts: [
+          "Lao động phức tạp",
+          "Lao động giản đơn",
+          "Lao động cụ thể",
+          "Lao động trừu tượng"
+        ],
+        ans: 2, // C
+        explain: "Luận điểm của William Petty đề cập đến việc sáng tạo ra của cải vật chất (giá trị sử dụng). Lao động cụ thể kết hợp với giới tự nhiên để tạo ra các giá trị sử dụng cụ thể của sản phẩm."
+      },
+      {
+        id: 32,
+        q: "Hình thức nào sau đây không phải là biểu hiện của giá trị thặng dư?",
+        opts: [
+          "Tiền lương",
+          "Lợi tức",
+          "Lợi nhuận",
+          "Địa tô"
+        ],
+        ans: 0, // A
+        explain: "Tiền lương là biểu hiện bằng tiền của giá trị hàng hóa sức lao động (chi phí mua SLĐ). Ngược lại, lợi nhuận, lợi tức, địa tô tư bản đều là những hình thái biến tướng của giá trị thặng dư (m)."
+      },
+      {
+        id: 33,
+        q: "Hình thái chung của giá trị được biểu hiện như thế nào? Chọn phương án sai.",
+        opts: [
+          "Vật trung gian cố định ở một hàng hóa được nhiều người ưa chuộng",
+          "Giá trị của mọi hàng hóa biểu hiện tập trung ở một hàng hóa",
+          "Giá trị mọi hàng hóa được biểu hiện bằng tiền kim loại",
+          "Vật trung gian cố định ở một số hàng hóa được nhiều người ưa chuộng"
+        ],
+        ans: 2, // C
+        explain: "Phương án C là biểu hiện của hình thái tiền tệ (khi kim loại quý đóng vai trò vật ngang giá chung độc quyền), không phải hình thái chung của giá trị."
+      },
+      {
+        id: 34,
+        q: "Giá trị của hàng hóa được xác định bởi yếu tố nào sau đây?",
+        opts: [
+          "Lao động trừu tượng của người sản xuất hàng hóa",
+          "Sự hao phí sức lao động của con người nói chung",
+          "Công dụng hàng hóa",
+          "Sự khan hiếm của hàng hóa"
+        ],
+        ans: 0, // A
+        explain: "Giá trị của hàng hóa chính là lao động trừu tượng của người sản xuất kết tinh trong hàng hóa, biểu hiện mối quan hệ xã hội giữa những người sản xuất hàng hóa."
+      },
+      {
+        id: 35,
+        q: "Tiền công danh nghĩa và tiền công thực tế quan hệ với nhau như thế nào?",
+        opts: [
+          "Cả ba phương án kia đều đúng.",
+          "Khi giá cả hàng hóa tiêu dùng và dịch vụ không đổi: Tiền công danh nghĩa tăng thì tiền công thực tế sẽ tăng.",
+          "Khi giá cả hàng hóa tiêu dùng và dịch vụ tăng: Tiền công danh nghĩa giảm thì tiền công thực tế sẽ tăng.",
+          "Khi giá cả hàng hóa tiêu dùng và dịch vụ giảm: Tiền công danh nghĩa tăng thì tiền công thực tế sẽ tăng nhiều hơn."
+        ],
+        ans: 1, // B
+        explain: "Tiền công thực tế = (Tiền công danh nghĩa) / (Chỉ số giá cả). Do đó, khi giá cả hàng hóa và dịch vụ không đổi, tiền công danh nghĩa tăng thì tiền công thực tế chắc chắn tăng tỷ lệ thuận."
+      },
+      {
+        id: 36,
+        q: "Giá trị mới là bao nhiêu nếu sơ đồ tư bản là 500c + 400v + 400m?",
+        opts: [
+          "700",
+          "1.200",
+          "900",
+          "800"
+        ],
+        ans: 3, // D
+        explain: "Giá trị mới do lao động sống của công nhân tạo ra gồm hai bộ phận: v (bù đắp sức lao động) + m (giá trị thặng dư). Giá trị mới = v + m = 400 + 400 = 800 (c = 500 chỉ là giá trị cũ được chuyển dịch vào sản phẩm)."
+      },
+      {
+        id: 37,
+        q: "Mối quan hệ giữa quy luật kinh tế và chính sách kinh tế:",
+        opts: [
+          "Chính sách kinh tế là sản phẩm chủ quan của nhà nước trên cơ sở nhận thức và vận dụng các quy luật khách quan.",
+          "Quy luật kinh tế là cơ sở của chính sách kinh tế",
+          "Tất cả các đáp án trên",
+          "Quy luật kinh tế và chính sách kinh tế đều phụ thuộc vào các điều kiện khách quan."
+        ],
+        ans: 2, // C
+        explain: "Quy luật kinh tế mang tính khách quan và là cơ sở hình thành chính sách. Chính sách kinh tế mang tính chủ quan của nhà nước nhưng luôn phải dựa trên và phụ thuộc vào quy luật cũng như điều kiện khách quan."
+      },
+      {
+        id: 38,
+        q: "Giá trị thặng dư tương đối và giá trị thặng dư siêu ngạch giống nhau ở những điểm nào?",
+        opts: [
+          "Kéo dài thời gian lao động thặng dư.",
+          "Đều dựa trên tiền đề tăng năng suất lao động.",
+          "Cả ba phương án kia đều đúng.",
+          "Rút ngắn thời gian lao động cần thiết."
+        ],
+        ans: 2, // C
+        explain: "Cả hai phương pháp đều giữ nguyên độ dài ngày lao động, tăng năng suất lao động nhằm rút ngắn thời gian lao động cần thiết (tất yếu), từ đó làm tăng thời gian lao động thặng dư tương ứng."
+      },
+      {
+        id: 39,
+        q: "Một doanh nghiệp có số tư bản đầu tư là 900 USD, cấu tạo hữu cơ 2/1. Tính giá trị tư liệu sản xuất đã đầu tư (c)?",
+        opts: [
+          "500 USD",
+          "600 USD",
+          "300 USD",
+          "450 USD"
+        ],
+        ans: 1, // B
+        explain: "K = c + v = 900 USD. Cấu tạo c/v = 2/1 => c = 2v. Thay vào ta có 2v + v = 900 => 3v = 900 => v = 300 USD. Tư liệu sản xuất đã đầu tư c = 2 * 300 = 600 USD."
+      },
+      {
+        id: 40,
+        q: "Hàng hóa là gì?",
+        opts: [
+          "Cả 3 phương án kia đều đúng",
+          "Là mọi sản phẩm thoả mãn nhu cầu của con người",
+          "Là những sản phẩm có thể thoả mãn được nhu cầu nhất định nào đó của con người",
+          "Là sản phẩm của lao động, thoả mãn những nhu cầu nhất định nào đó của con người thông qua trao đổi, mua bán."
+        ],
+        ans: 3, // D
+        explain: "Theo lý luận Mác - Lênin: Hàng hóa là sản phẩm của lao động, có thể thỏa mãn nhu cầu nào đó của con người và phải được đưa vào tiêu dùng thông qua con đường trao đổi, mua bán."
+      },
+      {
+        id: 41,
+        q: "Các yếu tố dưới đây, yếu tố nào không thuộc tư bản bất biến?",
+        opts: [
+          "Tiền lương, tiền thưởng.",
+          "Máy móc, thiết bị, nhà xưởng.",
+          "Điện, nước, nguyên liệu.",
+          "Kết cấu hạ tầng sản xuất."
+        ],
+        ans: 0, // A
+        explain: "Tư bản bất biến (c) là bộ phận tư bản tồn tại dưới hình thái tư liệu sản xuất (nhà xưởng, máy móc, nguyên vật liệu...). Tiền lương, tiền thưởng là tư bản mua sức lao động, thuộc về tư bản khả biến (v)."
+      },
+      {
+        id: 42,
+        q: "Một doanh nghiệp có số tư bản đầu tư là 600.000 USD, cấu tạo hữu cơ tư bản 3/1. Xác định tiền công trả cho người lao động?",
+        opts: [
+          "300.000 USD",
+          "150.000 USD",
+          "100.000 USD",
+          "450.000 USD"
+        ],
+        ans: 1, // B
+        explain: "Tổng tư bản c + v = 600.000 USD. Cấu tạo c/v = 3/1 => c = 3v => 4v = 600.000 => v = 150.000 USD. Tiền công trả cho người lao động chính là bộ phận tư bản khả biến v = 150.000 USD."
+      },
+      {
+        id: 43,
+        q: "Cấu tạo hữu cơ của tư bản là gì?",
+        opts: [
+          "Là cấu tạo tư bản xét về lượng giữa tư liệu sản xuất và sức lao động sử dụng tư liệu sản xuất đó.",
+          "Là cấu tạo giá trị của tư bản phản ánh sự biến đổi của cấu tạo kỹ thuật của tư bản và do cấu tạo kỹ thuật quyết định.",
+          "Là cấu tạo kỹ thuật của tư bản phản ánh cấu tạo giá trị của tư bản và do cấu tạo giá trị quyết định.",
+          "Là cấu tạo tư bản mà các bộ phận của nó có quan hệ gắn bó hữu cơ với nhau."
+        ],
+        ans: 1, // B
+        explain: "Cấu tạo hữu cơ của tư bản (ký hiệu c/v) là cấu tạo giá trị của tư bản do cấu tạo kỹ thuật quyết định và phản ánh sự biến đổi của cấu tạo kỹ thuật đó."
+      },
+      {
+        id: 44,
+        q: "Nhà tư bản đầu tư lần đầu 10.000.000 USD, cấu tạo hữu cơ 3/2, m'=200%. Nếu nhà tư bản sử dụng 30% khối lượng giá trị thặng dư có được cho tiêu dùng cá nhân thì tổng lượng tư bản đầu tư cho chu kỳ sau là bao nhiêu?",
+        opts: [
+          "5.600.000 USD.",
+          "2.400.000 USD.",
+          "8.000.000 USD.",
+          "15.600.000 USD."
+        ],
+        ans: 3, // D
+        explain: "K0 = 10.000.000 USD, c/v = 3/2 => v = (2/5) * 10.000.000 = 4.000.000 USD. Khối lượng thặng dư m = 200% * 4.000.000 = 8.000.000 USD. Tiêu dùng cá nhân 30% = 2.400.000 USD; phần tư bản hóa tích lũy 70% = 5.600.000 USD. Tổng tư bản chu kỳ sau K1 = 10.000.000 + 5.600.000 = 15.600.000 USD."
+      },
+      {
+        id: 45,
+        q: "Giá trị trao đổi của hàng hóa là gì?",
+        opts: [
+          "Là khả năng trao đổi của hàng hóa",
+          "Là sự phân biệt về chất giữa hai hàng hóa",
+          "Là tỷ lệ so sánh về mặt lượng giữa hai hàng hóa",
+          "Nội dung vật chất của hàng hóa"
+        ],
+        ans: 2, // C
+        explain: "Giá trị trao đổi trước hết biểu hiện là quan hệ về số lượng, là một tỷ lệ theo đó những giá trị sử dụng loại này trao đổi được với những giá trị sử dụng loại khác."
+      },
+      {
+        id: 46,
+        q: "Chi phí thực tế của xã hội để sản xuất hàng hóa là gì?",
+        opts: [
+          "Chi phí tư bản cố định và tư bản lưu động",
+          "Chi phí lao động sống và lao động quá khứ",
+          "Chi phí về tiền vốn, máy móc, nguyên liệu",
+          "Chi phí tư bản sử dụng và tư bản tiêu dùng"
+        ],
+        ans: 1, // B
+        explain: "Chi phí thực tế của xã hội là toàn bộ hao phí lao động xã hội cần thiết để tạo ra sản phẩm W = c + v + m, gồm lao động quá khứ (c - đã vật hóa trong tư liệu sản xuất) và lao động sống (v + m do công nhân bỏ ra). Khác với chi phí tư bản chỉ là k = c + v."
+      },
+      {
+        id: 47,
+        q: "Một doanh nghiệp có số tư bản đầu tư là 800 USD, cấu tạo hữu cơ tư bản 1/1. Tính giá trị tư liệu sản xuất đã đầu tư?",
+        opts: [
+          "100 USD",
+          "200 USD",
+          "600 USD",
+          "400 USD"
+        ],
+        ans: 3, // D
+        explain: "Tổng tư bản: c + v = 800 USD. Cấu tạo hữu cơ c/v = 1/1 => c = v. Ta có: 2c = 800 => c = 400 USD (giá trị tư liệu sản xuất đã đầu tư)."
+      },
+      {
+        id: 48,
+        q: "Giá trị thặng dư tuyệt đối là giá trị thặng dư có được do:",
+        opts: [
+          "Kéo dài ngày lao động.",
+          "Tăng năng suất lao động.",
+          "Giữ nguyên thời gian lao động trong ngày.",
+          "Rút ngắn ngày lao động."
+        ],
+        ans: 0, // A
+        explain: "Phương pháp sản xuất giá trị thặng dư tuyệt đối là phương pháp thu được bằng cách kéo dài độ dài của ngày làm việc vượt quá thời gian lao động tất yếu, trong khi thời gian lao động tất yếu và công nghệ giữ nguyên."
+      },
+      {
+        id: 49,
+        q: "Một doanh nghiệp tư bản sản xuất 5.000 sản phẩm với số tư bản đầu tư là 600.000 USD; cấu tạo hữu cơ tư bản 3/1, m'=200%. Tính giá trị của một đơn vị sản phẩm?",
+        opts: [
+          "120 USD",
+          "180 USD",
+          "150 USD",
+          "100 USD"
+        ],
+        ans: 1, // B
+        explain: "K = c + v = 600.000 USD, c/v = 3/1 => c = 450.000 USD, v = 150.000 USD. Khối lượng m = 200% * 150.000 = 300.000 USD. Tổng giá trị W = 450.000 + 150.000 + 300.000 = 900.000 USD. Giá trị 1 đơn vị = 900.000 / 5.000 = 180 USD."
+      },
+      {
+        id: 50,
+        q: "Bộ phận của tư bản sản xuất (nguyên liệu, nhiên liệu, vật liệu phụ, sức lao động...) được tiêu dùng hoàn toàn trong một chu kỳ sản xuất, giá trị của nó được chuyển toàn bộ vào sản phẩm trong quá trình sản xuất, khi hàng hóa được bán xong là bộ phận tư bản nào?",
+        opts: [
+          "Tư bản bất biến",
+          "Tư bản cố định",
+          "Tư bản lưu động",
+          "Tư bản khả biến"
+        ],
+        ans: 2, // C
+        explain: "Đó là định nghĩa của tư bản lưu động (gồm nguyên liệu, nhiên liệu, vật liệu phụ và tư bản khả biến mua sức lao động): chuyển toàn bộ giá trị một lần vào sản phẩm và hoàn lại cho nhà tư bản khi bán xong hàng hóa."
+      }
+    ];
+
+    // Trạng thái ứng dụng
+    let currentMode = 'practice'; // 'practice' hoặc 'exam'
+    let userAnswers = {};        // { [qid]: optionIndex }
+    let bookmarked = new Set();  // Set chứa các ID được đánh dấu
+    let examSubmitted = false;
+    let searchQuery = '';
+    let currentFilter = 'all';
+
+    // Biến thời gian thi
+    let examTimerInterval = null;
+    let timeRemaining = 45 * 60; // 45 phút
+
+    // Khởi tạo
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderNavGrid();
+      renderQuestions();
+      updateStatistics();
+    });
+
+    // Chuyển đổi chế độ
+    function switchMode(mode) {
+      if (currentMode === mode) return;
+      currentMode = mode;
+
+      const btnPractice = document.getElementById('btnModePractice');
+      const btnExam = document.getElementById('btnModeExam');
+      const timerEl = document.getElementById('examTimer');
+      const btnSubmit = document.getElementById('btnSubmitExam');
+      const resultBox = document.getElementById('examResultBox');
+
+      if (mode === 'practice') {
+        btnPractice.className = "px-2.5 py-1.5 rounded-md transition-all bg-white text-indigo-700 shadow-sm";
+        btnExam.className = "px-2.5 py-1.5 rounded-md transition-all text-slate-600 hover:text-slate-900";
+        timerEl.classList.add('hidden');
+        timerEl.classList.remove('flex');
+        btnSubmit.classList.add('hidden');
+        resultBox.classList.add('hidden');
+        clearInterval(examTimerInterval);
+      } else {
+        btnExam.className = "px-2.5 py-1.5 rounded-md transition-all bg-white text-indigo-700 shadow-sm";
+        btnPractice.className = "px-2.5 py-1.5 rounded-md transition-all text-slate-600 hover:text-slate-900";
+        timerEl.classList.remove('hidden');
+        timerEl.classList.add('flex');
+        btnSubmit.classList.remove('hidden');
+        startExamTimer();
+      }
+
+      renderQuestions();
+      renderNavGrid();
+      updateStatistics();
+    }
+
+    // Bộ đếm giờ thi
+    function startExamTimer() {
+      clearInterval(examTimerInterval);
+      timeRemaining = 45 * 60;
+      updateTimerDisplay();
+
+      examTimerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerDisplay();
+        if (timeRemaining <= 0) {
+          clearInterval(examTimerInterval);
+          alert('Đã hết thời gian thi thử! Hệ thống sẽ tự động chấm bài.');
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      document.getElementById('timerDisplay').innerText = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // Xử lý chọn đáp án
+    function selectAnswer(qid, optIndex) {
+      if (currentMode === 'exam' && examSubmitted) return; // Đã nộp bài thì không sửa
+
+      userAnswers[qid] = optIndex;
+      renderQuestions();
+      renderNavGrid();
+      updateStatistics();
+    }
+
+    // Toggle Bookmark
+    function toggleBookmark(qid) {
+      if (bookmarked.has(qid)) {
+        bookmarked.delete(qid);
+      } else {
+        bookmarked.add(qid);
+      }
+      renderQuestions();
+      renderNavGrid();
+      lucide.createIcons();
+    }
+
+    // Nộp bài thi
+    function submitExam() {
+      if (examSubmitted) return;
+      const answeredCount = Object.keys(userAnswers).length;
+      if (answeredCount < rawQuestions.length) {
+        const confirmSubmit = confirm(`Bạn mới làm ${answeredCount}/${rawQuestions.length} câu. Bạn có chắc chắn muốn nộp bài sớm không?`);
+        if (!confirmSubmit) return;
+      }
+
+      examSubmitted = true;
+      clearInterval(examTimerInterval);
+
+      // Ẩn nút nộp bài, hiển thị kết quả
+      document.getElementById('btnSubmitExam').classList.add('hidden');
+      document.getElementById('examResultBox').classList.remove('hidden');
+
+      renderQuestions();
+      renderNavGrid();
+      updateStatistics();
+
+      // Cuộn lên đầu
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Làm lại
+    function resetAll() {
+      const confirmReset = confirm('Bạn có chắc chắn muốn xóa tiến trình và làm lại toàn bộ từ đầu không?');
+      if (!confirmReset) return;
+
+      userAnswers = {};
+      bookmarked.clear();
+      examSubmitted = false;
+      document.getElementById('examResultBox').classList.add('hidden');
+
+      if (currentMode === 'exam') {
+        startExamTimer();
+        document.getElementById('btnSubmitExam').classList.remove('hidden');
+      }
+
+      renderQuestions();
+      renderNavGrid();
+      updateStatistics();
+    }
+
+    // Lọc & Tìm kiếm
+    function handleSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      renderQuestions();
+    }
+
+    function handleFilter(val) {
+      currentFilter = val;
+      renderQuestions();
+    }
+
+    // Cập nhật thống kê
+    function updateStatistics() {
+      const total = rawQuestions.length;
+      const answered = Object.keys(userAnswers).length;
+      let correct = 0;
+      let wrong = 0;
+
+      rawQuestions.forEach(q => {
+        if (userAnswers[q.id] !== undefined) {
+          if (userAnswers[q.id] === q.ans) {
+            correct++;
+          } else {
+            wrong++;
+          }
+        }
+      });
+
+      document.getElementById('progressText').innerText = `${answered} / ${total}`;
+      document.getElementById('progressBar').style.width = `${(answered / total) * 100}%`;
+      document.getElementById('statAnswered').innerText = answered;
+
+      if (currentMode === 'practice' || examSubmitted) {
+        document.getElementById('statCorrect').innerText = correct;
+        document.getElementById('statWrong').innerText = wrong;
+      } else {
+        document.getElementById('statCorrect').innerText = '-';
+        document.getElementById('statWrong').innerText = '-';
+      }
+
+      if (examSubmitted) {
+        const score = ((correct / total) * 10).toFixed(1);
+        const percent = Math.round((correct / total) * 100);
+        document.getElementById('examScoreText').innerText = `${score} / 10`;
+        document.getElementById('examRateText').innerText = `Tỷ lệ chính xác: ${percent}% (${correct}/${total} câu)`;
+      }
+    }
+
+    // Render danh sách câu hỏi
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      // Áp dụng bộ lọc và tìm kiếm
+      const filtered = rawQuestions.filter(q => {
+        // Tìm kiếm
+        const matchesSearch = !searchQuery || 
+          q.q.toLowerCase().includes(searchQuery) || 
+          q.opts.some(o => o.toLowerCase().includes(searchQuery));
+        
+        if (!matchesSearch) return false;
+
+        // Lọc trạng thái
+        const isAns = userAnswers[q.id] !== undefined;
+        const isCor = isAns && userAnswers[q.id] === q.ans;
+        const isBmk = bookmarked.has(q.id);
+
+        if (currentFilter === 'unanswered') return !isAns;
+        if (currentFilter === 'answered') return isAns;
+        if (currentFilter === 'wrong') return isAns && !isCor;
+        if (currentFilter === 'bookmarked') return isBmk;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white p-12 text-center rounded-xl border border-slate-200">
+            <i data-lucide="inbox" class="w-10 h-10 text-slate-300 mx-auto mb-2"></i>
+            <p class="text-sm text-slate-500 font-medium">Không tìm thấy câu hỏi phù hợp với điều kiện tìm kiếm.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      filtered.forEach(q => {
+        const userChoice = userAnswers[q.id];
+        const isAnswered = userChoice !== undefined;
+        const showResult = currentMode === 'practice' ? isAnswered : examSubmitted;
+        const isStarred = bookmarked.has(q.id);
+
+        const card = document.createElement('div');
+        card.id = `q-card-${q.id}`;
+        card.className = "bg-white rounded-xl p-5 shadow-sm border border-slate-200 transition-all scroll-mt-24";
+
+        // Letters A, B, C, D
+        const letters = ['A', 'B', 'C', 'D'];
+
+        // Build HTML
+        let optsHtml = '';
+        q.opts.forEach((opt, idx) => {
+          let optClasses = "relative flex items-start gap-3 p-3.5 rounded-lg border text-sm font-medium transition-all cursor-pointer ";
+          let badgeClasses = "w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ";
+
+          if (!showResult) {
+            // Chưa hiển thị đúng sai
+            if (userChoice === idx) {
+              optClasses += "border-indigo-600 bg-indigo-50/70 text-indigo-900";
+              badgeClasses += "bg-indigo-600 text-white";
+            } else {
+              optClasses += "border-slate-200 hover:border-indigo-200 hover:bg-slate-50 text-slate-700";
+              badgeClasses += "bg-slate-100 text-slate-600";
+            }
+          } else {
+            // Đã hiển thị kết quả (chế độ học hoặc đã nộp bài)
+            if (idx === q.ans) {
+              // Đáp án chuẩn
+              optClasses += "border-emerald-500 bg-emerald-50 text-emerald-950 ring-1 ring-emerald-500";
+              badgeClasses += "bg-emerald-600 text-white";
+            } else if (userChoice === idx && idx !== q.ans) {
+              // Người dùng chọn sai
+              optClasses += "border-rose-400 bg-rose-50 text-rose-950 ring-1 ring-rose-400";
+              badgeClasses += "bg-rose-600 text-white";
+            } else {
+              optClasses += "border-slate-200 opacity-60 text-slate-500";
+              badgeClasses += "bg-slate-100 text-slate-400";
+            }
+          }
+
+          optsHtml += `
+            <div onclick="selectAnswer(${q.id}, ${idx})" class="${optClasses}">
+              <div class="${badgeClasses}">${letters[idx]}</div>
+              <div class="leading-relaxed pt-0.5 flex-1">${opt}</div>
+              ${showResult && idx === q.ans ? '<i data-lucide="check" class="w-5 h-5 text-emerald-600 shrink-0"></i>' : ''}
+              ${showResult && userChoice === idx && idx !== q.ans ? '<i data-lucide="x" class="w-5 h-5 text-rose-500 shrink-0"></i>' : ''}
+            </div>
+          `;
+        });
+
+        // Explanation Box (nếu showResult = true)
+        let explainHtml = '';
+        if (showResult) {
+          explainHtml = `
+            <div class="mt-4 pt-4 border-t border-slate-100 bg-slate-50 -mx-5 -mb-5 p-4 rounded-b-xl">
+              <div class="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed">
+                <span class="inline-flex items-center gap-1 font-bold text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded text-[11px] shrink-0">
+                  <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-indigo-600"></i> Phân tích & Đáp án: ${letters[q.ans]}
+                </span>
+                <span class="text-slate-600">${q.explain}</span>
+              </div>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md font-bold text-xs border border-slate-200">
+                Câu ${q.id}
+              </span>
+              ${showResult ? (userChoice === q.ans 
+                ? '<span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Đúng</span>'
+                : '<span class="text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Sai</span>'
+              ) : ''}
+            </div>
+            <button onclick="toggleBookmark(${q.id})" title="Đánh dấu câu hỏi này" class="p-1.5 rounded-lg transition-colors ${isStarred ? 'text-amber-500 bg-amber-50' : 'text-slate-400 hover:text-amber-500 hover:bg-slate-50'}">
+              <i data-lucide="star" class="w-4 h-4 ${isStarred ? 'fill-amber-400' : ''}"></i>
+            </button>
+          </div>
+
+          <h3 class="text-base font-semibold text-slate-900 mb-3 leading-snug">
+            ${q.q}
+          </h3>
+
+          <div class="space-y-2">
+            ${optsHtml}
+          </div>
+
+          ${explainHtml}
+        `;
+
+        container.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Render lưới điều hướng 50 câu bên phải
+    function renderNavGrid() {
+      const grid = document.getElementById('navGrid');
+      grid.innerHTML = '';
+
+      rawQuestions.forEach(q => {
+        const userChoice = userAnswers[q.id];
+        const isAnswered = userChoice !== undefined;
+        const showResult = currentMode === 'practice' ? isAnswered : examSubmitted;
+        const isStarred = bookmarked.has(q.id);
+
+        const btn = document.createElement('button');
+        btn.setAttribute('onclick', `scrollToQuestion(${q.id})`);
+        btn.className = "relative h-9 w-full rounded-lg text-xs font-bold transition-all flex items-center justify-center border ";
+
+        if (!showResult) {
+          if (isAnswered) {
+            btn.className += "bg-indigo-600 text-white border-indigo-600 shadow-sm";
+          } else {
+            btn.className += "bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200";
+          }
+        } else {
+          if (userChoice === q.ans) {
+            btn.className += "bg-emerald-500 text-white border-emerald-500 shadow-sm";
+          } else if (isAnswered && userChoice !== q.ans) {
+            btn.className += "bg-rose-500 text-white border-rose-500 shadow-sm";
+          } else {
+            btn.className += "bg-slate-100 text-slate-400 border-slate-200";
+          }
+        }
+
+        // Bookmark tag badge nhỏ
+        btn.innerHTML = `
+          ${q.id}
+          ${isStarred ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full ring-2 ring-white"></span>' : ''}
+        `;
+
+        grid.appendChild(btn);
+      });
+    }
+
+    // Cuộn tới câu hỏi tương ứng
+    function scrollToQuestion(qid) {
+      const card = document.getElementById(`q-card-${qid}`);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        // Nếu câu hỏi đang bị ẩn do bộ lọc thì reset bộ lọc
+        currentFilter = 'all';
+        searchQuery = '';
+        document.getElementById('filterSelect').value = 'all';
+        document.getElementById('searchInput').value = '';
+        renderQuestions();
+        setTimeout(() => {
+          const el = document.getElementById(`q-card-${qid}`);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  </script>
+</body>
+</html>
+```eof
+
+Tệp HTML đơn nhất trên đã được thiết kế hoàn chỉnh với các điểm nổi bật:
+1. **Đầy đủ 50 câu hỏi**: Toàn bộ 50 câu trong đề thi đều có sẵn đáp án chuẩn và lời giải phân tích chi tiết từng phương án.
+2. **Hai chế độ linh hoạt**:
+   - **Chế độ Luyện tập**: Bấm chọn đáp án sẽ hiển thị ngay đúng/sai cùng khung phân tích lý luận và công thức toán học kinh tế.
+   - **Chế độ Thi thử**: Hỗ trợ đếm ngược 45 phút, chỉ hiển thị kết quả và lời giải sau khi bấm nộp bài.
+3. **Tiện ích đầy đủ**: Lưới điều hướng 50 câu, tìm kiếm từ khóa tức thì, lọc câu chưa làm / làm sai / đánh dấu sao (Bookmark) và thanh thống kê tiến độ.

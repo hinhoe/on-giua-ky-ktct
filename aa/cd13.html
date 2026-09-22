@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 13: Quan hệ lợi ích kinh tế & Giải quyết mâu thuẫn (Case PouYuen)</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-light: #e0e7ff;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Feedback & Highlight */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 13: QUAN HỆ LỢI ÍCH KINH TẾ & GIẢI QUYẾT MÂU THUẪN</h1>
+    <p>Case Study: Công ty TNHH PouYuen Việt Nam - Môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Bản chất của lợi ích kinh tế:</strong> Là lợi ích vật chất thu được khi con người thực hiện các hoạt động kinh tế; là hình thức biểu hiện của các quan hệ sản xuất và trao đổi. Lợi ích kinh tế giữ vai trò là <em>động lực trực tiếp</em> thôi thúc các chủ thể hành động.</li>
+        <li><strong>Hệ thống các quan hệ lợi ích kinh tế cơ bản:</strong>
+          <br>• <strong>Lợi ích cá nhân:</strong> Động lực trực tiếp, là cơ sở và tiền đề cho các lợi ích khác tồn tại.
+          <br>• <strong>Lợi ích tập thể:</strong> Lợi ích chung của một cộng đồng, tổ chức, doanh nghiệp.
+          <br>• <strong>Lợi ích xã hội:</strong> Lợi ích của toàn thể quốc gia - dân tộc do Nhà nước đại diện và điều phối.
+        </li>
+        <li><strong>Mâu thuẫn lợi ích kinh tế:</strong> Xuất phát từ sự đối lập khách quan về mục tiêu phân chia giá trị mới tạo ra ($v + m$): chủ doanh nghiệp muốn giảm chi phí nhân công để tối đa hóa lợi nhuận ($m$), còn người lao động muốn tối đa hóa tiền lương ($v$) và các chế độ phúc lợi.</li>
+        <li><strong>Case Study Công ty PouYuen Việt Nam (TP.HCM):</strong>
+          <br>• <em>Bối cảnh:</em> Sự sụt giảm nghiêm trọng đơn hàng xuất khẩu toàn cầu buộc PouYuen phải cắt giảm hàng ngàn lao động.
+          <br>• <em>Mâu thuẫn bộc phát:</em> Nguy cơ người lao động mất thu nhập, hụt an sinh đối đầu với áp lực sống còn cắt giảm chi phí của doanh nghiệp.
+          <br>• <em>Mô hình giải quyết hài hòa đa bên:</em> Doanh nghiệp tự nguyện chi trả trợ cấp mất việc làm cao hơn quy định của luật; Công đoàn hỗ trợ, giám sát an sinh; Nhà nước kích hoạt quỹ bảo hiểm thất nghiệp và tổ chức các sàn giao dịch việc làm lưu động để kết nối chuyển đổi nghề.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Cụm từ dễ nhầm lẫn & Thuật ngữ cần lưu ý</h2>
+      <ul>
+        <li><span class="badge">Mâu thuẫn lợi ích mang tính khách quan</span> Mâu thuẫn là tất yếu do sự khác biệt về vị thế sở hữu và vai trò phân phối, không thể triệt tiêu hoàn toàn mà chỉ có thể điều hòa và hài hòa thông qua đối thoại, thỏa ước và pháp luật.</li>
+        <li><span class="badge">Trợ cấp thôi việc vs Trợ cấp mất việc làm</span>
+          <br>• <strong>Trợ cấp thôi việc (Điều 46 BLLĐ):</strong> Áp dụng khi chấm dứt hợp đồng lao động hợp pháp (mỗi năm làm việc được trợ cấp <em>1/2 tháng tiền lương</em>).
+          <br>• <strong>Trợ cấp mất việc làm (Điều 47 BLLĐ):</strong> Áp dụng khi cắt giảm do thay đổi cơ cấu, công nghệ hoặc lý do kinh tế/khủng hoảng (mỗi năm làm việc được trợ cấp <em>1 tháng tiền lương</em>, mức chi trả <em>ít nhất bằng 2 tháng tiền lương</em>).
+        </li>
+        <li><span class="badge">Hài hòa lợi ích kinh tế</span> Sự kết hợp thỏa đáng giữa các bên, không để lợi ích của chủ thể này chèn ép, triệt tiêu hay xâm phạm bất hợp pháp đến lợi ích của chủ thể khác, tạo động lực phát triển bền vững.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render câu hỏi bằng JS -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Lợi ích kinh tế được hiểu là gì trong hệ thống các quan hệ kinh tế?",
+      options: [
+        "A. Tình cảm yêu mến giữa các đồng nghiệp.",
+        "B. Lợi ích vật chất thu được khi con người thực hiện các hoạt động kinh tế.",
+        "C. Bằng khen của Ủy ban nhân dân.",
+        "D. Danh tiếng cá nhân trên mạng xã hội."
+      ],
+      correct: 1,
+      explain: "Lợi ích kinh tế phản ánh mục đích vật chất trực tiếp mà các chủ thể hướng tới khi tham gia vào các quan hệ sản xuất, phân phối, trao đổi và tiêu dùng."
+    },
+    {
+      q: "Câu 2: Yếu tố nào giữ vai trò là \"động lực trực tiếp\" thúc đẩy các chủ thể kinh tế hành động?",
+      options: [
+        "A. Lợi ích kinh tế.",
+        "B. Lời khen ngợi từ cấp trên.",
+        "C. Áp lực thời tiết.",
+        "D. Trình độ học vấn của người khác."
+      ],
+      correct: 0,
+      explain: "Lợi ích kinh tế là động lực nội tại trực tiếp nhất thôi thúc mọi cá nhân, doanh nghiệp và người lao động nỗ lực sản xuất, kinh doanh và lao động sáng tạo."
+    },
+    {
+      q: "Câu 3: Trong các hình thức lợi ích kinh tế, lợi ích nào giữ vai trò là cơ sở, tiền đề cho các lợi ích khác?",
+      options: [
+        "A. Lợi ích cá nhân.",
+        "B. Lợi ích tập thể.",
+        "C. Lợi ích xã hội.",
+        "D. Lợi ích quốc tế."
+      ],
+      correct: 0,
+      explain: "Lợi ích cá nhân là điểm xuất phát, là nền tảng vì con người trước hết phải duy trì sự tồn tại và phát triển của chính mình; từ đó mới có thể đóng góp cho lợi ích tập thể và xã hội."
+    },
+    {
+      q: "Câu 4: Mâu thuẫn lợi ích kinh tế giữa người lao động và người sử dụng lao động trong doanh nghiệp phát sinh từ nguyên nhân cốt lõi nào?",
+      options: [
+        "A. Sự bất đồng về ngôn ngữ giao tiếp.",
+        "B. Sự đối lập trong việc phân chia giá trị mới tạo ra (chủ muốn tối đa lợi nhuận m, thợ muốn tối đa tiền lương v).",
+        "C. Việc lựa chọn màu sắc đồng phục công ty.",
+        "D. Địa điểm đặt trụ sở công ty."
+      ],
+      correct: 1,
+      explain: "Vì giá trị mới (v + m) do lao động tạo ra là một đại lượng có hạn trong chu kỳ sản xuất; nếu phần dành cho v (tiền lương thợ) tăng thì phần dành cho m (lợi nhuận chủ) sẽ giảm và ngược lại."
+    },
+    {
+      q: "Câu 5: Tại Công ty PouYuen Việt Nam, nguyên nhân trực tiếp buộc doanh nghiệp phải cắt giảm hàng ngàn lao động là gì?",
+      options: [
+        "A. Doanh nghiệp bị sáp nhập vào tập đoàn khác.",
+        "B. Sự đứt gãy chuỗi cung ứng và suy giảm đơn hàng nghiêm trọng từ thị trường quốc tế.",
+        "C. Người lao động tự ý bỏ việc hàng loạt.",
+        "D. Nhà nước thu hồi giấy phép kinh doanh."
+      ],
+      correct: 1,
+      explain: "Lạm phát và suy thoái kinh tế tại các thị trường xuất khẩu trọng điểm (Mỹ, châu Âu) làm các thương hiệu lớn cắt giảm đơn hàng gia công giày dép, buộc PouYuen phải tái cơ cấu thu hẹp quy mô."
+    },
+    {
+      q: "Câu 6: Việc Công ty PouYuen tự nguyện chi trả mức trợ cấp mất việc làm cao hơn quy định của Bộ luật Lao động phản ánh thái độ gì?",
+      options: [
+        "A. Sự lãng phí ngân sách doanh nghiệp.",
+        "B. Nỗ lực hài hòa mâu thuẫn lợi ích, chia sẻ khó khăn với người lao động để giữ uy tín thương hiệu.",
+        "C. Sự ép buộc từ các công ty đối thủ.",
+        "D. Việc vi phạm quy định tài chính."
+      ],
+      correct: 1,
+      explain: "Chi trả mức trợ cấp cao hơn luật định là hành động thiện chí giúp xoa dịu cú sốc mất việc cho công nhân gắn bó lâu năm, tránh bùng phát tranh chấp lao động tập thể và giữ gìn hình ảnh thương hiệu quốc tế."
+    },
+    {
+      q: "Câu 7: Vai trò của tổ chức Công đoàn trong việc giải quyết biến động lao động tại PouYuen là gì?",
+      options: [
+        "A. Trực tiếp sa thải công nhân.",
+        "B. Đại diện bảo vệ quyền lợi người lao động, giám sát việc chi trả trợ cấp và hỗ trợ an sinh xã hội.",
+        "C. Cho doanh nghiệp vay tiền kinh doanh.",
+        "D. Bắt buộc công nhân nghỉ việc không lương."
+      ],
+      correct: 1,
+      explain: "Công đoàn đóng vai trò cầu nối đối thoại, đại diện thương lượng phương án bồi thường, giám sát quá trình chốt sổ BHXH và chi trả tiền trợ cấp minh bạch đến tay người lao động."
+    },
+    {
+      q: "Câu 8: Công cụ an sinh xã hội quan trọng nhất do Nhà nước vận hành nhằm hỗ trợ người lao động bị mất việc làm tại PouYuen là gì?",
+      options: [
+        "A. Quỹ từ thiện cá nhân.",
+        "B. Quỹ Bảo hiểm thất nghiệp.",
+        "C. Trợ cấp mua xe máy mới.",
+        "D. Mua cổ phiếu ưu đãi."
+      ],
+      correct: 1,
+      explain: "Chính sách Bảo hiểm thất nghiệp giúp chi trả trợ cấp thất nghiệp hàng tháng, hỗ trợ học nghề miễn phí và cấp bảo hiểm y tế trong giai đoạn công nhân tìm kiếm việc làm mới."
+    },
+    {
+      q: "Câu 9: Để giải quyết mâu thuẫn lợi ích kinh tế một cách bền vững, Nhà nước cần đóng vai trò gì?",
+      options: [
+        "A. Đứng về một bên và trừng phạt bên còn lại.",
+        "B. Lập ra khung pháp lý minh bạch, làm trọng tài hòa giải và điều tiết lợi ích bằng chính sách an sinh.",
+        "C. Bỏ mặc cho các bên tự giải quyết bằng bạo lực.",
+        "D. Cấm doanh nghiệp cắt giảm lao động trong mọi trường hợp."
+      ],
+      correct: 1,
+      explain: "Nhà nước giữ vai trò cầm cân nảy mực: ban hành luật pháp minh bạch (Bộ luật Lao động), thiết lập cơ chế trọng tài hòa giải và sử dụng mạng lưới an sinh xã hội để bảo vệ bên yếu thế."
+    },
+    {
+      q: "Câu 10: Mối quan hệ giữa lợi ích cá nhân, lợi ích tập thể và lợi ích xã hội được xác định như thế nào?",
+      options: [
+        "A. Hoàn toàn đối lập và triệt tiêu lẫn nhau.",
+        "B. Thống nhất Dialectic: Lợi ích cá nhân là động lực, lợi ích tập thể và xã hội định hướng và đảm bảo môi trường phát triển cho lợi ích cá nhân.",
+        "C. Lợi ích cá nhân không có vai trò gì.",
+        "D. Lợi ích xã hội luôn luôn đè bẹp lợi ích cá nhân."
+      ],
+      correct: 1,
+      explain: "Các tầng nấc lợi ích có mối quan hệ biện chứng thống nhất: thỏa mãn lợi ích cá nhân là động lực nội sinh; ngược lại, lợi ích tập thể và xã hội tạo tiền đề hạ tầng và sự ổn định để bảo đảm lợi ích cá nhân."
+    },
+    {
+      q: "Câu 11: Hiện tượng người lao động đình công, bãi công xuất phát từ trạng thái nào của quan hệ lợi ích?",
+      options: [
+        "A. Lợi ích kinh tế giữa hai bên đạt được sự hòa hợp tuyệt đối.",
+        "B. Mâu thuẫn lợi ích kinh tế bộc phát gay gắt mà không được thương lượng hòa giải kịp thời.",
+        "C. Doanh nghiệp thưởng lương tháng 13 quá cao.",
+        "D. Người lao động có quá nhiều thời gian rảnh rỗi."
+      ],
+      correct: 1,
+      explain: "Đình công là phản ứng bộc phát tập thể của người lao động khi quyền lợi kinh tế cơ bản (lương, thưởng, tăng ca, bảo hiểm) bị xâm phạm hoặc bất đồng không được thương lượng giải quyết thỏa đáng."
+    },
+    {
+      q: "Câu 12: Trợ cấp mất việc làm được doanh nghiệp chi trả cho người lao động trong trường hợp nào?",
+      options: [
+        "A. Người lao động bị sa thải do vi phạm kỷ luật nặng.",
+        "B. Doanh nghiệp thay đổi cơ cấu, công nghệ hoặc vì lý do kinh tế dẫn đến nhiều lao động bị mất việc.",
+        "C. Người lao động tự ý nghỉ việc không báo trước.",
+        "D. Người lao động đến tuổi nghỉ hưu."
+      ],
+      correct: 1,
+      explain: "Căn cứ Điều 47 Bộ luật Lao động 2019, người sử dụng lao động trả trợ cấp mất việc làm cho người lao động đã làm việc thường xuyên từ đủ 12 tháng trở lên bị mất việc do thay đổi cơ cấu, công nghệ hoặc lý do kinh tế."
+    },
+    {
+      q: "Câu 13: Mức trợ cấp mất việc làm tối thiểu theo Bộ luật Lao động Việt Nam quy định là bao nhiêu?",
+      options: [
+        "A. 1/2 tháng tiền lương.",
+        "B. 1 tháng tiền lương.",
+        "C. 2 tháng tiền lương cho mỗi năm làm việc.",
+        "D. Ít nhất bằng 2 tháng tiền lương."
+      ],
+      correct: 3,
+      explain: "Luật quy định mỗi năm làm việc trả 1 tháng tiền lương nhưng mức thanh toán tối thiểu cho người lao động trong mọi trường hợp mất việc làm ít nhất phải bằng 02 tháng tiền lương."
+    },
+    {
+      q: "Câu 14: Hành vi trốn đóng Bảo hiểm xã hội, Bảo hiểm y tế của một số doanh nghiệp là biểu hiện của điều gì?",
+      options: [
+        "A. Sự tối ưu hóa chi phí sản xuất hợp pháp.",
+        "B. Sự vi phạm pháp luật và xâm phạm nghiêm trọng đến lợi ích kinh tế lâu dài của người lao động.",
+        "C. Sự sáng tạo trong quản trị tài chính.",
+        "D. Sự giúp đỡ người lao động tăng lương cầm tay."
+      ],
+      correct: 1,
+      explain: "Trốn đóng BHXH, BHYT là hành vi vi phạm pháp luật nghiêm trọng, tước đoạt các quyền lợi sống còn về thai sản, ốm đau, hưu trí và bảo hiểm thất nghiệp của người lao động."
+    },
+    {
+      q: "Câu 15: Yếu tố nào giúp ngăn ngừa các xung đột lợi ích gay gắt trong doanh nghiệp ngay từ ban đầu?",
+      options: [
+        "A. Lắp đặt hệ thống camera giám sát 24/7.",
+        "B. Xây dựng Thỏa ước lao động tập thể minh bạch và tổ chức Đối thoại định kỳ tại nơi làm việc.",
+        "C. Phạt tiền nặng mọi hành vi thắc mắc của công nhân.",
+        "D. Cấm công nhân giao tiếp với nhau."
+      ],
+      correct: 1,
+      explain: "Đối thoại định kỳ và Thỏa ước lao động tập thể có thương lượng thực chất tạo ra cơ chế giải tỏa bức xúc, chia sẻ thông tin sản xuất và thống nhất quyền lợi minh bạch giữa hai bên."
+    },
+    {
+      q: "Câu 16: Sự phối hợp liên ngành (Sở LĐTBXH, Trung tâm Dịch vụ Việc làm, Công đoàn) trong vụ việc PouYuen nhằm đạt mục tiêu gì?",
+      options: [
+        "A. Ép buộc doanh nghiệp phá sản.",
+        "B. Nhanh chóng kết nối cung - cầu lao động, hỗ trợ công nhân chuyển đổi nghề nghiệp và sớm có việc làm mới.",
+        "C. Phạt tiền công nhân bị mất việc.",
+        "D. Đóng cửa các sàn giao dịch việc làm."
+      ],
+      correct: 1,
+      explain: "Mục tiêu là hỗ trợ khẩn cấp thị trường lao động: tiếp nhận hồ sơ thất nghiệp nhanh gọn, tổ chức tuyển dụng trực tiếp ngay tại nhà máy để công nhân sớm quay lại thị trường làm việc."
+    },
+    {
+      q: "Câu 17: Khái niệm \"Hài hòa các lợi ích kinh tế\" được hiểu là gì?",
+      options: [
+        "A. Cắt cào bằng chia đều thu nhập cho mọi người.",
+        "B. Sự đảm bảo hợp lý lợi ích của các bên, không để lợi ích của chủ thể này xâm phạm bất hợp pháp đến lợi ích chủ thể khác.",
+        "C. Bắt buộc doanh nghiệp nhượng lại toàn bộ cổ phần cho công nhân.",
+        "D. Người lao động chấp nhận làm việc không lương."
+      ],
+      correct: 1,
+      explain: "Hài hòa lợi ích kinh tế không phải là cào bằng bình quân chủ nghĩa, mà là tạo lập cơ chế phân phối công bằng để các bên cùng được hưởng thành quả tương xứng với đóng góp của mình."
+    },
+    {
+      q: "Câu 18: Tác hại lớn nhất của việc giải quyết mâu thuẫn lợi ích bằng các biện pháp tiêu cực (đình công bất hợp pháp, đập phá) là gì?",
+      options: [
+        "A. Giảm chi phí quản lý doanh nghiệp.",
+        "B. Gây thiệt hại tài chính cho cả hai bên, làm mất an ninh trật tự và giảm môi trường thu hút đầu tư.",
+        "C. Giúp doanh nghiệp nhận được thêm đơn hàng.",
+        "D. Làm tăng tiền lương ngay lập tức."
+      ],
+      correct: 1,
+      explain: "Đình công bất hợp pháp gây đứt gãy sản xuất, công nhân mất ngày lương, doanh nghiệp bị phạt hợp đồng và môi trường đầu tư kinh doanh của địa phương bị ảnh hưởng tiêu cực."
+    },
+    {
+      q: "Câu 19: Bài học lớn nhất cho người lao động từ các đợt cắt giảm lao động quy mô lớn như tại PouYuen là gì?",
+      options: [
+        "A. Không cần đi làm ở các công ty lớn.",
+        "B. Chủ động nâng cao trình độ tay nghề, đa dạng hóa kỹ năng để tăng khả năng thích ứng trước các biến động của thị trường lao động.",
+        "C. Chỉ làm các công việc ngắn hạn không ký hợp đồng.",
+        "D. Trông chờ hoàn toàn vào trợ cấp nhà nước."
+      ],
+      correct: 1,
+      explain: "Trong bối cảnh tự động hóa và thị trường biến động nhanh, người lao động chỉ có thể tự bảo vệ việc làm bền vững bằng cách liên tục học tập suốt đời, nâng cao tay nghề và kỹ năng thích ứng."
+    },
+    {
+      q: "Câu 20: Việc đảm bảo lợi ích kinh tế của người lao động có tác động ngược lại như thế nào đối với doanh nghiệp?",
+      options: [
+        "A. Làm doanh nghiệp cạn kiệt nguồn vốn nhanh chóng.",
+        "B. Tăng động lực làm việc, tăng năng suất lao động, giảm tỷ lệ nghỉ việc và tạo sự phát triển bền vững cho doanh nghiệp.",
+        "C. Làm công nhân trở nên lười biếng.",
+        "D. Bắt buộc doanh nghiệp phải tăng giá bán sản phẩm."
+      ],
+      correct: 1,
+      explain: "Đảm bảo lương thưởng và phúc lợi tốt sẽ khích lệ tinh thần làm việc, kích thích tăng năng suất lao động, gắn kết nhân sự trung thành và tạo nền tảng phát triển trường tồn cho doanh nghiệp."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

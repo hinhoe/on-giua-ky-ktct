@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 10: Độc quyền trong nền kinh tế số (Case Google)</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-900: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Card Panels */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* States & Feedback */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Control Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 10: ĐỘC QUYỀN TRONG NỀN KINH TẾ SỐ</h1>
+    <p>Case Study: Google - Môn Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (10 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Đặc điểm độc quyền số:</strong> Không xác lập bằng tư liệu sản xuất hữu hình (máy móc, nhà máy) mà dựa trên <em>Dữ liệu lớn (Big Data), thuật toán độc quyền và hiệu ứng mạng lưới đa chiều</em>.</li>
+        <li><strong>Thực trạng vị thế thống trị của Google:</strong>
+          <br>• Công cụ tìm kiếm: Nắm giữ trên <strong>91,3%</strong> thị phần toàn cầu.
+          <br>• Hệ điều hành di động Android: Chiếm <strong>67,75%</strong> thị phần.
+          <br>• Trình duyệt web Chrome: Chiếm <strong>68,22%</strong> thị phần.
+        </li>
+        <li><strong>Sự phụ thuộc bất cân xứng của doanh nghiệp:</strong> Hầu hết doanh nghiệp hiện nay buộc phải hiện diện và phụ thuộc vào hệ sinh thái của Google để tiếp cận khách hàng tiềm năng qua Google Search (SEO), quảng cáo trực tuyến (Google Ads) và kênh phân phối ứng dụng di động (Google Play Store).</li>
+        <li><strong>Tác động hai mặt của độc quyền số:</strong>
+          <br>• <strong>Tích cực:</strong> Giảm chi phí tìm kiếm thông tin, chuẩn hóa kết nối toàn cầu, thúc đẩy nghiên cứu và sáng tạo công nghệ AI/Big Data.
+          <br>• <strong>Tiêu cực:</strong> Chèn ép và thôn tính đối thủ khởi nghiệp, xâm phạm quyền riêng tư và bảo mật dữ liệu người dùng, thao túng luồng phân phối thông tin, áp đặt chi phí quảng cáo và phí hoa hồng sàn cao.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Cụm từ dễ nhầm lẫn & Ký hiệu cần lưu ý</h2>
+      <ul>
+        <li><span class="badge">Quyền lực thị trường số (Digital Market Power)</span> Khả năng của các tập đoàn công nghệ duy trì vị thế áp đảo lâu dài, đơn phương thay đổi thuật toán, áp đặt biểu phí dịch vụ và điều khoản phân phối mà các bên tham gia không có quyền thương lượng.</li>
+        <li><span class="badge">Chi phí chuyển đổi (Switching Cost)</span> Các chi phí phát sinh, tổn thất dữ liệu và nguy cơ đánh mất toàn bộ dòng khách hàng quen thuộc khi doanh nghiệp quyết định rời bỏ hệ sinh thái Google sang một nền tảng đối thủ.</li>
+        <li><span class="badge">Mất cân bằng thương lượng</span> Tình trạng doanh nghiệp nhỏ và vừa không có quyền đối thoại hay đàm phán hợp đồng, bắt buộc phải chấp nhận hoàn toàn các chính sách đơn phương của tập đoàn công nghệ số.</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Render danh sách câu hỏi qua Javascript -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Độc quyền trong nền kinh tế số khác biệt cơ bản với độc quyền truyền thống ở yếu tố sở hữu nào?",
+      options: [
+        "A. Sở hữu nhà xưởng và nguyên vật liệu hữu hình.",
+        "B. Sở hữu dữ liệu lớn (Big Data), thuật toán độc quyền và hệ sinh thái số.",
+        "C. Sở hữu hệ thống cửa hàng bán lẻ.",
+        "D. Sở hữu nguồn tài nguyên khoáng sản."
+      ],
+      correct: 1,
+      explain: "Khác với độc quyền công nghiệp truyền thống dựa trên tư bản hữu hình (nhà xưởng, hầm mỏ), độc quyền số hình thành từ quyền kiểm soát dữ liệu người dùng khổng lồ (Big Data), các thuật toán thông minh và hệ sinh thái phần mềm khép kín."
+    },
+    {
+      q: "Câu 2: Chỉ số thị phần công cụ tìm kiếm toàn cầu của Google đạt mức bao nhiêu, thể hiện vị thế độc quyền áp đảo?",
+      options: [
+        "A. Khoảng 50%",
+        "B. Khoảng 70%",
+        "C. Trên 91%",
+        "D. 100%"
+      ],
+      correct: 2,
+      explain: "Google kiểm soát hơn 91,3% lưu lượng tìm kiếm trên toàn thế giới, tạo nên sự độc tôn gần như tuyệt đối ở điểm khởi đầu tiếp cận thông tin của người dùng Internet."
+    },
+    {
+      q: "Câu 3: Việc hệ điều hành Android nắm giữ khoảng 67,75% thị phần di động giúp Google tạo ra lợi thế gì?",
+      options: [
+        "A. Bán được nhiều điện thoại phần cứng hơn.",
+        "B. Bắt buộc các nhà phát triển ứng dụng phải tuân thủ quy định và nộp phí trên Google Play Store.",
+        "C. Miễn phí hoàn toàn tiền điện cho người dùng.",
+        "D. Thay thế vai trò của các nhà mạng viễn thông."
+      ],
+      correct: 1,
+      explain: "Sự thống trị của hệ điều hành Android cho phép Google kiểm soát kho ứng dụng Google Play Store, từ đó áp đặt mức chiết khấu hoa hồng (lên tới 15 - 30%) và thiết lập các rào cản kỹ thuật đối với các nhà phát triển ứng dụng."
+    },
+    {
+      q: "Câu 4: Các doanh nghiệp kinh doanh hiện nay rơi vào tình trạng \"phụ thuộc bất cân xứng\" vào Google vì nguyên nhân nào?",
+      options: [
+        "A. Nếu không dùng dịch vụ của Google (Search, Ads), doanh nghiệp phải chịu chi phí cực lớn hoặc mất hoàn toàn dòng khách hàng.",
+        "B. Google cấm doanh nghiệp bán hàng trực tiếp.",
+        "C. Google là ngân hàng cho doanh nghiệp vay vốn.",
+        "D. Nhà nước bắt buộc 100% doanh nghiệp phải mua Google Ads."
+      ],
+      correct: 0,
+      explain: "Vì người tiêu dùng chủ yếu tìm kiếm sản phẩm qua Google Search, doanh nghiệp nếu không tối ưu SEO hoặc không chi trả ngân sách lớn cho Google Ads sẽ gần như bị 'vô hình hóa' trên không gian mạng và mất đứt dòng khách hàng tiềm năng."
+    },
+    {
+      q: "Câu 5: Khái niệm \"Chi phí chuyển đổi\" (Switching Cost) trong trường hợp Google được hiểu là gì?",
+      options: [
+        "A. Tiền mua máy tính mới.",
+        "B. Chi phí tổn thất và rủi ro lớn khi doanh nghiệp từ bỏ hệ sinh thái Google để sang nền tảng khác.",
+        "C. Phí đổi tiền tệ từ USD sang VNĐ.",
+        "D. Cước phí kết nối mạng internet hằng tháng."
+      ],
+      correct: 1,
+      explain: "Chi phí chuyển đổi trong kinh tế số là toàn bộ rủi ro mất mát dữ liệu khách hàng, thứ hạng tìm kiếm và lượng truy cập mà doanh nghiệp phải gánh chịu nếu quyết định rời bỏ các công cụ của Google để chuyển sang nền tảng khác."
+    },
+    {
+      q: "Câu 6: Mặt trái của việc Google nắm giữ vị thế độc quyền đối với người tiêu dùng là gì?",
+      options: [
+        "A. Không tìm được thông tin trên mạng.",
+        "B. Nguy cơ thu thập dữ liệu cá nhân quá mức, mất quyền riêng tư và bị thao túng luồng thông tin hiển thị.",
+        "C. Phải trả tiền mặt mỗi lần tìm kiếm.",
+        "D. Bị cấm sử dụng điện thoại thông minh."
+      ],
+      correct: 1,
+      explain: "Google thu thập sâu lịch sử tìm kiếm, vị trí, email và thói quen cá nhân để xây dựng chân dung người dùng bán quảng cáo, đồng thời thuật toán của hãng có quyền năng định hình những thông tin mà người dùng được phép nhìn thấy trước tiên."
+    },
+    {
+      q: "Câu 7: Biểu hiện lạm dụng vị thế độc quyền của Google bị cơ quan quản lý chống độc quyền (EU, Mỹ) điều tra là gì?",
+      options: [
+        "A. Tự ưu tiên hiển thị dịch vụ của chính Google và ép buộc cài đặt sẵn ứng dụng trên Android.",
+        "B. Giảm giá quảng cáo cho tất cả công ty.",
+        "C. Tăng tốc độ truy cập internet.",
+        "D. Hỗ trợ kinh phí cho các startup công nghệ."
+      ],
+      correct: 0,
+      explain: "Các cơ quan quản lý cạnh tranh quốc tế đã xử phạt Google hàng tỷ USD vì hành vi tự ưu tiên (self-preferencing) các dịch vụ 'nhà làm' (như Google Shopping, Google Maps) trên kết quả tìm kiếm và ràng buộc các nhà sản xuất điện thoại phải cài mặc định công cụ tìm kiếm và trình duyệt Chrome."
+    },
+    {
+      q: "Câu 8: Đối với các doanh nghiệp Việt Nam, bài học quan trọng nhất từ sự thống trị của Google là gì?",
+      options: [
+        "A. Không cần làm quảng cáo trên internet.",
+        "B. Đa dạng hóa kênh tiếp cận khách hàng, xây dựng dữ liệu riêng để tránh lệ thuộc hoàn toàn vào một nền tảng ngoại.",
+        "C. Chờ đợi Google hạ giá dịch vụ.",
+        "D. Ngừng phát triển ứng dụng trên di động."
+      ],
+      correct: 1,
+      explain: "Để phòng ngừa rủi ro bị bóp nghẹt khi thuật toán thay đổi hoặc chi phí quảng cáo tăng phi mã, doanh nghiệp cần phát triển chiến lược đa kênh (omnichannel) và chủ động xây dựng cơ sở dữ liệu khách hàng nội bộ (First-Party Data)."
+    },
+    {
+      q: "Câu 9: Công cụ nào giúp Google thu lợi nhuận thương mại lớn nhất trong hệ sinh thái số của mình?",
+      options: [
+        "A. Bán hệ điều hành Android.",
+        "B. Dịch vụ quảng cáo Google Ads dựa trên dữ liệu hành vi người dùng.",
+        "C. Thu phí tải ứng dụng Google Maps.",
+        "D. Bán thiết bị thu phát wifi."
+      ],
+      correct: 1,
+      explain: "Đại bộ phận doanh thu khổng lồ của Google (Alphabet) đến từ mảng quảng cáo trực tuyến (Google Search, YouTube Ads, Google Network) thông qua hệ thống đấu thầu từ khóa Google Ads."
+    },
+    {
+      q: "Câu 10: Yêu cầu quản lý của Nhà nước đối với các tập đoàn độc quyền số xuyên quốc gia như Google là gì?",
+      options: [
+        "A. Cấm hoàn toàn internet.",
+        "B. Bắt buộc minh bạch thuật toán, bảo vệ dữ liệu người dùng, thu thuế công bằng và áp dụng Luật Cạnh tranh.",
+        "C. Yêu cầu Google nhượng lại toàn bộ cổ phần.",
+        "D. Để thị trường tự điều tiết hoàn toàn không can thiệp."
+      ],
+      correct: 1,
+      explain: "Các quốc gia hiện nay tăng cường xây dựng khung pháp lý về chủ quyền dữ liệu, yêu cầu kiểm toán thuật toán xếp hạng, thực hiện nghĩa vụ nộp thuế của nhà cung cấp dịch vụ số xuyên biên giới và kiểm soát chặt chẽ các hành vi hạn chế cạnh tranh."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>

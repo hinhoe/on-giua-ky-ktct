@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ đề 5: Nguồn gốc Giá trị thặng dư & Tự động hóa</title>
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-dark: #6d28d9;
+      --primary-light: #ede9fe;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --gray-50: #faf5ff;
+      --gray-100: #f5f3ff;
+      --gray-200: #e5e7eb;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header & Tabs */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.55rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--gray-700);
+      font-size: 0.95rem;
+    }
+
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      border-radius: 9999px;
+      background: white;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--gray-200);
+    }
+
+    /* Study View */
+    .study-section {
+      margin-bottom: 20px;
+    }
+
+    .study-section h2 {
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .study-section ul {
+      padding-left: 20px;
+    }
+
+    .study-section li {
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .math-formula {
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      background: #f3f4f6;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* Quiz View */
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .quiz-question:last-child {
+      border-bottom: none;
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-item:hover {
+      background: var(--gray-50);
+    }
+
+    .option-item input {
+      margin-right: 12px;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+
+    /* Feedback & Highlight */
+    .option-item.correct-ans {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      font-weight: 600;
+      color: #14532d;
+    }
+
+    .option-item.wrong-ans {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #7f1d1d;
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Sticky Bottom Bar */
+    .control-bar {
+      position: sticky;
+      bottom: 16px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-reset {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .score-banner {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>CHỦ ĐỀ 5: NGUỒN GỐC GIÁ TRỊ THẶNG DƯ & VẤN ĐỀ ROBOT, TỰ ĐỘNG HÓA</h1>
+    <p>Hệ thống tự học và kiểm tra trắc nghiệm Kinh tế chính trị Mác - Lênin</p>
+    <div class="tab-switch">
+      <button id="btnTabStudy" class="tab-btn active" onclick="switchTab('study')">📖 Nội dung Ôn bài</button>
+      <button id="btnTabQuiz" class="tab-btn" onclick="switchTab('quiz')">✍️ Phần Kiểm tra (20 câu)</button>
+    </div>
+  </header>
+
+  <!-- CHẾ ĐỘ 1: ÔN TẬP LÝ THUYẾT -->
+  <main id="studyView">
+    <div class="card study-section">
+      <h2>1. Ý chính & Lưu ý trọng tâm</h2>
+      <ul>
+        <li><strong>Bản chất giá trị thặng dư (m):</strong> Là bộ phận giá trị mới dôi ra ngoài giá trị sức lao động do công nhân làm thuê tạo ra và bị nhà tư bản chiếm đoạt không công.</li>
+        <li><strong>Hai bộ phận tư bản theo vai trò tạo giá trị:</strong>
+          <br>• <strong>Tư bản bất biến (c):</strong> Tồn tại dưới dạng nhà xưởng, máy móc, nguyên vật liệu. Giá trị của nó được lao động cụ thể bảo tồn và chuyển dịch nguyên vẹn vào sản phẩm, <em>không tự tăng lên về lượng</em>.
+          <br>• <strong>Tư bản khả biến (v):</strong> Bộ phận tư bản dùng để mua hàng hóa sức lao động. Trong quá trình sản xuất, lao động sống của công nhân tạo ra một lượng giá trị mới lớn hơn giá trị của bản thân nó, là <em>nguồn gốc duy nhất tạo ra giá trị mới (v + m) và giá trị thặng dư (m)</em>.
+        </li>
+        <li><strong>Vấn đề Robot & Tự động hóa hiện đại:</strong> Robot, AI, dây chuyền tự động chỉ là tư liệu sản xuất hiện đại, thuộc về tư bản bất biến (c). Robot <strong>KHÔNG</strong> tự thân tạo ra giá trị thặng dư, nó chỉ chuyển dần giá trị hao mòn vào sản phẩm. Việc ứng dụng công nghệ làm tăng năng suất lao động cá biệt, giúp nhà tư bản thu được giá trị thặng dư siêu ngạch.</li>
+      </ul>
+    </div>
+
+    <div class="card study-section">
+      <h2>2. Công thức & Ký hiệu chuyên ngành cốt lõi</h2>
+      <ul>
+        <li><span class="badge">Tổng giá trị hàng hóa</span> <span class="math-formula">W = c + v + m</span> (gồm giá trị cũ c chuyển vào và giá trị mới v + m do lao động sống tạo ra).</li>
+        <li><span class="badge">Giá trị mới (Lao động sống)</span> <span class="math-formula">Giá trị mới = v + m</span></li>
+        <li><span class="badge">Tư bản ứng trước</span> <span class="math-formula">K = c + v</span> (Chi phí sản xuất tư bản chủ nghĩa).</li>
+        <li><span class="badge">Tỷ suất giá trị thặng dư</span> <span class="math-formula">m' = (m / v) * 100% = (t' / t) * 100%</span>
+          <br>• Phản ánh <em>trình độ bóc lột</em> của nhà tư bản đối với lao động làm thuê.
+          <br>• Với <span class="math-formula">t</span> là thời gian lao động tất yếu, <span class="math-formula">t'</span> là thời gian lao động thặng dư (Tổng ngày lao động <span class="math-formula">T = t + t'</span>).
+        </li>
+        <li><span class="badge">Khối lượng giá trị thặng dư</span> <span class="math-formula">M = m' * V</span>
+          <br>• Phản ánh <em>quy mô tuyệt đối</em> của giá trị thặng dư mà nhà tư bản bòn rút được (V là tổng tư bản khả biến).
+        </li>
+        <li><span class="badge">Cấu tạo hữu cơ của tư bản</span> <span class="math-formula">c / v</span>
+          <br>• Tỷ lệ giữa số lượng tư liệu sản xuất và số lượng sức lao động sử dụng tư liệu sản xuất đó.
+        </li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- CHẾ ĐỘ 2: PHẦN KIỂM TRA -->
+  <main id="quizView" class="hidden">
+    <div class="card">
+      <div id="quizContainer">
+        <!-- Danh sách câu hỏi render tự động qua JS -->
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div id="scoreDisplay" class="score-banner">Chưa nộp bài</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-reset" onclick="resetQuiz()">Làm lại</button>
+        <button id="btnSubmitQuiz" class="btn btn-submit" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Câu 1: Giá trị thặng dư được tạo ra ở đâu?",
+      options: [
+        "A. Vừa trong sản xuất vừa trong lưu thông.",
+        "B. Trong sản xuất.",
+        "C. Trong lưu thông.",
+        "D. Trong quá trình trao đổi tiền tệ."
+      ],
+      correct: 1,
+      explain: "Lưu thông không tạo ra giá trị và giá trị thặng dư. Giá trị thặng dư được sinh ra duy nhất trong quá trình sản xuất nhờ việc tiêu dùng giá trị sử dụng đặc biệt của hàng hóa sức lao động."
+    },
+    {
+      q: "Câu 2: Bộ phận tư bản nào là nguồn gốc duy nhất tạo ra giá trị thặng dư?",
+      options: [
+        "A. Tư bản bất biến (c).",
+        "B. Tư bản khả biến (v).",
+        "C. Tư bản cố định.",
+        "D. Tư bản tiền tệ."
+      ],
+      correct: 1,
+      explain: "Tư bản khả biến (v) dùng để mua sức lao động. Quá trình lao động sống của công nhân tạo ra một lượng giá trị mới (v + m) lớn hơn giá trị của chính sức lao động, do đó v là nguồn gốc duy nhất sinh ra m."
+    },
+    {
+      q: "Câu 3: Khẳng định nào sau đây là ĐÚNG về vai trò của Robot trong sản xuất công nghiệp?",
+      options: [
+        "A. Robot tự thân tạo ra giá trị thặng dư.",
+        "B. Robot thuộc về tư bản khả biến.",
+        "C. Robot là sản phẩm của lao động quá khứ (tư bản bất biến c), chỉ chuyển dịch nguyên vẹn giá trị hao mòn vào sản phẩm.",
+        "D. Robot có thể thay thế hoàn toàn vai trò tạo giá trị mới của con người."
+      ],
+      correct: 2,
+      explain: "Robot và công nghệ tự động hóa chỉ là tư liệu lao động (thuộc tư bản bất biến c). Robot không có lao động sống trừu tượng nên không thể tự sinh ra giá trị mới, mà chỉ chuyển dịch dần phần giá trị hao mòn của chính nó vào sản phẩm."
+    },
+    {
+      q: "Câu 4: Giá trị mới do lao động sống tạo ra trong quá trình sản xuất bao gồm những bộ phận nào?",
+      options: [
+        "A. c + v",
+        "B. v + m",
+        "C. c + m",
+        "D. c + v + m"
+      ],
+      correct: 1,
+      explain: "Giá trị mới của hàng hóa hoàn toàn do lao động sống tạo ra trong chu kỳ sản xuất hiện tại, cấu thành bởi v (bù đắp giá trị sức lao động) và m (giá trị thặng dư). Còn c là giá trị cũ được bảo tồn chuyển vào."
+    },
+    {
+      q: "Câu 5: Một tư bản có vốn đầu tư 300.000 USD, cấu tạo hữu cơ c/v = 2/1, tỷ suất giá trị thặng dư m' = 100%. Xác định giá trị mới được tạo ra?",
+      options: [
+        "A. 100.000 USD",
+        "B. 200.000 USD",
+        "C. 300.000 USD",
+        "D. 400.000 USD"
+      ],
+      correct: 1,
+      explain: "Ta có: K = c + v = 300.000 USD. Vì c/v = 2/1 nên chia vốn làm 3 phần: v = 100.000 USD, c = 200.000 USD. Với m' = 100%, m = v = 100.000 USD. Giá trị mới = v + m = 100.000 + 100.000 = 200.000 USD."
+    },
+    {
+      q: "Câu 6: Bộ phận tư bản tồn tại dưới hình thức nhà xưởng, máy móc, nguyên nhiên vật liệu có đặc điểm gì về mặt giá trị?",
+      options: [
+        "A. Tự tăng lên về lượng trong sản xuất.",
+        "B. Giá trị không thay đổi về lượng và được chuyển dịch vào sản phẩm (Tư bản bất biến c).",
+        "C. Trực tiếp tạo ra giá trị thặng dư.",
+        "D. Biến thành tiền lương của công nhân."
+      ],
+      correct: 1,
+      explain: "Đây là tư bản bất biến (c), giá trị của nó không thay đổi về đại lượng trong quá trình sản xuất và được chuyển dịch dần hoặc nguyên vẹn vào sản phẩm mới thông qua lao động cụ thể."
+    },
+    {
+      q: "Câu 7: Một cỗ máy tư bản cấu tạo theo sơ đồ: 80c + 30v + 60m. Nếu thời gian lao động thặng dư là 6 giờ thì tổng độ dài ngày lao động là mấy giờ?",
+      options: [
+        "A. 6 giờ",
+        "B. 8 giờ",
+        "C. 9 giờ",
+        "D. 12 giờ"
+      ],
+      correct: 2,
+      explain: "Tỷ suất m' = (m / v) = 60 / 30 = 200%. Ta có m' = t' / t => 200% = 6 / t => t = 3 giờ (thời gian lao động tất yếu). Độ dài ngày lao động = t + t' = 3 + 6 = 9 giờ."
+    },
+    {
+      q: "Câu 8: Việc phân chia tư bản thành tư bản bất biến (c) và tư bản khả biến (v) căn cứ vào tiêu chí nào?",
+      options: [
+        "A. Phương thức chuyển giá trị sang sản phẩm.",
+        "B. Vai trò của từng bộ phận tư bản trong quá trình tạo ra giá trị thặng dư.",
+        "C. Tốc độ chu chuyển chung của tư bản.",
+        "D. Tỷ lệ phân chia lợi nhuận."
+      ],
+      correct: 1,
+      explain: "C. Mác phân chia c và v căn cứ vào vai trò khác nhau của chúng trong quá trình sản xuất giá trị thặng dư: c không sinh thêm giá trị, chỉ có v mới trực tiếp tạo ra giá trị mới và thặng dư."
+    },
+    {
+      q: "Câu 9: Chìa khóa để giải quyết mâu thuẫn trong công thức chung của tư bản (T - H - T') là gì?",
+      options: [
+        "A. Việc mua bán hàng hóa đắt hơn giá trị.",
+        "B. Hàng hóa sức lao động và giá trị sử dụng đặc biệt của nó.",
+        "C. Sự phát minh ra tiền tệ.",
+        "D. Việc giảm chi phí vận chuyển."
+      ],
+      correct: 1,
+      explain: "Mâu thuẫn là làm sao tiền có thể đẻ ra tiền nhiều hơn (T' > T) ngay trong khuôn khổ quy luật giá trị ngang giá? Chìa khóa là nhà tư bản tìm thấy trên thị trường hàng hóa sức lao động, mà khi tiêu dùng nó tạo ra lượng giá trị lớn hơn giá trị của chính nó."
+    },
+    {
+      q: "Câu 10: Khi nhà máy áp dụng tự động hóa hoàn toàn, tỷ suất giá trị thặng dư m' tăng vọt là nhờ yếu tố nào?",
+      options: [
+        "A. Robot biết đòi tiền lương.",
+        "B. Năng suất lao động cá biệt tăng vượt trội, rút ngắn thời gian tất yếu.",
+        "C. Nhà tư bản không cần mua nguyên liệu.",
+        "D. Ngày lao động kéo dài lên 24 giờ."
+      ],
+      correct: 1,
+      explain: "Tự động hóa nâng cao đột biến năng suất lao động cá biệt, làm giảm mạnh thời gian hao phí lao động cần thiết để tái sản xuất sức lao động (rút ngắn thời gian tất yếu t), do đó phần thời gian lao động thặng dư t' tăng lên tương ứng."
+    },
+    {
+      q: "Câu 11: Giá trị của một hàng hóa W gồm các bộ phận nào?",
+      options: [
+        "A. Chi phí sản xuất và tiền công.",
+        "B. c + v + m",
+        "C. c + v.",
+        "D. Lợi nhuận và tiền lương."
+      ],
+      correct: 1,
+      explain: "Cơ cấu giá trị hàng hóa đầy đủ bao gồm: c (giá trị tư liệu sản xuất tiêu hao) + v (giá trị sức lao động) + m (giá trị thặng dư do công nhân tạo ra)."
+    },
+    {
+      q: "Câu 12: Tính giá trị mới được tạo ra nếu sơ đồ tư bản là 500c + 400v + 400m?",
+      options: [
+        "A. 1.300",
+        "B. 1.200",
+        "C. 900",
+        "D. 800"
+      ],
+      correct: 3,
+      explain: "Giá trị mới = v + m = 400 + 400 = 800. (500c là giá trị cũ do lao động quá khứ chuyển dịch vào, không tính vào giá trị mới)."
+    },
+    {
+      q: "Câu 13: Tư bản đầu tư K = 600.000 USD, cấu tạo hữu cơ c/v = 3/1. Tính lượng tư bản khả biến (v)?",
+      options: [
+        "A. 450.000 USD",
+        "B. 300.000 USD",
+        "C. 150.000 USD",
+        "D. 100.000 USD"
+      ],
+      correct: 2,
+      explain: "K = c + v = 3v + v = 4v = 600.000 USD => v = 600.000 / 4 = 150.000 USD (c = 450.000 USD)."
+    },
+    {
+      q: "Câu 14: Chi phí thực tế của xã hội để sản xuất hàng hóa bao gồm những chi phí nào?",
+      options: [
+        "A. Chi phí mua máy móc và tiền lương.",
+        "B. Chi phí lao động sống (v+m) và lao động quá khứ (c).",
+        "C. Chi phí vận chuyển và quảng cáo.",
+        "D. Chi phí tiền vay ngân hàng."
+      ],
+      correct: 1,
+      explain: "Chi phí thực tế của xã hội chính là toàn bộ lượng lao động xã hội đã tiêu hao để sản xuất ra hàng hóa, bao gồm lao động quá khứ kết tinh (c) và lao động sống (v + m)."
+    },
+    {
+      q: "Câu 15: Vì sao tăng năng suất lao động trong các ngành sản xuất tư liệu sinh hoạt lại làm tăng giá trị thặng dư?",
+      options: [
+        "A. Làm tăng giá trị sức lao động.",
+        "B. Làm giảm giá trị tư liệu sinh hoạt => giảm giá trị sức lao động v => rút ngắn thời gian tất yếu t.",
+        "C. Làm kéo dài ngày lao động.",
+        "D. Làm giảm chất lượng sản phẩm."
+      ],
+      correct: 1,
+      explain: "Tăng năng suất ở các ngành sản xuất tư liệu sinh hoạt làm giá cả hàng tiêu dùng giảm => giá trị sức lao động giảm => thời gian lao động tất yếu (t) giảm xuống => thời gian lao động thặng dư (t') tăng lên, tạo ra giá trị thặng dư tương đối."
+    },
+    {
+      q: "Câu 16: Tư bản ứng trước 1.000.000 USD, c/v = 4/1, m' = 200%. Tính khối lượng giá trị thặng dư m?",
+      options: [
+        "A. 200.000 USD",
+        "B. 400.000 USD",
+        "C. 800.000 USD",
+        "D. 1.000.000 USD"
+      ],
+      correct: 1,
+      explain: "K = c + v = 4v + v = 5v = 1.000.000 USD => v = 200.000 USD. Khối lượng thặng dư m = m' * v = 200% * 200.000 = 400.000 USD."
+    },
+    {
+      q: "Câu 17: Thuộc tính nào của hàng hóa sức lao động có khả năng tạo ra giá trị mới?",
+      options: [
+        "A. Giá trị trao đổi.",
+        "B. Giá trị sử dụng.",
+        "C. Mẫu mã bao bì.",
+        "D. Trọng lượng cơ thể."
+      ],
+      correct: 1,
+      explain: "Giá trị sử dụng của hàng hóa sức lao động có đặc tính độc nhất vô nhị: khi được tiêu dùng (người công nhân tiến hành lao động), nó tạo ra một lượng giá trị mới lớn hơn giá trị của chính nó."
+    },
+    {
+      q: "Câu 18: Công thức lưu thông tư bản là gì?",
+      options: [
+        "A. H – T – H",
+        "B. T – H – T’ (trong đó T' = T + ΔT)",
+        "C. H – H’",
+        "D. T – T"
+      ],
+      correct: 1,
+      explain: "Công thức chung của tư bản là T – H – T' (với T' = T + ΔT; ΔT là số tiền tăng thêm, tức là giá trị thặng dư). Mục đích của lưu thông tư bản là làm tăng giá trị chứ không phải tiêu dùng như lưu thông hàng hóa giản đơn (H-T-H)."
+    },
+    {
+      q: "Câu 19: Tỷ suất giá trị thặng dư m' phản ánh điều gì?",
+      options: [
+        "A. Quy mô giàu có tuyệt đối của nhà tư bản.",
+        "B. Trình độ bóc lột của tư bản đối với lao động làm thuê.",
+        "C. Tốc độ quay vòng của máy móc.",
+        "D. Hiệu quả sử dụng nguyên vật liệu."
+      ],
+      correct: 1,
+      explain: "m' = (m / v) * 100% phản ánh chính xác trình độ bóc lột của nhà tư bản đối với công nhân làm thuê (cho biết một đơn vị tư bản khả biến bỏ ra sinh ra bao nhiêu đơn vị thặng dư)."
+    },
+    {
+      q: "Câu 20: Khối lượng giá trị thặng dư M phản ánh điều gì?",
+      options: [
+        "A. Trình độ bóc lột tương đối.",
+        "B. Quy mô tuyệt đối của giá trị thặng dư mà nhà tư bản thu được.",
+        "C. Tổng chi phí sản xuất.",
+        "D. Tiền công trung bình."
+      ],
+      correct: 1,
+      explain: "Khối lượng giá trị thặng dư M = m' * V phản ánh quy mô tuyệt đối của giá trị thặng dư mà giai cấp tư sản chiếm đoạt được từ toàn bộ lực lượng lao động làm thuê."
+    }
+  ];
+
+  function renderQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+
+    quizData.forEach((item, qIndex) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.id = `question-${qIndex}`;
+
+      let optionsHtml = "";
+      item.options.forEach((opt, oIndex) => {
+        optionsHtml += `
+          <label class="option-item" id="opt-${qIndex}-${oIndex}">
+            <input type="radio" name="question-${qIndex}" value="${oIndex}">
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      qDiv.innerHTML = `
+        <div class="question-title">${item.q}</div>
+        <div class="options-list">${optionsHtml}</div>
+        <div class="explanation-box" id="explain-${qIndex}">
+          <strong>💡 Phân tích & Lời giải:</strong> ${item.explain}
+        </div>
+      `;
+      container.appendChild(qDiv);
+    });
+  }
+
+  function switchTab(tab) {
+    const btnStudy = document.getElementById("btnTabStudy");
+    const btnQuiz = document.getElementById("btnTabQuiz");
+    const studyView = document.getElementById("studyView");
+    const quizView = document.getElementById("quizView");
+
+    if (tab === 'study') {
+      btnStudy.classList.add("active");
+      btnQuiz.classList.remove("active");
+      studyView.classList.remove("hidden");
+      quizView.classList.add("hidden");
+    } else {
+      btnQuiz.classList.add("active");
+      btnStudy.classList.remove("active");
+      quizView.classList.remove("hidden");
+      studyView.classList.add("hidden");
+    }
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizData.forEach((item, qIndex) => {
+      const selected = document.querySelector(`input[name="question-${qIndex}"]:checked`);
+      const explainBox = document.getElementById(`explain-${qIndex}`);
+      explainBox.style.display = "block";
+
+      item.options.forEach((_, oIndex) => {
+        const label = document.getElementById(`opt-${qIndex}-${oIndex}`);
+        label.classList.remove("correct-ans", "wrong-ans");
+      });
+
+      const correctLabel = document.getElementById(`opt-${qIndex}-${item.correct}`);
+      if (correctLabel) correctLabel.classList.add("correct-ans");
+
+      if (selected) {
+        const userChoice = parseInt(selected.value);
+        if (userChoice === item.correct) {
+          score++;
+        } else {
+          const wrongLabel = document.getElementById(`opt-${qIndex}-${userChoice}`);
+          if (wrongLabel) wrongLabel.classList.add("wrong-ans");
+        }
+      }
+    });
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const percent = Math.round((score / quizData.length) * 100);
+    scoreDisplay.innerText = `Điểm số: ${score}/${quizData.length} (${percent}%)`;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    renderQuiz();
+    document.getElementById("scoreDisplay").innerText = "Chưa nộp bài";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuiz();
+</script>
+
+</body>
+</html>
