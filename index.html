@@ -7,6 +7,7 @@
   <style>
     :root {
       --sidebar-width: 320px;
+      --sidebar-collapsed-width: 68px;
       --primary: #1e40af;
       --primary-hover: #1d4ed8;
       --bg-dark: #0f172a;
@@ -38,12 +39,41 @@
       flex-direction: column;
       border-right: 1px solid var(--border-color);
       z-index: 10;
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Trạng thái thu nhỏ của sidebar */
+    aside.collapsed {
+      width: var(--sidebar-collapsed-width);
+      min-width: var(--sidebar-collapsed-width);
+    }
+
+    aside.collapsed .sidebar-header h2,
+    aside.collapsed .sidebar-header p,
+    aside.collapsed .menu-text {
+      display: none;
+    }
+
+    aside.collapsed .sidebar-header {
+      padding: 14px 8px;
+      text-align: center;
+    }
+
+    aside.collapsed .menu-link {
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    aside.collapsed .badge-cd {
+      margin: 0;
     }
 
     .sidebar-header {
-      padding: 20px 16px;
+      padding: 18px 16px;
       border-bottom: 1px solid var(--border-color);
       background: #020617;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .sidebar-header h2 {
@@ -61,12 +91,13 @@
     .menu-list {
       flex: 1;
       overflow-y: auto;
+      overflow-x: hidden;
       padding: 12px 8px;
       list-style: none;
     }
 
     .menu-list::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
 
     .menu-list::-webkit-scrollbar-thumb {
@@ -89,12 +120,12 @@
       border-radius: 8px;
       transition: all 0.18s ease;
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .menu-link:hover {
       background: rgba(255, 255, 255, 0.08);
       color: white;
-      transform: translateX(3px);
     }
 
     .menu-link.active {
@@ -107,9 +138,10 @@
     .badge-cd {
       font-size: 0.72rem;
       background: rgba(255, 255, 255, 0.15);
-      padding: 2px 6px;
+      padding: 3px 6px;
       border-radius: 4px;
       font-weight: 700;
+      flex-shrink: 0;
     }
 
     .menu-link.special {
@@ -129,13 +161,14 @@
       color: white;
     }
 
-    /* Content Area Styling */
+    /* Main Area */
     main {
       flex: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
+      background: #f1f5f9;
     }
 
     .top-bar {
@@ -146,9 +179,39 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
-      font-size: 0.9rem;
-      font-weight: 600;
       color: #334155;
+    }
+
+    .left-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Nút Toggle Sidebar */
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background: #e2e8f0;
+      color: var(--primary);
+    }
+
+    .top-bar-title {
+      font-size: 0.92rem;
+      font-weight: 600;
     }
 
     .content-frame {
@@ -163,90 +226,89 @@
 <body>
 
   <!-- SIDEBAR BÊN TRÁI -->
-  <aside>
+  <aside id="sidebar">
     <div class="sidebar-header">
-      <h2>PORTAL ÔN THI KTCT</h2>
-      <p>Chọn chủ đề để chuyển bài học</p>
+      <h2>PORTAL ÔN THI</h2>
+      <p>Kinh tế chính trị Mác - Lênin</p>
     </div>
 
     <ul class="menu-list">
       <li class="menu-item">
-        <a class="menu-link active" onclick="loadTopic('aa/cd3.html', 'Chủ đề 3: Quy luật giá trị & Áp lực cạnh tranh', this)">
+        <a class="menu-link active" title="Chủ đề 3: Quy luật giá trị & Áp lực cạnh tranh" onclick="loadTopic('aa/cd3.html', 'Chủ đề 3: Quy luật giá trị & Áp lực cạnh tranh', this)">
           <span class="badge-cd">CĐ 3</span>
-          <span>Quy luật giá trị & Cạnh tranh</span>
+          <span class="menu-text">Quy luật giá trị & Cạnh tranh</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd4.html', 'Chủ đề 4: Kinh tế nền tảng & Quan hệ trung gian', this)">
+        <a class="menu-link" title="Chủ đề 4: Kinh tế nền tảng & Quan hệ trung gian" onclick="loadTopic('aa/cd4.html', 'Chủ đề 4: Kinh tế nền tảng & Quan hệ trung gian', this)">
           <span class="badge-cd">CĐ 4</span>
-          <span>Kinh tế nền tảng số</span>
+          <span class="menu-text">Kinh tế nền tảng số</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd5.html', 'Chủ đề 5: Nguồn gốc GTTD & Vấn đề Robot, Tự động hóa', this)">
+        <a class="menu-link" title="Chủ đề 5: Nguồn gốc GTTD & Vấn đề Robot, Tự động hóa" onclick="loadTopic('aa/cd5.html', 'Chủ đề 5: Nguồn gốc GTTD & Vấn đề Robot, Tự động hóa', this)">
           <span class="badge-cd">CĐ 5</span>
-          <span>Nguồn gốc GTTD & Tự động hóa</span>
+          <span class="menu-text">Nguồn gốc GTTD & Tự động hóa</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd6.html', 'Chủ đề 6: Các phương pháp sản xuất GTTD & Quan hệ lợi ích', this)">
+        <a class="menu-link" title="Chủ đề 6: Các phương pháp sản xuất GTTD & Quan hệ lợi ích" onclick="loadTopic('aa/cd6.html', 'Chủ đề 6: Các phương pháp sản xuất GTTD & Quan hệ lợi ích', this)">
           <span class="badge-cd">CĐ 6</span>
-          <span>Phương pháp sản xuất GTTD</span>
+          <span class="menu-text">Phương pháp sản xuất GTTD</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd7.html', 'Chủ đề 7: Tiền công, Giá trị sức lao động & Đời sống', this)">
+        <a class="menu-link" title="Chủ đề 7: Tiền công, Giá trị sức lao động & Đời sống" onclick="loadTopic('aa/cd7.html', 'Chủ đề 7: Tiền công, Giá trị sức lao động & Đời sống', this)">
           <span class="badge-cd">CĐ 7</span>
-          <span>Tiền công & Giá trị sức lao động</span>
+          <span class="menu-text">Tiền công & Giá trị sức lao động</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd8.html', 'Chủ đề 8: Tích lũy tư bản & Cơ cấu lao động hiện đại', this)">
+        <a class="menu-link" title="Chủ đề 8: Tích lũy tư bản & Cơ cấu lao động hiện đại" onclick="loadTopic('aa/cd8.html', 'Chủ đề 8: Tích lũy tư bản & Cơ cấu lao động hiện đại', this)">
           <span class="badge-cd">CĐ 8</span>
-          <span>Tích lũy tư bản & Mở rộng SX</span>
+          <span class="menu-text">Tích lũy tư bản & Mở rộng SX</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd9.html', 'Chủ đề 9: Độc quyền & Cạnh tranh hàng không (Case ACV)', this)">
+        <a class="menu-link" title="Chủ đề 9: Độc quyền & Cạnh tranh hàng không (Case ACV)" onclick="loadTopic('aa/cd9.html', 'Chủ đề 9: Độc quyền & Cạnh tranh hàng không (Case ACV)', this)">
           <span class="badge-cd">CĐ 9</span>
-          <span>Độc quyền hàng không (ACV)</span>
+          <span class="menu-text">Độc quyền hàng không (ACV)</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd10.html', 'Chủ đề 10: Độc quyền kinh tế số (Case Google)', this)">
+        <a class="menu-link" title="Chủ đề 10: Độc quyền kinh tế số (Case Google)" onclick="loadTopic('aa/cd10.html', 'Chủ đề 10: Độc quyền kinh tế số (Case Google)', this)">
           <span class="badge-cd">CĐ 10</span>
-          <span>Độc quyền số (Google)</span>
+          <span class="menu-text">Độc quyền số (Google)</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd11.html', 'Chủ đề 11: Tập đoàn lớn & Cạnh tranh (Case Petrolimex)', this)">
+        <a class="menu-link" title="Chủ đề 11: Tập đoàn lớn & Cạnh tranh (Case Petrolimex)" onclick="loadTopic('aa/cd11.html', 'Chủ đề 11: Tập đoàn lớn & Cạnh tranh (Case Petrolimex)', this)">
           <span class="badge-cd">CĐ 11</span>
-          <span>Tập đoàn lớn (Petrolimex)</span>
+          <span class="menu-text">Tập đoàn lớn (Petrolimex)</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd12.html', 'Chủ đề 12: Kinh tế thị trường định hướng XHCN', this)">
+        <a class="menu-link" title="Chủ đề 12: Kinh tế thị trường định hướng XHCN" onclick="loadTopic('aa/cd12.html', 'Chủ đề 12: Kinh tế thị trường định hướng XHCN', this)">
           <span class="badge-cd">CĐ 12</span>
-          <span>KTTT định hướng XHCN</span>
+          <span class="menu-text">KTTT định hướng XHCN</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd13.html', 'Chủ đề 13: Quan hệ lợi ích kinh tế (Case PouYuen)', this)">
+        <a class="menu-link" title="Chủ đề 13: Quan hệ lợi ích kinh tế (Case PouYuen)" onclick="loadTopic('aa/cd13.html', 'Chủ đề 13: Quan hệ lợi ích kinh tế (Case PouYuen)', this)">
           <span class="badge-cd">CĐ 13</span>
-          <span>Mâu thuẫn lợi ích (PouYuen)</span>
+          <span class="menu-text">Mâu thuẫn lợi ích (PouYuen)</span>
         </a>
       </li>
       <li class="menu-item">
-        <a class="menu-link" onclick="loadTopic('aa/cd14.html', 'Chủ đề 14: CNH, HĐH & Hội nhập trong kỷ nguyên số', this)">
+        <a class="menu-link" title="Chủ đề 14: CNH, HĐH & Hội nhập trong kỷ nguyên số" onclick="loadTopic('aa/cd14.html', 'Chủ đề 14: CNH, HĐH & Hội nhập trong kỷ nguyên số', this)">
           <span class="badge-cd">CĐ 14</span>
-          <span>CNH, HĐH kỷ nguyên số</span>
+          <span class="menu-text">CNH, HĐH kỷ nguyên số</span>
         </a>
       </li>
       <li class="menu-item">
-        <!-- Đã mã hóa URL cho file có khoảng trắng và dấu tiếng Việt để chạy chuẩn trên cả GitHub -->
-        <a class="menu-link special" onclick="loadTopic('aa/gi%E1%BB%AFa%20k%C3%AC.html', 'Đề Ôn Tập / Thi Giữa Kỳ', this)">
+        <a class="menu-link special" title="Đề Ôn Tập / Thi Giữa Kỳ" onclick="loadTopic('aa/gi%E1%BB%AFa%20k%C3%AC.html', 'Đề Ôn Tập / Thi Giữa Kỳ', this)">
           <span>🎯</span>
-          <span>ĐỀ THI GIỮA KỲ</span>
+          <span class="menu-text">ĐỀ THI GIỮA KỲ</span>
         </a>
       </li>
     </ul>
@@ -255,14 +317,22 @@
   <!-- KHUNG HIỂN THỊ NỘI DUNG BÊN PHẢI -->
   <main>
     <div class="top-bar">
-      <span id="currentTopicTitle">Chủ đề 3: Quy luật giá trị & Áp lực cạnh tranh</span>
-      <span style="font-weight: normal; color: #64748b; font-size: 0.8rem;">Trình duyệt nội bộ</span>
+      <div class="left-controls">
+        <button id="toggleBtn" class="toggle-btn" onclick="toggleSidebar()" title="Thu nhỏ / Mở rộng Sidebar">☰</button>
+        <span id="currentTopicTitle" class="top-bar-title">Chủ đề 3: Quy luật giá trị & Áp lực cạnh tranh</span>
+      </div>
+      <span style="font-size: 0.8rem; color: #64748b;">Trình duyệt nội bộ</span>
     </div>
-    <!-- Load mặc định file cd3.html trong thư mục aa -->
+    
     <iframe id="mainFrame" class="content-frame" src="aa/cd3.html"></iframe>
   </main>
 
   <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('collapsed');
+    }
+
     function loadTopic(fileUrl, title, element) {
       document.getElementById('mainFrame').src = fileUrl;
       document.getElementById('currentTopicTitle').innerText = title;
